@@ -1,0 +1,799 @@
+﻿<ScrollViewer
+    Background="White"
+    mc:Ignorable="d"
+    x:Class="CuisineCompanion.Views.EditMyInfoView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:behavior="clr-namespace:CuisineCompanion.Common.Behavior"
+    xmlns:common="clr-namespace:CuisineCompanion.Common"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:helper="clr-namespace:CuisineCompanion.Helper"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="clr-namespace:CuisineCompanion.Models"
+    xmlns:properties="clr-namespace:CuisineCompanion.Resources"
+    xmlns:viewModels="clr-namespace:CuisineCompanion.ViewModels"
+    xmlns:views="clr-namespace:CuisineCompanion.Views"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <b:Interaction.Behaviors>
+        <behavior:ScrollSpeedBehavior />
+    </b:Interaction.Behaviors>
+    <ScrollViewer.DataContext>
+        <viewModels:EditMyInfoViewModel />
+    </ScrollViewer.DataContext>
+    <Grid>
+        <StackPanel
+            DataContext="{Binding MyInfo, UpdateSourceTrigger=PropertyChanged}"
+            Orientation="Vertical"
+            Style="{StaticResource NoErrorStyle}"
+            Visibility="{Binding DataContext.Flag, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter={x:Static models:EditMyInfoFlags.Info}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type views:EditMyInfoView}}}">
+            <Border MinHeight="40" Style="{StaticResource Body}">
+                <Grid MinHeight="40">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Border
+                        Background="#52B39E"
+                        CornerRadius="10"
+                        DockPanel.Dock="Left"
+                        Grid.Column="0"
+                        MinHeight="40">
+                        <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+                            <Image
+                                Height="24"
+                                Margin="4,0,0,0"
+                                Source="{StaticResource IconLArrow}"
+                                Width="24" />
+                            <TextBlock
+                                FontSize="24"
+                                Foreground="White"
+                                HorizontalAlignment="Right"
+                                Padding="4,0,10,0"
+                                Text="返回"
+                                VerticalAlignment="Center" />
+                        </StackPanel>
+                        <b:Interaction.Behaviors>
+                            <behavior:PressReboundBehavior Command="{Binding Source={x:Static viewModels:MainViewModel.Navigate}, Path=GoBackCommand}" />
+                            <behavior:FocusAmplificationBehavior Mod="Weak" />
+                        </b:Interaction.Behaviors>
+                    </Border>
+                    <Border
+                        Background="#52B39E"
+                        CornerRadius="10"
+                        DockPanel.Dock="Right"
+                        Grid.Column="2"
+                        HorizontalAlignment="Right"
+                        MinHeight="40"
+                        Width="80">
+                        <TextBlock
+                            FontSize="24"
+                            Foreground="White"
+                            HorizontalAlignment="Center"
+                            Padding="10,0"
+                            Text="确认"
+                            VerticalAlignment="Center" />
+                        <b:Interaction.Behaviors>
+                            <behavior:PressReboundBehavior Command="{Binding DataContext.SaveCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type views:EditMyInfoView}}}" />
+                            <behavior:FocusAmplificationBehavior Mod="Weak" />
+                        </b:Interaction.Behaviors>
+                    </Border>
+                </Grid>
+            </Border>
+
+            <Border Style="{StaticResource Body}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="4*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock
+                        Grid.Column="0"
+                        Margin="30,24,10,0"
+                        Style="{StaticResource Title}"
+                        Text="昵称" />
+                    <common:TipTextBox
+                        Grid.Column="1"
+                        Style="{StaticResource Input}"
+                        TipBoxText="输入你的新名字">
+                        <common:TipTextBox.InputView>
+                            <TextBox Text="{Binding UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                        </common:TipTextBox.InputView>
+                    </common:TipTextBox>
+                </Grid>
+            </Border>
+            <Border Style="{StaticResource Body}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="4*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock
+                        Grid.Column="0"
+                        Margin="30,24,10,0"
+                        Style="{StaticResource Title}"
+                        Text="姓别" />
+                    <StackPanel
+                        Grid.Column="1"
+                        Margin="35,0"
+                        Orientation="Horizontal"
+                        VerticalAlignment="Center">
+                        <RadioButton
+                            Content="男"
+                            FontSize="16"
+                            IsChecked="{Binding Gender}"
+                            Margin="0,0,10,0"
+                            VerticalAlignment="Center" />
+                        <RadioButton
+                            Content="女"
+                            FontSize="16"
+                            IsChecked="{Binding Gender, Converter={StaticResource BoolInverterConverter}}"
+                            VerticalAlignment="Center" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <Border Style="{StaticResource Body}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="4*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock
+                        Grid.Column="0"
+                        Margin="30,24,10,0"
+                        Style="{StaticResource Title}"
+                        Text="生日" />
+                    <DatePicker
+                        Background="{x:Null}"
+                        Grid.Column="1"
+                        Height="30"
+                        Margin="35,0"
+                        Padding="0,5"
+                        SelectedDate="{Binding BirthDate}" />
+                </Grid>
+            </Border>
+
+            <Border Style="{StaticResource Body}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="10*" />
+                        <ColumnDefinition Width="15*" />
+                        <ColumnDefinition Width="5*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock
+                        Grid.Column="0"
+                        Margin="30,24,10,0"
+                        Style="{StaticResource Title}"
+                        Text="历史档案" />
+                    <ComboBox
+                        Grid.Column="1"
+                        ItemsSource="{Binding UserInfoList}"
+                        Margin="0"
+                        SelectedValue="{Binding UserNowInfo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                        Style="{StaticResource ComboBoxStyle}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <Border>
+                                    <TextBlock Margin="10,0,0,0" Text="{Binding UpdateTime, StringFormat={}{0:yyyy-MM-dd HH:mm:ss}}" />
+                                </Border>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <Image
+                        Grid.Column="2"
+                        Height="30"
+                        Source="{StaticResource IconClose}"
+                        Width="30">
+                        <b:Interaction.Behaviors>
+                            <behavior:PressReboundBehavior Command="{Binding DataContext.DeleteCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type views:EditMyInfoView}}}" />
+                            <behavior:FocusAmplificationBehavior Mod="Weak" />
+                        </b:Interaction.Behaviors>
+                    </Image>
+                </Grid>
+            </Border>
+
+            <Border Style="{StaticResource Body}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="4*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock
+                        Grid.Column="0"
+                        Margin="30,24,10,0"
+                        Style="{StaticResource Title}"
+                        Text="身高" />
+                    <common:TipTextBox
+                        Grid.Column="1"
+                        Style="{StaticResource Input}"
+                        TipBoxText="输入你的身高 （cm）">
+                        <common:TipTextBox.InputView>
+                            <TextBox Text="{Binding UserNowInfo.Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}">
+                                <b:Interaction.Behaviors>
+                                    <behavior:DraggableNumericBehavior />
+                                    <behavior:DecimalBindingBehavior
+                                        IsPositive="True"
+                                        MaxValue="1000"
+                                        MinValue="0" />
+                                </b:Interaction.Behaviors>
+                            </TextBox>
+                        </common:TipTextBox.InputView>
+                    </common:TipTextBox>
+                </Grid>
+            </Border>
+            <Border Style="{StaticResource Body}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="4*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock
+                        Grid.Column="0"
+                        Margin="30,24,10,0"
+                        Style="{StaticResource Title}"
+                        Text="体重" />
+                    <common:TipTextBox
+                        Grid.Column="1"
+                        Style="{StaticResource Input}"
+                        TipBoxText="输入你的体重 （kg）">
+                        <common:TipTextBox.InputView>
+                            <TextBox Text="{Binding UserNowInfo.Weight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}">
+                                <b:Interaction.Behaviors>
+                                    <behavior:DraggableNumericBehavior />
+                                    <behavior:DecimalBindingBehavior
+                                        IsPositive="True"
+                                        MaxValue="1000"
+                                        MinValue="0" />
+                                </b:Interaction.Behaviors>
+                            </TextBox>
+                        </common:TipTextBox.InputView>
+                    </common:TipTextBox>
+                </Grid>
+            </Border>
+
+            <Border Style="{StaticResource Body}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="2*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock
+                        Grid.Column="0"
+                        Margin="10"
+                        Style="{StaticResource Title}"
+                        Text="BMI"
+                        VerticalAlignment="Center" />
+                    <StackPanel Grid.Column="1" Orientation="Vertical">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Border
+                                Background="#7DAFFFE2"
+                                CornerRadius="10"
+                                Grid.Column="0"
+                                Margin="2,10"
+                                MinHeight="30"
+                                Padding="1">
+                                <TextBlock
+                                    FontSize="20"
+                                    Foreground="Indigo"
+                                    HorizontalAlignment="Center"
+                                    Margin="0"
+                                    Text="{Binding BmiStr}"
+                                    VerticalAlignment="Center" />
+                            </Border>
+                            <TextBlock
+                                Grid.Column="1"
+                                Margin="0"
+                                Style="{StaticResource Title}"
+                                Text="{Binding Bmi, StringFormat={}{0:0.#} kg/㎡}"
+                                VerticalAlignment="Center" />
+                        </Grid>
+
+                        <Slider
+                            HorizontalAlignment="Stretch"
+                            IsEnabled="False"
+                            Margin="8,0,20,20"
+                            Maximum="33.9"
+                            Minimum="12.5"
+                            Value="{Binding Bmi, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            VerticalAlignment="Center">
+                            <Slider.Template>
+                                <ControlTemplate TargetType="Slider">
+                                    <Grid>
+                                        <Track x:Name="PART_Track">
+                                            <Track.DecreaseRepeatButton>
+                                                <RepeatButton Command="{x:Static Slider.DecreaseLarge}" Visibility="Collapsed" />
+                                            </Track.DecreaseRepeatButton>
+                                            <Track.Thumb>
+                                                <Thumb x:Name="Thumb">
+                                                    <Thumb.Template>
+                                                        <ControlTemplate TargetType="Thumb">
+                                                            <Path Data="M0,0 L10,0 L5,10 Z" Fill="#48094F" />
+                                                        </ControlTemplate>
+                                                    </Thumb.Template>
+                                                </Thumb>
+                                            </Track.Thumb>
+                                            <Track.IncreaseRepeatButton>
+                                                <RepeatButton Command="{x:Static Slider.IncreaseLarge}" Visibility="Collapsed" />
+                                            </Track.IncreaseRepeatButton>
+                                        </Track>
+                                        <Grid Margin="0,10,0,0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="60*" />
+                                                <ColumnDefinition Width="54*" />
+                                                <ColumnDefinition Width="40*" />
+                                                <ColumnDefinition Width="60*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Border
+                                                Background="#00DCBC"
+                                                CornerRadius="3,0,0,3"
+                                                Grid.Column="0"
+                                                Height="5"
+                                                VerticalAlignment="Center" />
+                                            <Border
+                                                Background="{x:Static helper:ColorHelper.A}"
+                                                Grid.Column="1"
+                                                Height="5"
+                                                VerticalAlignment="Center" />
+                                            <Border
+                                                Background="{x:Static helper:ColorHelper.C}"
+                                                Grid.Column="2"
+                                                Height="5"
+                                                VerticalAlignment="Center" />
+                                            <Border
+                                                Background="#FF5707"
+                                                CornerRadius="0,3,3,0"
+                                                Grid.Column="3"
+                                                Height="5"
+                                                VerticalAlignment="Center" />
+                                        </Grid>
+                                    </Grid>
+                                </ControlTemplate>
+                            </Slider.Template>
+                        </Slider>
+                    </StackPanel>
+
+                </Grid>
+            </Border>
+            <Border
+                Background="#00000000"
+                BorderThickness="0"
+                Margin="0"
+                Style="{StaticResource Body}">
+                <TextBlock
+                    Margin="7"
+                    Style="{StaticResource Title}"
+                    Text="分析结果" />
+            </Border>
+
+            <Border Style="{StaticResource Body}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="4*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock
+                        Grid.Column="0"
+                        Margin="30,24,10,0"
+                        Style="{StaticResource Title}"
+                        Text="习惯" />
+
+                    <ComboBox
+                        Grid.Column="1"
+                        ItemsSource="{Binding Source={x:Static viewModels:MainViewModel.ActivityLevels}}"
+                        SelectedValue="{Binding UserNowInfo.ActivityLevelStr, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                        SelectedValuePath="Key"
+                        Style="{StaticResource ComboBoxStyle}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Margin="10,0,10,0" Text="{Binding Value}" />
+                                    <TextBlock Margin="0,0,20,0" Text="{Binding Key}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </Grid>
+            </Border>
+
+            <Border DataContext="{Binding .UserNowInfo}" Style="{StaticResource Body}">
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Style="{StaticResource Title}" Text="供能占比" />
+                    <Border Background="#46D0E2FF">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="10*" />
+                                <ColumnDefinition Width="14*" />
+                                <ColumnDefinition Width="8*" />
+                                <ColumnDefinition Width="8*" />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel
+                                Grid.Column="0"
+                                Margin="10,5,0,0"
+                                Orientation="Horizontal">
+                                <Image
+                                    Height="30"
+                                    Source="{StaticResource IconFat}"
+                                    Width="30" />
+                                <TextBlock
+                                    Margin="0"
+                                    Style="{StaticResource Title}"
+                                    Text="脂肪" />
+                            </StackPanel>
+
+                            <Slider
+                                Grid.Column="1"
+                                HorizontalAlignment="Stretch"
+                                Margin="8,0,0,0"
+                                Maximum="0.3"
+                                Minimum="0.2"
+                                Value="{Binding FatPercentage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                VerticalAlignment="Center" />
+                            <TextBlock
+                                FontSize="16"
+                                Grid.Column="2"
+                                Margin="0"
+                                Style="{StaticResource Title}"
+                                Text="{Binding FatPercentage, StringFormat={}{0:F2} %}"
+                                VerticalAlignment="Center" />
+                            <TextBlock
+                                FontSize="16"
+                                Grid.Column="3"
+                                Margin="0"
+                                Style="{StaticResource Title}"
+                                Text="{Binding FatRequirement, StringFormat={}{0:0.#} g/天}"
+                                VerticalAlignment="Center" />
+                        </Grid>
+                    </Border>
+                    <Border Background="#46D0E2FF">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="10*" />
+                                <ColumnDefinition Width="14*" />
+                                <ColumnDefinition Width="8*" />
+                                <ColumnDefinition Width="8*" />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel
+                                Grid.Column="0"
+                                Margin="10,5,0,0"
+                                Orientation="Horizontal">
+                                <Image
+                                    Height="30"
+                                    Source="{StaticResource IconCarbohydrate}"
+                                    Width="30" />
+                                <TextBlock
+                                    Margin="0"
+                                    Style="{StaticResource Title}"
+                                    Text="碳水" />
+                            </StackPanel>
+                            <Slider
+                                Grid.Column="1"
+                                HorizontalAlignment="Stretch"
+                                IsEnabled="False"
+                                Margin="8,0,0,0"
+                                Maximum="0.65"
+                                Minimum="0.5"
+                                Value="{Binding CarbohydratePercentage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                VerticalAlignment="Center" />
+                            <TextBlock
+                                FontSize="16"
+                                Grid.Column="2"
+                                Margin="0"
+                                Style="{StaticResource Title}"
+                                Text="{Binding CarbohydratePercentage, StringFormat={}{0:F2} %}"
+                                VerticalAlignment="Center" />
+                            <TextBlock
+                                FontSize="16"
+                                Grid.Column="3"
+                                Margin="0"
+                                Style="{StaticResource Title}"
+                                Text="{Binding CarbohydrateRequirement, StringFormat={}{0:0.#} g/天}"
+                                VerticalAlignment="Center" />
+                        </Grid>
+                    </Border>
+                    <Border Background="#46D0E2FF">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="10*" />
+                                <ColumnDefinition Width="14*" />
+                                <ColumnDefinition Width="8*" />
+                                <ColumnDefinition Width="8*" />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel
+                                Grid.Column="0"
+                                Margin="10,5,0,0"
+                                Orientation="Horizontal">
+                                <Image
+                                    Height="30"
+                                    Source="{StaticResource IconProtein}"
+                                    Width="30" />
+                                <TextBlock
+                                    Margin="0"
+                                    Style="{StaticResource Title}"
+                                    Text="蛋白质" />
+                            </StackPanel>
+                            <Slider
+                                Grid.Column="1"
+                                HorizontalAlignment="Stretch"
+                                Margin="8,0,0,0"
+                                Maximum="0.2"
+                                Minimum="0.1"
+                                Value="{Binding ProteinPercentage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                VerticalAlignment="Center" />
+                            <TextBlock
+                                FontSize="16"
+                                Grid.Column="2"
+                                Margin="0"
+                                Style="{StaticResource Title}"
+                                Text="{Binding ProteinPercentage, StringFormat={}{0:F2} %}"
+                                VerticalAlignment="Center" />
+                            <TextBlock
+                                FontSize="16"
+                                Grid.Column="3"
+                                Margin="0"
+                                Style="{StaticResource Title}"
+                                Text="{Binding ProteinRequirement, StringFormat={}{0:0.#} g/天}"
+                                VerticalAlignment="Center" />
+                        </Grid>
+                    </Border>
+                    <Border Background="#46D0E2FF">
+                        <StackPanel
+                            HorizontalAlignment="Center"
+                            Margin="0,0,0,10"
+                            Orientation="Horizontal">
+                            <TextBlock
+                                FontSize="18"
+                                Style="{StaticResource Title}"
+                                Text="{Binding ProteinRni, StringFormat={}推荐蛋白质摄入量 {0:0.#} g/天  点击填入}">
+                                <b:Interaction.Behaviors>
+                                    <behavior:PressReboundBehavior Command="{Binding DataContext.ToRNICommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type views:EditMyInfoView}}}" CommandParameter="{Binding}" />
+                                    <behavior:FocusAmplificationBehavior
+                                        Duration="0.2"
+                                        XFrom="1"
+                                        XTo="1.04"
+                                        YFrom="1"
+                                        YTo="1.04" />
+                                </b:Interaction.Behaviors>
+                            </TextBlock>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource Body}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="2*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <TextBlock
+                        Grid.Column="0"
+                        Grid.Row="0"
+                        Style="{StaticResource Title}"
+                        Text="基础代谢" />
+                    <TextBlock
+                        Grid.Column="1"
+                        Grid.Row="0"
+                        Style="{StaticResource Title}"
+                        Text="{Binding Ree, StringFormat={}{0:0.#} kcal/天}" />
+                    <TextBlock
+                        Grid.Column="0"
+                        Grid.Row="1"
+                        Style="{StaticResource Title}"
+                        Text="推荐摄入量" />
+                    <TextBlock
+                        Grid.Column="1"
+                        Grid.Row="1"
+                        Margin="10,24,10,24"
+                        Style="{StaticResource Title}"
+                        Text="{Binding Tdee, StringFormat={}{0:0.#} kcal/天}" />
+                </Grid>
+            </Border>
+
+            <Border Margin="0,120,0,0" Style="{StaticResource Body}">
+                <TextBlock
+                    Foreground="#0062FF"
+                    Grid.Column="0"
+                    HorizontalAlignment="Center"
+                    Margin="30,24,10,0"
+                    Style="{StaticResource Title}"
+                    Text="退出登陆" />
+                <b:Interaction.Behaviors>
+                    <behavior:PressReboundBehavior Command="{Binding DataContext.SignOutCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type views:EditMyInfoView}}}" CommandParameter="{Binding}" />
+                    <behavior:FocusAmplificationBehavior
+                        Duration="0.2"
+                        XFrom="1"
+                        XTo="1.04"
+                        YFrom="1"
+                        YTo="1.04" />
+                </b:Interaction.Behaviors>
+            </Border>
+
+            <Border Margin="0,50,0,0" Style="{StaticResource Body}">
+                <TextBlock
+                    Foreground="Orange"
+                    Grid.Column="0"
+                    HorizontalAlignment="Center"
+                    Margin="30,24,10,0"
+                    Style="{StaticResource Title}"
+                    Text="修改密码" />
+                <b:Interaction.Behaviors>
+                    <behavior:PressReboundBehavior Command="{Binding DataContext.GoChangeCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type views:EditMyInfoView}}}" CommandParameter="{x:Static models:EditMyInfoFlags.Password}" />
+                    <behavior:FocusAmplificationBehavior
+                        Duration="0.2"
+                        XFrom="1"
+                        XTo="1.04"
+                        YFrom="1"
+                        YTo="1.04" />
+                </b:Interaction.Behaviors>
+            </Border>
+
+            <Border Margin="0,50,0,0" Style="{StaticResource Body}">
+                <TextBlock
+                    Foreground="Red"
+                    Grid.Column="0"
+                    HorizontalAlignment="Center"
+                    Margin="30,24,10,0"
+                    Style="{StaticResource Title}"
+                    Text="注销账户" />
+                <b:Interaction.Behaviors>
+                    <behavior:PressReboundBehavior Command="{Binding DataContext.GoChangeCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type views:EditMyInfoView}}}" CommandParameter="{x:Static models:EditMyInfoFlags.Logout}" />
+                    <behavior:FocusAmplificationBehavior
+                        Duration="0.2"
+                        XFrom="1"
+                        XTo="1.04"
+                        YFrom="1"
+                        YTo="1.04" />
+                </b:Interaction.Behaviors>
+            </Border>
+        </StackPanel>
+
+        <StackPanel
+            DataContext="{Binding ChangePasswordModel, ValidatesOnDataErrors=False}"
+            HorizontalAlignment="Center"
+            Orientation="Vertical"
+            Style="{StaticResource NoErrorStyle}"
+            Visibility="{Binding DataContext.Flag, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter={x:Static models:EditMyInfoFlags.Password}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type views:EditMyInfoView}}}">
+            <TextBlock
+                FontSize="18"
+                HorizontalAlignment="Center"
+                Margin="70,14"
+                Style="{StaticResource Title}"
+                Text="{Binding PhoneString}"
+                VerticalAlignment="Center" />
+            <common:TipTextBox
+                BorderBrush="#ACB0AF"
+                BorderThickness="1"
+                IconSource="{StaticResource IconPhone}"
+                Margin="70,7"
+                TipBoxText="请输入手机号后四位">
+                <common:TipTextBox.InputView>
+                    <TextBox Text="{Binding PhoneCut, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                </common:TipTextBox.InputView>
+            </common:TipTextBox>
+
+
+            <common:TipTextBox
+                BorderBrush="#ACB0AF"
+                BorderThickness="1"
+                IconSource="{StaticResource IconPassword}"
+                Margin="70,7"
+                TipBoxText="{Binding Source={x:Static properties:Strings.Str_OldPassword}}">
+                <common:TipTextBox.InputView>
+                    <PasswordBox behavior:PasswordBindingEx.Password="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}">
+                        <b:Interaction.Behaviors>
+                            <behavior:PasswordBindingBehavior />
+                        </b:Interaction.Behaviors>
+                    </PasswordBox>
+                </common:TipTextBox.InputView>
+            </common:TipTextBox>
+
+            <common:TipTextBox
+                BorderBrush="#ACB0AF"
+                BorderThickness="1"
+                IconSource="{StaticResource IconPassword}"
+                Margin="70,7"
+                TipBoxText="{Binding Source={x:Static properties:Strings.Str_NewPassword}}">
+                <common:TipTextBox.InputView>
+                    <PasswordBox behavior:PasswordBindingEx.Password="{Binding NewPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}">
+                        <b:Interaction.Behaviors>
+                            <behavior:PasswordBindingBehavior />
+                        </b:Interaction.Behaviors>
+                    </PasswordBox>
+                </common:TipTextBox.InputView>
+            </common:TipTextBox>
+
+
+            <common:TipTextBox
+                BorderBrush="#ACB0AF"
+                BorderThickness="1"
+                IconSource="{StaticResource IconPassword}"
+                Margin="70,7"
+                TipBoxText="{Binding Source={x:Static properties:Strings.Str_Password_Confirm}}">
+                <common:TipTextBox.InputView>
+                    <PasswordBox behavior:PasswordBindingEx.Password="{Binding ConfirmPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}">
+                        <b:Interaction.Behaviors>
+                            <behavior:PasswordBindingBehavior />
+                        </b:Interaction.Behaviors>
+                    </PasswordBox>
+                </common:TipTextBox.InputView>
+            </common:TipTextBox>
+            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                <Button
+                    Command="{Binding DataContext.ChangePasswordCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type views:EditMyInfoView}}}"
+                    Content="{Binding Source={x:Static properties:Strings.Str_Enter}}"
+                    Style="{StaticResource LargeButton}">
+                    <b:Interaction.Behaviors>
+                        <behavior:PressReboundBehavior />
+                    </b:Interaction.Behaviors>
+                </Button>
+                <Button
+                    Command="{Binding DataContext.BackCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type views:EditMyInfoView}}}"
+                    Content="{Binding Source={x:Static properties:Strings.Str_Cancel}}"
+                    Style="{StaticResource LargeButton}">
+                    <b:Interaction.Behaviors>
+                        <behavior:PressReboundBehavior />
+                    </b:Interaction.Behaviors>
+                </Button>
+            </StackPanel>
+        </StackPanel>
+
+        <StackPanel
+            DataContext="{Binding LogoutModel}"
+            HorizontalAlignment="Center"
+            Orientation="Vertical"
+            Style="{StaticResource NoErrorStyle}"
+            Visibility="{Binding DataContext.Flag, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter={x:Static models:EditMyInfoFlags.Logout}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type views:EditMyInfoView}}}">
+            <TextBlock
+                Foreground="Red"
+                HorizontalAlignment="Center"
+                Margin="70,40"
+                Style="{StaticResource Title}"
+                Text="此操作会注销账号，请谨慎操作！"
+                VerticalAlignment="Center" />
+
+
+            <common:TipTextBox
+                BorderBrush="#ACB0AF"
+                BorderThickness="1"
+                IconSource="{StaticResource IconPassword}"
+                Margin="70,7"
+                TipBoxText="{Binding Source={x:Static properties:Strings.Str_Password}}">
+                <common:TipTextBox.InputView>
+                    <PasswordBox behavior:PasswordBindingEx.Password="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}">
+                        <b:Interaction.Behaviors>
+                            <behavior:PasswordBindingBehavior />
+                        </b:Interaction.Behaviors>
+                    </PasswordBox>
+                </common:TipTextBox.InputView>
+            </common:TipTextBox>
+
+            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                <Button
+                    Command="{Binding DataContext.LogoutCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type views:EditMyInfoView}}}"
+                    Content="{Binding Source={x:Static properties:Strings.Str_Enter}}"
+                    Style="{StaticResource LargeButton}">
+                    <b:Interaction.Behaviors>
+                        <behavior:PressReboundBehavior />
+                    </b:Interaction.Behaviors>
+                </Button>
+                <Button
+                    Command="{Binding DataContext.BackCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type views:EditMyInfoView}}}"
+                    Content="{Binding Source={x:Static properties:Strings.Str_Cancel}}"
+                    Style="{StaticResource LargeButton}">
+                    <b:Interaction.Behaviors>
+                        <behavior:PressReboundBehavior />
+                    </b:Interaction.Behaviors>
+                </Button>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</ScrollViewer>

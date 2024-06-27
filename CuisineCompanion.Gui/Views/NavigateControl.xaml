@@ -1,0 +1,206 @@
+﻿<UserControl
+    Background="{x:Null}"
+    Height="720"
+    Width="1280"
+    mc:Ignorable="d"
+    x:Class="CuisineCompanion.Views.NavigateControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:behavior="clr-namespace:CuisineCompanion.Common.Behavior"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:helpers="clr-namespace:CuisineCompanion.Helper"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModels="clr-namespace:CuisineCompanion.ViewModels"
+    xmlns:views="clr-namespace:CuisineCompanion.Views"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <UserControl.DataContext>
+        <viewModels:HomeViewModel />
+    </UserControl.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="5*" />
+            <RowDefinition Height="110*" />
+        </Grid.RowDefinitions>
+        <Border
+            Background="{x:Static helpers:ColorHelper.E}"
+            BorderBrush="MediumPurple"
+            BorderThickness="0.1"
+            CornerRadius="5,5,0,0"
+            Grid.Row="0"
+            VerticalAlignment="Top">
+            <DockPanel>
+                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                    <Button Style="{StaticResource ButtonJust}" Width="{Binding (Button.Height)}">
+                        <b:Interaction.Behaviors>
+                            <behavior:WindowStateManagementBehavior Mod="Minimize" />
+                            <behavior:FocusAmplificationBehavior />
+                        </b:Interaction.Behaviors>
+                        <Image Source="{StaticResource IconMinimize}">
+                            <b:Interaction.Behaviors>
+                                <behavior:FocusAmplificationBehavior />
+                            </b:Interaction.Behaviors>
+                        </Image>
+                    </Button>
+                    <Button Style="{StaticResource ButtonJust}" Width="{Binding (Button.Height)}">
+                        <b:Interaction.Behaviors>
+                            <behavior:WindowStateManagementBehavior Mod="Maximize" />
+                            <behavior:FocusAmplificationBehavior />
+                        </b:Interaction.Behaviors>
+                        <Image Source="{StaticResource IconMaximize}">
+                            <b:Interaction.Behaviors>
+                                <behavior:FocusAmplificationBehavior />
+                            </b:Interaction.Behaviors>
+                        </Image>
+                    </Button>
+                    <Button Style="{StaticResource ButtonJust}" Width="{Binding (Button.Height)}">
+                        <b:Interaction.Behaviors>
+                            <behavior:WindowStateManagementBehavior Mod="Close" />
+                        </b:Interaction.Behaviors>
+                        <Image Source="{StaticResource IconClose}">
+                            <b:Interaction.Behaviors>
+                                <behavior:FocusAmplificationBehavior />
+                            </b:Interaction.Behaviors>
+                        </Image>
+                    </Button>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Button
+                        Style="{StaticResource ButtonJust}"
+                        Width="{Binding (Button.Height)}"
+                        x:Name="MenuToggleButton">
+                        <Image Source="{StaticResource IconMenu}" />
+                    </Button>
+                    <Button Style="{StaticResource ButtonJust}" Width="{Binding (Button.Height)}">
+                        <Image Source="{StaticResource IconLArrow}" />
+                        <b:Interaction.Behaviors>
+                            <behavior:PressReboundBehavior Command="{Binding GoBackCommand, RelativeSource={RelativeSource AncestorType=views:NavigateControl}}" />
+                            <behavior:FocusAmplificationBehavior />
+                        </b:Interaction.Behaviors>
+                    </Button>
+                    <Button Style="{StaticResource ButtonJust}" Width="{Binding (Button.Height)}">
+                        <Image Source="{StaticResource IconRArrow}" />
+                        <b:Interaction.Behaviors>
+                            <behavior:PressReboundBehavior Command="{Binding GoForwardCommand, RelativeSource={RelativeSource AncestorType=views:NavigateControl}}" />
+                            <behavior:FocusAmplificationBehavior />
+                        </b:Interaction.Behaviors>
+                    </Button>
+                    <TextBlock
+                        FontSize="20"
+                        Foreground="{x:Static helpers:ColorHelper.M}"
+                        Margin="20,0"
+                        Text="11111111111111111"
+                        VerticalAlignment="Center"
+                        x:Name="TitleTextBlock">
+                        <b:Interaction.Behaviors>
+                            <behavior:PressReboundBehavior />
+                            <behavior:FocusAmplificationBehavior />
+                        </b:Interaction.Behaviors>
+                    </TextBlock>
+                </StackPanel>
+            </DockPanel>
+
+        </Border>
+
+
+        <ContentControl
+            Grid.Row="1"
+            Height="Auto"
+            x:Name="HomeContentControl" />
+
+
+        <Grid
+            Background="Transparent"
+            Grid.Row="0"
+            Grid.RowSpan="2"
+            Visibility="Collapsed"
+            x:Name="Grid1">
+            <Border
+                Background="{x:Static helpers:ColorHelper.O}"
+                CornerRadius="10"
+                HorizontalAlignment="Left"
+                Opacity="0.98"
+                RenderTransformOrigin="0,0"
+                VerticalAlignment="Top">
+                <StackPanel
+                    Orientation="Vertical"
+                    Visibility="Collapsed"
+                    x:Name="Panel1">
+                    <ListBox
+                        Background="{x:Null}"
+                        BorderBrush="{x:Null}"
+                        BorderThickness="1"
+                        ItemsSource="{Binding MenuBars}"
+                        SelectedIndex="0"
+                        SelectedItem="{Binding SelectedItem}"
+                        x:Name="Menu1">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <DockPanel Background="Transparent" Dock="Left">
+                                    <Image
+                                        Margin="0,4"
+                                        Source="{Binding Icon}"
+                                        Width="25" />
+                                    <TextBlock
+                                        FontSize="17"
+                                        Margin="10,10"
+                                        Text="{Binding Title}"
+                                        VerticalAlignment="Center" />
+                                    <b:Interaction.Behaviors>
+                                        <behavior:PressReboundBehavior />
+                                        <behavior:FocusAmplificationBehavior Mod="Natural" />
+                                    </b:Interaction.Behaviors>
+                                </DockPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="MinHeight" Value="40" />
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                            <Grid Background="Transparent">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="*" />
+                                                </Grid.ColumnDefinitions>
+                                                <Border Grid.Column="0" x:Name="Border1" />
+                                                <Border
+                                                    Grid.Column="1"
+                                                    Opacity="0.7"
+                                                    x:Name="Border2">
+                                                    <Grid>
+                                                        <ContentPresenter VerticalAlignment="Center" />
+                                                    </Grid>
+                                                </Border>
+                                            </Grid>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsSelected" Value="True">
+                                                    <Setter Property="BorderThickness" TargetName="Border1" Value="4,0,0,0" />
+                                                    <Setter Property="BorderBrush" TargetName="Border1" Value="Bisque" />
+                                                    <!-- <Setter Property="Opacity" TargetName="Border1" Value="0.5" /> -->
+
+                                                    <Setter Property="Background" TargetName="Border2" Value="#5AB300" />
+                                                    <Setter Property="BorderBrush" TargetName="Border2" Value="Orange" />
+                                                    <Setter Property="Opacity" TargetName="Border2" Value="0.9" />
+                                                </Trigger>
+
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="BorderThickness" TargetName="Border1" Value="4,0,0,0" />
+                                                    <Setter Property="BorderBrush" TargetName="Border1" Value="Beige" />
+
+                                                    <Setter Property="Background" TargetName="Border2" Value="Bisque" />
+                                                    <Setter Property="BorderBrush" TargetName="Border2" Value="Beige" />
+                                                    <Setter Property="Opacity" TargetName="Border2" Value="0.8" />
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                    </ListBox>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>

@@ -1,0 +1,2 @@
+﻿dotnet tool install --global dotnet-ef --version 7.0.16
+dotnet ef dbcontext scaffold "server=localhost;user=root;password=123456;database=recipe_management_system" MySql.EntityFrameworkCore -o DataModel -f -v

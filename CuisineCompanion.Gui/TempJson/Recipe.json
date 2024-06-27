@@ -1,0 +1,199 @@
+{
+  "recipeId": 4,
+  "title": "鸡翅鸡爪煲",
+  "rName": "鸡翅鸡爪煲",
+  "fileUri": "http://localhost:5281/api/File/GetImageFile/files/Recipes/1-1.webp",
+  "summary": "在家也能品尝到火爆餐厅的鸡翅鸡爪煲，美味至极，令人难以忘怀。酱汁浓郁，口感软烂脱骨，再搭配一碗热腾腾的米饭，真是美味无穷。现在，让我来分享一下这道佳肴的制作方法吧！",
+  "category": [
+    {
+      "categoryId": 5,
+      "cName": "2"
+    },
+    {
+      "categoryId": 8,
+      "cName": "2"
+    }
+  ],
+  "mealPlans": [],
+  "steps": [
+    {
+      "title": "步骤1",
+      "fileUri": null,
+      "refer": "首先，剪掉鸡爪的指甲，确保干净利落。然后，把鸡翅和鸡爪彻底洗净。接下来，把它们放入冷水中，加入适量的葱姜和料酒，煮约3分钟进行焯水。这一步能够有效去除鸡翅和鸡爪的腥味和血水。完成后，用漏网将食材捞出，并轻轻沥干水分，以便后续烹饪。",
+      "requiredTime": "00:30:00",
+      "requiredIngredient": "鸡翅.鸡爪|+|1.1",
+      "summary": "在购买鸡翅和鸡爪时，选择新鲜的食材是至关重要的，因为它直接关系到最终菜品的口感和质量。鸡爪要用盐水泡，否则味道不对，会有腥味的。因此，在购买时，请务必留意食材的新鲜程度，以确保您能够制作出令人满意的佳肴。"
+    },
+    {
+      "title": "步骤2",
+      "fileUri": null,
+      "refer": "把土豆和胡萝卜切成不规则的块状，玉米则切成小段，洋葱切碎。这些配料的加入不仅丰富了菜肴的口感和视觉效果，同时也为菜品增添了更多营养价值。",
+      "requiredTime": "00:10:00",
+      "requiredIngredient": "土豆.红萝卜.玉米.洋葱|+|1.1.1.1",
+      "summary": null
+    },
+    {
+      "title": "步骤3",
+      "fileUri": "http://localhost:5281/api/File/GetImageFile/files/Recipes/1-2.webp",
+      "refer": "先将锅预热，再倒入适量的油，随后放入一小把冰糖，以小火慢炒至呈现出诱人的枣红色。接着，将鸡翅和鸡爪加入锅中，不断翻炒直至均匀上色。随后，加入一勺豆瓣酱，继续翻炒至红油溢出。最后，将预先调制好的料汁均匀淋入锅中，与鸡翅和鸡爪充分混合。这样处理，可以确保鸡翅和鸡爪充分吸收料汁的风味。",
+      "requiredTime": "00:20:00",
+      "requiredIngredient": "生抽.老抽.黄豆酱.盐.冰糖|+.鸡翅.鸡爪|1.1.1.1.1.8.8",
+      "summary": "调制料汁时，可依据个人口味灵活调整调料比例，打造出满意的风味。\n在烹饪过程中，需维持小火慢炖的状态，确保食材能够充分吸收汤汁的鲜美。"
+    },
+    {
+      "title": "步骤4",
+      "fileUri": null,
+      "refer": "将半瓶啤酒与清水混合，水量刚好覆盖食材，然后盖上锅盖，用小火焖煮20分钟。这样做不仅能有效去除鸡翅和鸡爪的腥味，还能为菜品增添独特的香气。在焖煮过程中，务必保持火力适中，确保食材能够充分吸收汤汁的美味。",
+      "requiredTime": "00:25:00",
+      "requiredIngredient": "啤酒|+.鸡翅.鸡爪|1.12.12",
+      "summary": null
+    },
+    {
+      "title": "步骤5",
+      "fileUri": null,
+      "refer": "在焖煮了20分钟后，我们将切好的配菜加入其中，并继续焖煮15分钟。这样可以让配菜充分吸收汤汁的鲜美。在翻焖的过程中，要特别留意避免糊锅，维持小火慢煮，确保菜品口感完美。",
+      "requiredTime": "00:15:00",
+      "requiredIngredient": "土豆.红萝卜.玉米|+|1.1.1",
+      "summary": "在烹饪过程中，收汁是一个重要的步骤。为了确保菜肴的口感和外观不受影响，火候的控制显得尤为重要。过高的温度或过长的烹饪时间都可能导致食材糊锅，进而影响整体的风味和美感。因此，在收汁时，我们必须密切关注火候，适时调整，确保烹饪出的菜肴既美味又诱人。"
+    },
+    {
+      "title": "步骤6",
+      "fileUri": "http://localhost:5281/api/File/GetImageFile/files/Recipes/1-3.webp",
+      "refer": "将切好的洋葱倾入锅中，快速翻炒至微黄，随后转为大火，使汤汁逐渐浓稠。洋葱的添加不仅丰富了菜肴的风味和视觉效果，更是点睛之笔，为菜品增添了一抹独特的香气。在收汁的过程中，火候的掌控至关重要，以防出现糊锅的情况。",
+      "requiredTime": "00:05:00",
+      "requiredIngredient": "洋葱|+.土豆.红萝卜.玉米.鸡翅.鸡爪|1.1.1.2.6.6",
+      "summary": null
+    },
+    {
+      "title": "步骤7",
+      "fileUri": "http://localhost:5281/api/File/GetImageFile/files/Recipes/1-4.webp",
+      "refer": "最终，撒上葱花和白芝麻，这道美味的鸡翅鸡爪煲便可上桌了。葱花和白芝麻的点缀不仅丰富了菜品的色彩，还提升了口感，令人垂涎欲滴。经过长时间的慢炖，汤汁变得浓郁，鸡肉软糯脱骨，每一口都充满了满足感。这道佳肴绝对能让你的味蕾得到极致的享受。",
+      "requiredTime": null,
+      "requiredIngredient": null,
+      "summary": null
+    }
+  ],
+  "ingredients": [
+    {
+      "ingredientId": 4,
+      "iName": "鸡翅",
+      "unit": "g",
+      "quantity": "{\"个\":90}",
+      "nutritional": "{\n  \"蛋白质\": 19.0,\n  \"脂肪\": 11.5,\n  \"碳水化合物\": 5.5,\n  \"热量 kcal\": 202,\n  \"饱和脂肪(酸)\": 5.6,\n  \"不饱和脂肪酸\": 5.2,\n  \"单不饱和脂肪酸\": 5.1,\n  \"多不饱和脂肪酸\": 0.1,\n  \"n-3脂肪酸\": 0.2,\n  \"胆固醇\": 81,\n  \"维生素A\": 28,\n  \"维生素B2(核黄素)\": 0.05,\n  \"维生素B6(吡哆醇)\": 0.53,\n  \"维生素B12(钴胺素)\": 0.38,\n  \"维生素E\": 0.44,\n  \"烟酸(烟酰胺/尼克酸)\": 4.36,\n  \"胆碱\": 12.6,\n  \"生物素\": 4.7,\n  \"钠\": 51,\n  \"钾\": 205,\n  \"钙\": 8,\n  \"磷\": 94,\n  \"镁\": 17,\n  \"铁\": 0.9,\n  \"锌\": 0.42,\n  \"锰\": 0.01,\n  \"硒\": 8.7,\n  \"嘌呤\": 138\n}",
+      "allergy": null,
+      "content": 0.78,
+      "fileUri": "http://localhost:5281/api/File/GetImageFile/files/Ingredients/4.jpg",
+      "dosage": 200
+    },
+    {
+      "ingredientId": 5,
+      "iName": "鸡爪",
+      "unit": "g",
+      "quantity": "{\"只\":50}",
+      "nutritional": "{\n  \"热量 kcal\": 254,\n  \"碳水化合物\": 2.7,\n  \"蛋白质\": 23.9,\n  \"脂肪\": 16.4,\n  \"饱和脂肪(酸)\": 3.8,\n  \"不饱和脂肪酸\": 11.8,\n  \"单不饱和脂肪酸\": 8.4,\n  \"多不饱和脂肪酸\": 3.4,\n  \"胆固醇\": 103,\n  \"叶酸\": 86,\n  \"维生素A\": 37,\n  \"维生素B1(硫胺素)\": 0.01,\n  \"维生素B2(核黄素)\": 0.13,\n  \"维生素B12(钴胺素)\": 0.47,\n  \"维生素D\": 0.2,\n  \"维生素E\": 0.32,\n  \"烟酸(烟酰胺/尼克酸)\": 2.4,\n  \"钠\": 169,\n  \"钾\": 108,\n  \"钙\": 36,\n  \"磷\": 76,\n  \"镁\": 7,\n  \"铁\": 1.4,\n  \"锌\": 0.9,\n  \"铜\": 0.05,\n  \"锰\": 0.03,\n  \"硒\": 10.0\n}",
+      "allergy": null,
+      "content": 0.6,
+      "fileUri": "http://localhost:5281/api/File/GetImageFile/files/Ingredients/5.jpg",
+      "dosage": 200
+    },
+    {
+      "ingredientId": 6,
+      "iName": "土豆",
+      "unit": "g",
+      "quantity": "{\"个\":230}",
+      "nutritional": "{\n  \"热量 kcal\": 81,\n  \"碳水化合物\": 17.8,\n  \"膳食纤维\": 1.1,\n  \"蛋白质\": 2.6,\n  \"脂肪\": 0.2,\n  \"叶酸\": 16,\n  \"维生素A\": 1,\n  \"维生素B1(硫胺素)\": 0.1,\n  \"维生素B2(核黄素)\": 0.02,\n  \"维生素C(抗坏血酸)\": 14.0,\n  \"胡萝卜素\": 6,\n  \"维生素E\": 0.34,\n  \"烟酸(烟酰胺/尼克酸)\": 1.1,\n  \"泛酸\": 0.3,\n  \"生物素\": 4.2,\n  \"钠\": 6,\n  \"钾\": 347,\n  \"钙\": 7,\n  \"磷\": 46,\n  \"镁\": 24,\n  \"铁\": 0.4,\n  \"锌\": 0.3,\n  \"铜\": 0.09,\n  \"锰\": 0.1,\n  \"碘\": 1.2,\n  \"硒\": 0.5,\n  \"嘌呤\": 13\n}",
+      "allergy": null,
+      "content": 0.94,
+      "fileUri": "http://localhost:5281/api/File/GetImageFile/files/Ingredients/6.webp",
+      "dosage": 100
+    },
+    {
+      "ingredientId": 7,
+      "iName": "胡萝卜",
+      "unit": "g",
+      "quantity": "{\"根\":265,\"片\":10}",
+      "nutritional": "{\n  \"热量 kcal\": 32,\n  \"碳水化合物\": 8.1,\n  \"膳食纤维\": 2.4,\n  \"蛋白质\": 1.0,\n  \"脂肪\": 0.2,\n  \"叶酸\": 20,\n  \"维生素A\": 342,\n  \"维生素B2(核黄素)\": 0.02,\n  \"维生素B6(吡哆醇)\": 0.22,\n  \"维生素C(抗坏血酸)\": 9.0,\n  \"胡萝卜素\": 4107,\n  \"维生素E\": 0.31,\n  \"泛酸\": 0.27,\n  \"生物素\": 3.1,\n  \"钠\": 121,\n  \"钾\": 119,\n  \"钙\": 27,\n  \"磷\": 38,\n  \"镁\": 18,\n  \"铁\": 0.3,\n  \"锌\": 0.22,\n  \"铜\": 0.07,\n  \"锰\": 0.08,\n  \"碘\": 1.2,\n  \"硒\": 0.6,\n  \"原花青素\": 256.36,\n  \"嘌呤\": 2\n}",
+      "allergy": null,
+      "content": 0.97,
+      "fileUri": "http://localhost:5281/api/File/GetImageFile/files/Ingredients/7.jpg",
+      "dosage": 100
+    },
+    {
+      "ingredientId": 8,
+      "iName": "玉米",
+      "unit": "g",
+      "quantity": "{\"根\":142}",
+      "nutritional": "{\n  \"热量 kcal\": 107,\n  \"碳水化合物\": 17.8,\n  \"膳食纤维\": 4.7,\n  \"蛋白质\": 3.3,\n  \"脂肪\": 2.5,\n  \"饱和脂肪(酸)\": 0.7,\n  \"叶酸\": 27,\n  \"维生素A\": 18,\n  \"维生素B1(硫胺素)\": 0.13,\n  \"维生素B2(核黄素)\": 0.1,\n  \"维生素B6(吡哆醇)\": 0.2,\n  \"维生素C(抗坏血酸)\": 5.4,\n  \"维生素E\": 0.75,\n  \"烟酸(烟酰胺/尼克酸)\": 1.84,\n  \"钠\": 2,\n  \"钾\": 269,\n  \"钙\": 3,\n  \"磷\": 84,\n  \"镁\": 34,\n  \"铁\": 0.6,\n  \"锌\": 0.6\n}",
+      "allergy": null,
+      "content": 0.61,
+      "fileUri": "http://localhost:5281/api/File/GetImageFile/files/Ingredients/8.webp",
+      "dosage": 200
+    },
+    {
+      "ingredientId": 9,
+      "iName": "生抽",
+      "unit": "g",
+      "quantity": "{\"勺\":5}",
+      "nutritional": "{\n  \"热量 kcal\": 20,\n  \"蛋白质\": 4.8,\n  \"脂肪\": 0.1,\n  \"碘\": 1.3,\n  \"钠\": 7247\n}",
+      "allergy": null,
+      "content": 1,
+      "fileUri": "http://localhost:5281/api/File/GetImageFile/files/Ingredients/9.jpg",
+      "dosage": 5
+    },
+    {
+      "ingredientId": 10,
+      "iName": "老抽",
+      "unit": "g",
+      "quantity": "{\"勺\":5}",
+      "nutritional": "{\n  \"热量 kcal\": 16,\n  \"碳水化合物\": 2.9,\n  \"钠\": 1032,\n  \"蛋白质\": 0.8\n}",
+      "allergy": null,
+      "content": 1,
+      "fileUri": "http://localhost:5281/api/File/GetImageFile/files/Ingredients/10.webp",
+      "dosage": 5
+    },
+    {
+      "ingredientId": 11,
+      "iName": "黄豆酱",
+      "unit": "g",
+      "quantity": "{\"勺\":15}",
+      "nutritional": "{\n  \"热量 kcal\": 126,\n  \"碳水化合物\": 13.4,\n  \"蛋白质\": 7.5,\n  \"脂肪\": 4.6,\n  \"钠\": 3930\n}",
+      "allergy": null,
+      "content": 1,
+      "fileUri": "http://localhost:5281/api/File/GetImageFile/files/Ingredients/11.webp",
+      "dosage": 15
+    },
+    {
+      "ingredientId": 12,
+      "iName": "盐",
+      "unit": "g",
+      "quantity": "{\"勺\":6}",
+      "nutritional": "{\n  \"钠\": 39311,\n  \"氯\": 59900,\n  \"碘\": 3500,\n  \"硒\": 1\n}",
+      "allergy": null,
+      "content": 1,
+      "fileUri": "http://localhost:5281/api/File/GetImageFile/files/Ingredients/12.webp",
+      "dosage": 6
+    },
+    {
+      "ingredientId": 13,
+      "iName": "冰糖",
+      "unit": "g",
+      "quantity": "{\"把\":10}",
+      "nutritional": "{\n  \"热量 kcal\": 397,\n  \"碳水化合物\": 99.3,\n  \"维生素B1(硫胺素)\": 0.03,\n  \"维生素B2(核黄素)\": 0.03,\n  \"钠\": 3,\n  \"钾\": 1,\n  \"钙\": 23,\n  \"镁\": 2,\n  \"铁\": 1.4,\n  \"锌\": 0.21,\n  \"铜\": 0.03\n}",
+      "allergy": null,
+      "content": 1,
+      "fileUri": "http://localhost:5281/api/File/GetImageFile/files/Ingredients/13.jpg",
+      "dosage": 10
+    },
+    {
+      "ingredientId": 14,
+      "iName": "啤酒",
+      "unit": "ml",
+      "quantity": "{\"瓶\":500}",
+      "nutritional": "{\n  \"热量 kcal\": 38,\n  \"碳水化合物\": 3.1,\n  \"蛋白质\": 0.4\n}",
+      "allergy": null,
+      "content": 1,
+      "fileUri": "http://localhost:5281/api/File/GetImageFile/files/Ingredients/14.webp",
+      "dosage": 250
+    }
+  ]
+}

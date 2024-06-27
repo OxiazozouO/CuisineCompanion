@@ -1,0 +1,104 @@
+﻿<StackPanel
+    Background="#FFFFFF"
+    VerticalAlignment="Center"
+    x:Class="CuisineCompanion.Views.Regster"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:behavior="clr-namespace:CuisineCompanion.Common.Behavior"
+    xmlns:common="clr-namespace:CuisineCompanion.Common"
+    xmlns:properties="clr-namespace:CuisineCompanion.Resources"
+    xmlns:viewModels="clr-namespace:CuisineCompanion.ViewModels"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <StackPanel.DataContext>
+        <viewModels:RegisterViewModel />
+    </StackPanel.DataContext>
+    <StackPanel.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="..\Resources\Styles.xaml" />
+                <ResourceDictionary Source="..\Resources\Icons.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </StackPanel.Resources>
+
+    <TextBlock
+        Foreground="#3AB19B"
+        Style="{StaticResource TitleText}"
+        Text="{Binding Source={x:Static properties:Strings.Str_Regster}}" />
+
+
+    <common:TipTextBox
+        BorderBrush="#ACB0AF"
+        BorderThickness="1"
+        HorizontalAlignment="Stretch"
+        IconSource="{StaticResource IconName}"
+        Margin="70,7"
+        TipBoxText="{Binding Source={x:Static properties:Strings.Str_Name}}">
+        <common:TipTextBox.InputView>
+            <TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+        </common:TipTextBox.InputView>
+    </common:TipTextBox>
+
+    <common:TipTextBox
+        BorderBrush="#ACB0AF"
+        BorderThickness="1"
+        IconSource="{StaticResource IconEmail}"
+        Margin="70,7"
+        TipBoxText="{Binding Source={x:Static properties:Strings.Str_Email}}">
+        <common:TipTextBox.InputView>
+            <TextBox Text="{Binding Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+        </common:TipTextBox.InputView>
+    </common:TipTextBox>
+
+    <common:TipTextBox
+        BorderBrush="#ACB0AF"
+        BorderThickness="1"
+        IconSource="{StaticResource IconPhone}"
+        Margin="70,7"
+        TipBoxText="{Binding Source={x:Static properties:Strings.Str_Phone}}">
+        <common:TipTextBox.InputView>
+            <TextBox Text="{Binding Phone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+        </common:TipTextBox.InputView>
+    </common:TipTextBox>
+
+    <common:TipTextBox
+        BorderBrush="#ACB0AF"
+        BorderThickness="1"
+        IconSource="{StaticResource IconPassword}"
+        Margin="70,7"
+        TipBoxText="{Binding Source={x:Static properties:Strings.Str_Password}}">
+        <common:TipTextBox.InputView>
+            <PasswordBox behavior:PasswordBindingEx.Password="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}">
+                <b:Interaction.Behaviors>
+                    <behavior:PasswordBindingBehavior />
+                </b:Interaction.Behaviors>
+            </PasswordBox>
+        </common:TipTextBox.InputView>
+    </common:TipTextBox>
+
+
+    <common:TipTextBox
+        BorderBrush="#ACB0AF"
+        BorderThickness="1"
+        IconSource="{StaticResource IconPassword}"
+        Margin="70,7"
+        TipBoxText="{Binding Source={x:Static properties:Strings.Str_Password_Confirm}}">
+        <common:TipTextBox.InputView>
+            <PasswordBox behavior:PasswordBindingEx.Password="{Binding ConfirmPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}">
+                <b:Interaction.Behaviors>
+                    <behavior:PasswordBindingBehavior />
+                </b:Interaction.Behaviors>
+            </PasswordBox>
+        </common:TipTextBox.InputView>
+
+
+    </common:TipTextBox>
+    <Button
+        Command="{Binding RegisterCommand}"
+        Content="{Binding Source={x:Static properties:Strings.Str_Regster}}"
+        Style="{StaticResource LargeButton}">
+        <b:Interaction.Behaviors>
+            <behavior:PressReboundBehavior />
+        </b:Interaction.Behaviors>
+    </Button>
+</StackPanel>

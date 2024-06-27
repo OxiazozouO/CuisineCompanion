@@ -1,0 +1,138 @@
+﻿<ScrollViewer
+    mc:Ignorable="d"
+    x:Class="CuisineCompanion.Views.FavoriteItemView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:behavior="clr-namespace:CuisineCompanion.Common.Behavior"
+    xmlns:common="clr-namespace:CuisineCompanion.Common"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="clr-namespace:CuisineCompanion.Models"
+    xmlns:viewModels="clr-namespace:CuisineCompanion.ViewModels"
+    xmlns:views="clr-namespace:CuisineCompanion.Views"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <b:Interaction.Behaviors>
+        <behavior:ScrollSpeedBehavior />
+    </b:Interaction.Behaviors>
+    <ScrollViewer.Resources>
+        <ResourceDictionary>
+            <ControlTemplate x:Key="CloseButtonTemplate">
+                <Border
+                    Background="Azure"
+                    CornerRadius="20"
+                    Visibility="{Binding IsMouseOver, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}}, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Image
+                        Height="40"
+                        Source="{StaticResource IconClose}"
+                        Width="40" />
+                    <b:Interaction.Behaviors>
+                        <behavior:FocusAmplificationBehavior Mod="Weak" />
+                    </b:Interaction.Behaviors>
+                </Border>
+            </ControlTemplate>
+
+            <Style TargetType="FrameworkElement" x:Key="RightTopVisibilityStyle">
+                <Setter Property="HorizontalAlignment" Value="Right" />
+                <Setter Property="VerticalAlignment" Value="Top" />
+                <Setter Property="Visibility">
+                    <Setter.Value>
+                        <Binding
+                            Converter="{StaticResource BooleanToVisibilityConverter}"
+                            Path="DataContext.IsEdit"
+                            RelativeSource="{RelativeSource FindAncestor,
+                                                            AncestorType={x:Type views:FavoriteItemView}}" />
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    </ScrollViewer.Resources>
+    <ScrollViewer.DataContext>
+        <viewModels:FavoriteItemViewModel />
+    </ScrollViewer.DataContext>
+    <Grid>
+        <StackPanel Background="White" Orientation="Vertical">
+            <TextBlock
+                FontSize="36"
+                FontWeight="Bold"
+                Foreground="Gray"
+                HorizontalAlignment="Left"
+                Margin="10,10"
+                Text="{Binding Root.CName}" />
+            <TextBlock
+                Margin="16,20"
+                Style="{StaticResource Text1Style}"
+                Text="{Binding Root.Refer}" />
+            <views:SimpleSearchBox
+                DataContext="{Binding}"
+                HorizontalAlignment="Right"
+                Margin="0,0,10,0" />
+
+
+            <ItemsControl ItemsSource="{Binding Recipes}" Visibility="{Binding Root.Flag, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter={x:Static models:ModelFlags.Recipe}}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <common:WaterfallPanel Columns="4" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <views:RecipeInfoTemplate DataContext="{Binding}" />
+                            <Border Style="{StaticResource RightTopVisibilityStyle}">
+                                <Control Template="{StaticResource CloseButtonTemplate}">
+                                    <b:Interaction.Behaviors>
+                                        <behavior:PressReboundBehavior Command="{Binding DataContext.DeleteItemCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type views:FavoriteItemView}}}" CommandParameter="{Binding RecipeId}" />
+                                    </b:Interaction.Behaviors>
+                                </Control>
+                            </Border>
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <ItemsControl ItemsSource="{Binding Menus}" Visibility="{Binding Root.Flag, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter={x:Static models:ModelFlags.Menu}}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <common:WaterfallPanel Columns="4" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <views:RecipeInfoTemplate DataContext="{Binding}" />
+                            <Border Style="{StaticResource RightTopVisibilityStyle}">
+                                <Control Template="{StaticResource CloseButtonTemplate}">
+                                    <b:Interaction.Behaviors>
+                                        <behavior:PressReboundBehavior Command="{Binding DataContext.DeleteItemCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type views:FavoriteItemView}}}" CommandParameter="{Binding RecipeId}" />
+                                    </b:Interaction.Behaviors>
+                                </Control>
+                            </Border>
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <ItemsControl ItemsSource="{Binding Ingredients}" Visibility="{Binding Root.Flag, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter={x:Static models:ModelFlags.Ingredient}}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <common:WaterfallPanel Columns="5" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <views:IngredientInfoTemplate DataContext="{Binding}" />
+                            <Border Style="{StaticResource RightTopVisibilityStyle}">
+                                <Control Template="{StaticResource CloseButtonTemplate}">
+                                    <b:Interaction.Behaviors>
+                                        <behavior:PressReboundBehavior Command="{Binding DataContext.DeleteItemCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type views:FavoriteItemView}}}" CommandParameter="{Binding Ingredient.IngredientId}" />
+                                    </b:Interaction.Behaviors>
+                                </Control>
+                            </Border>
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </StackPanel>
+    </Grid>
+</ScrollViewer>

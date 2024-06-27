@@ -1,0 +1,16 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:converter="clr-namespace:CuisineCompanion.Common.Converter"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <converter:DecimalConverter x:Key="DecimalConverter" />
+    <converter:TimeSpanConverter x:Key="TimeSpanConverter" />
+    <converter:TimeToColorConverter x:Key="TimeToColorConverter" />
+    <converter:NullOrEmptyToVisibilityConverter x:Key="NullOrEmptyToVisibilityConverter" />
+    <converter:TimeSpanToVisibilityConverter x:Key="TimeSpanToVisibilityConverter" />
+    <converter:ImageConverter x:Key="ImageConverter" />
+    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    <converter:BooleanToVisibilityInverterConverter x:Key="BooleanToVisibilityInverterConverter" />
+    <converter:EnumToVisibilityConverter x:Key="EnumToVisibilityConverter" />
+    <converter:BoolInverterConverter x:Key="BoolInverterConverter" />
+    <converter:DateTimeFormatConverter x:Key="DateTimeFormatConverter" />
+</ResourceDictionary>

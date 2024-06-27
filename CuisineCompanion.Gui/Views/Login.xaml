@@ -1,0 +1,113 @@
+﻿<StackPanel
+    Background="#FFFFFF"
+    VerticalAlignment="Center"
+    x:Class="CuisineCompanion.Views.Login"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:behavior="clr-namespace:CuisineCompanion.Common.Behavior"
+    xmlns:common="clr-namespace:CuisineCompanion.Common"
+    xmlns:properties="clr-namespace:CuisineCompanion.Resources"
+    xmlns:viewModels="clr-namespace:CuisineCompanion.ViewModels"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <StackPanel.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="..\Resources\Styles.xaml" />
+                <ResourceDictionary Source="..\Resources\Icons.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </StackPanel.Resources>
+    <StackPanel.DataContext>
+        <viewModels:LoginViewModel />
+    </StackPanel.DataContext>
+    <TextBlock
+        Foreground="#3AB19B"
+        Style="{StaticResource TitleText}"
+        Text="{Binding Source={x:Static properties:Strings.Str_Login}}" />
+    <StackPanel
+        HorizontalAlignment="Center"
+        Margin="0,20"
+        Orientation="Horizontal">
+        <Button
+            Click="Longin_OnClick"
+            Name="NameBnt"
+            Style="{StaticResource ButtonCircle}">
+            <Image
+                Height="20"
+                Source="{StaticResource IconName}"
+                Width="20" />
+            <b:Interaction.Behaviors>
+                <behavior:PressReboundBehavior />
+            </b:Interaction.Behaviors>
+        </Button>
+        <Button
+            Click="Longin_OnClick"
+            Name="EmailBnt"
+            Style="{StaticResource ButtonCircle}">
+            <Image
+                Height="20"
+                Source="{StaticResource IconEmail}"
+                Width="20" />
+            <b:Interaction.Behaviors>
+                <behavior:PressReboundBehavior />
+            </b:Interaction.Behaviors>
+        </Button>
+        <Button
+            Click="Longin_OnClick"
+            Name="PhoneBnt"
+            Style="{StaticResource ButtonCircle}">
+            <Image
+                Height="20"
+                Source="{StaticResource IconPhone}"
+                Width="20" />
+            <b:Interaction.Behaviors>
+                <behavior:PressReboundBehavior />
+            </b:Interaction.Behaviors>
+        </Button>
+    </StackPanel>
+    <TextBlock
+        Foreground="#878787"
+        Margin="0,10,0,15"
+        Name="LoginTip"
+        Style="{StaticResource NormalText}"
+        Text="请你输入信息以登录：" />
+
+    <StackPanel>
+        <common:TipTextBox
+            BorderBrush="#ACB0AF"
+            BorderThickness="1"
+            IconSource="{StaticResource IconName}"
+            Margin="70,7"
+            TipBoxText="Name"
+            x:Name="IdentifierInp">
+            <common:TipTextBox.InputView>
+                <TextBox Text="{Binding Identifier, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+            </common:TipTextBox.InputView>
+        </common:TipTextBox>
+
+        <common:TipTextBox
+            BorderBrush="#ACB0AF"
+            BorderThickness="1"
+            IconSource="{StaticResource IconPassword}"
+            Margin="70,7"
+            TipBoxText="{Binding Source={x:Static properties:Strings.Str_Password}}">
+            <common:TipTextBox.InputView>
+                <PasswordBox behavior:PasswordBindingEx.Password="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}">
+                    <b:Interaction.Behaviors>
+                        <behavior:PasswordBindingBehavior />
+                    </b:Interaction.Behaviors>
+                </PasswordBox>
+            </common:TipTextBox.InputView>
+        </common:TipTextBox>
+
+    </StackPanel>
+
+    <Button
+        Command="{Binding LoginCommand}"
+        Content="{Binding Source={x:Static properties:Strings.Str_Login}}"
+        Style="{StaticResource LargeButton}">
+        <b:Interaction.Behaviors>
+            <behavior:PressReboundBehavior />
+        </b:Interaction.Behaviors>
+    </Button>
+</StackPanel>

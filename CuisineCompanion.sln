@@ -1,0 +1,46 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CuisineCompanion.Gui", "CuisineCompanion.Gui\CuisineCompanion.Gui.csproj", "{45C95210-CB82-467A-9964-5817846283D9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CuisineCompanion.ConsoleTest", "CuisineCompanion.ConsoleTest\CuisineCompanion.ConsoleTest.csproj", "{3AA2B114-D8CC-4EAD-8AEB-A0B02AAF42E4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CuisineCompanion.WebApi", "CuisineCompanion.WebApi\CuisineCompanion.WebApi.csproj", "{C68682C9-1569-4AFA-9221-311B313085F4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Experiment", "Experiment\Experiment.csproj", "{0F9711AD-B1B1-425F-912C-987EA300F44E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinFormsApp2", "WinFormsApp2\WinFormsApp2.csproj", "{502DAF8D-4D06-41A5-BEA9-DC4A2622FA50}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CuisineCompanion.Generator", "CuisineCompanion.Generator\CuisineCompanion.Generator.csproj", "{60952DD1-6D3E-4CC9-9795-7A3E2A1D8285}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{45C95210-CB82-467A-9964-5817846283D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45C95210-CB82-467A-9964-5817846283D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45C95210-CB82-467A-9964-5817846283D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45C95210-CB82-467A-9964-5817846283D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3AA2B114-D8CC-4EAD-8AEB-A0B02AAF42E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3AA2B114-D8CC-4EAD-8AEB-A0B02AAF42E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3AA2B114-D8CC-4EAD-8AEB-A0B02AAF42E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3AA2B114-D8CC-4EAD-8AEB-A0B02AAF42E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C68682C9-1569-4AFA-9221-311B313085F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C68682C9-1569-4AFA-9221-311B313085F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C68682C9-1569-4AFA-9221-311B313085F4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C68682C9-1569-4AFA-9221-311B313085F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F9711AD-B1B1-425F-912C-987EA300F44E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F9711AD-B1B1-425F-912C-987EA300F44E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F9711AD-B1B1-425F-912C-987EA300F44E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F9711AD-B1B1-425F-912C-987EA300F44E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{502DAF8D-4D06-41A5-BEA9-DC4A2622FA50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{502DAF8D-4D06-41A5-BEA9-DC4A2622FA50}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{502DAF8D-4D06-41A5-BEA9-DC4A2622FA50}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{502DAF8D-4D06-41A5-BEA9-DC4A2622FA50}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60952DD1-6D3E-4CC9-9795-7A3E2A1D8285}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60952DD1-6D3E-4CC9-9795-7A3E2A1D8285}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60952DD1-6D3E-4CC9-9795-7A3E2A1D8285}.Debug|Any CPU.ActiveCfg = Release|Any CPU
+		{60952DD1-6D3E-4CC9-9795-7A3E2A1D8285}.Debug|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

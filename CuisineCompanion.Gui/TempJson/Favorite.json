@@ -1,0 +1,34 @@
+﻿[
+  {
+    "favoriteId": 4,
+    "cName": "默认收藏夹",
+    "refer": "",
+    "fileUri": null,
+    "categoryName": "食材",
+    "itemsCount": 6
+  },
+  {
+    "favoriteId": 5,
+    "cName": "默认收藏夹2",
+    "refer": "",
+    "fileUri": null,
+    "categoryName": "食谱",
+    "itemsCount": 2
+  },
+  {
+    "favoriteId": 6,
+    "cName": "默认收藏夹3",
+    "refer": "",
+    "fileUri": null,
+    "categoryName": "食谱",
+    "itemsCount": 0
+  },
+  {
+    "favoriteId": 7,
+    "cName": "默认收藏夹4",
+    "refer": "",
+    "fileUri": null,
+    "categoryName": "食材",
+    "itemsCount": 0
+  }
+]

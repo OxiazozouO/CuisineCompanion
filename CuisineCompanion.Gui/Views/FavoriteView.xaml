@@ -1,0 +1,336 @@
+﻿<ScrollViewer
+    Background="White"
+    mc:Ignorable="d"
+    x:Class="CuisineCompanion.Views.FavoriteView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:behavior="clr-namespace:CuisineCompanion.Common.Behavior"
+    xmlns:common="clr-namespace:CuisineCompanion.Common"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="clr-namespace:CuisineCompanion.Models"
+    xmlns:viewModels="clr-namespace:CuisineCompanion.ViewModels"
+    xmlns:views="clr-namespace:CuisineCompanion.Views"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ScrollViewer.DataContext>
+        <viewModels:FavoriteViewModel />
+    </ScrollViewer.DataContext>
+    <ScrollViewer.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Border" x:Key="FavoriteItemBorderStyle">
+                <Setter Property="Background" Value="Beige" />
+                <Setter Property="Margin" Value="5" />
+                <Setter Property="CornerRadius" Value="10" />
+                <Setter Property="Padding" Value="5" />
+                <Setter Property="MaxWidth" Value="700" />
+                <Setter Property="HorizontalAlignment" Value="Left" />
+            </Style>
+
+            <Style TargetType="TextBlock" x:Key="Fih1">
+                <Setter Property="FontSize" Value="20" />
+                <Setter Property="Foreground" Value="Coral" />
+            </Style>
+
+            <Style TargetType="TextBlock" x:Key="Fih2">
+                <Setter Property="FontSize" Value="16" />
+                <Setter Property="Foreground" Value="Coral" />
+                <Setter Property="MaxWidth" Value="400" />
+                <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+                <Setter Property="TextWrapping" Value="Wrap" />
+            </Style>
+
+            <Style TargetType="TextBlock" x:Key="Fih3">
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="Foreground" Value="Coral" />
+            </Style>
+
+            <Style TargetType="Image" x:Key="FavoriteItemImageStyle">
+                <Setter Property="Height" Value="30" />
+                <Setter Property="Width" Value="30" />
+                <Setter Property="Visibility" Value="{Binding IsMouseOver, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}}, Converter={StaticResource BooleanToVisibilityConverter}}" />
+            </Style>
+
+            <Style
+                BasedOn="{StaticResource FavoriteItemImageStyle}"
+                TargetType="Image"
+                x:Key="FavoriteItemCloseImageStyle">
+                <Setter Property="Source" Value="{StaticResource IconClose}" />
+            </Style>
+
+            <Style
+                BasedOn="{StaticResource FavoriteItemImageStyle}"
+                TargetType="Image"
+                x:Key="FavoriteItemMoreImageStyle">
+                <Setter Property="Source" Value="{StaticResource IconMore}" />
+            </Style>
+
+
+            <Style TargetType="Border" x:Key="IngredientBorderStyle">
+                <Setter Property="Background" Value="Bisque" />
+                <Setter Property="BorderBrush" Value="Aquamarine" />
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="Margin" Value="0,5" />
+                <Setter Property="Padding" Value="0,10" />
+            </Style>
+
+            <Style TargetType="TextBlock" x:Key="IngredientTextBlockStyle">
+                <Setter Property="FontSize" Value="24" />
+                <Setter Property="Foreground" Value="#FF662F" />
+                <Setter Property="HorizontalAlignment" Value="Left" />
+            </Style>
+
+            <Style TargetType="Image" x:Key="AddImageStyle">
+                <Setter Property="Height" Value="30" />
+                <Setter Property="Width" Value="30" />
+                <Setter Property="Margin" Value="40,0" />
+                <Setter Property="Source" Value="{StaticResource IconAdd}" />
+            </Style>
+
+        </ResourceDictionary>
+    </ScrollViewer.Resources>
+    <b:Interaction.Behaviors>
+        <behavior:ScrollSpeedBehavior />
+    </b:Interaction.Behaviors>
+    <Grid DataContext="{Binding MyFavorites, UpdateSourceTrigger=PropertyChanged}">
+        <StackPanel Orientation="Vertical">
+            <Border Style="{StaticResource IngredientBorderStyle}" Visibility="{Binding VisibilityMode, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter={x:Static models:ModelFlags.Ingredient}}">
+                <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Style="{StaticResource IngredientTextBlockStyle}" Text="食材" />
+                        <Image Style="{StaticResource AddImageStyle}">
+                            <b:Interaction.Behaviors>
+                                <behavior:PressReboundBehavior Command="{Binding DataContext.AddFavoriteCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type views:FavoriteView}}}" CommandParameter="{Binding .Ingredients}" />
+                                <behavior:FocusAmplificationBehavior />
+                            </b:Interaction.Behaviors>
+                        </Image>
+                    </StackPanel>
+
+                    <ItemsControl ItemsSource="{Binding Ingredients.FavoriteList}" Style="{StaticResource HorizontalStackPanelItemsPanelStyle}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Border Style="{StaticResource FavoriteItemBorderStyle}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <common:CornerRadiusImage Source="{Binding FileUri}" Style="{StaticResource CornerRadiusImageStyle}" />
+
+                                            <StackPanel Margin="8,0,0,0" Orientation="Vertical">
+                                                <TextBlock Style="{StaticResource Fih1}" Text="{Binding CName}" />
+                                                <TextBlock Style="{StaticResource Fih2}" Text="{Binding Refer}" />
+                                                <Border Background="#FFDCC2" Style="{StaticResource FavoriteItemBorderStyle}">
+                                                    <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                                        <TextBlock Style="{StaticResource Fih3}" Text="{Binding ItemsCount, UpdateSourceTrigger=PropertyChanged}" />
+                                                        <TextBlock Style="{StaticResource Fih3}" Text="个内容" />
+                                                    </StackPanel>
+                                                </Border>
+                                            </StackPanel>
+                                        </StackPanel>
+
+                                        <b:Interaction.Behaviors>
+                                            <behavior:PressReboundBehavior Command="{Binding DataContext.SelectedFavoriteCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type views:FavoriteView}}}" CommandParameter="{Binding}" />
+                                            <behavior:FocusAmplificationBehavior Mod="Weak" />
+                                        </b:Interaction.Behaviors>
+                                    </Border>
+
+
+                                    <Border
+                                        HorizontalAlignment="Right"
+                                        Margin="0,0,10,0"
+                                        VerticalAlignment="Center">
+                                        <StackPanel
+                                            HorizontalAlignment="Right"
+                                            Margin="20,0,0,0"
+                                            Orientation="Horizontal">
+                                            <Image Style="{StaticResource FavoriteItemCloseImageStyle}">
+                                                <b:Interaction.Behaviors>
+                                                    <behavior:PressReboundBehavior Command="{Binding DataContext.RemoveFavoriteCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type views:FavoriteView}}}" CommandParameter="{Binding}" />
+                                                    <behavior:FocusAmplificationBehavior />
+                                                </b:Interaction.Behaviors>
+                                            </Image>
+                                            <Image Style="{StaticResource FavoriteItemMoreImageStyle}">
+                                                <b:Interaction.Behaviors>
+                                                    <behavior:PressReboundBehavior Command="{Binding DataContext.EditFavoriteCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type views:FavoriteView}}}" CommandParameter="{Binding}" />
+                                                    <behavior:FocusAmplificationBehavior />
+                                                </b:Interaction.Behaviors>
+                                            </Image>
+                                        </StackPanel>
+                                    </Border>
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Border>
+
+            <Border
+                Background="#D6FFAE"
+                Style="{StaticResource IngredientBorderStyle}"
+                Visibility="{Binding VisibilityMode, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter={x:Static models:ModelFlags.Recipe}}">
+                <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock
+                            Foreground="#3B8100"
+                            Style="{StaticResource IngredientTextBlockStyle}"
+                            Text="食谱" />
+                        <Image Style="{StaticResource AddImageStyle}">
+                            <b:Interaction.Behaviors>
+                                <behavior:PressReboundBehavior Command="{Binding DataContext.AddFavoriteCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type views:FavoriteView}}}" CommandParameter="{Binding .Ingredients}" />
+                                <behavior:FocusAmplificationBehavior />
+                            </b:Interaction.Behaviors>
+                        </Image>
+                    </StackPanel>
+                    <ItemsControl ItemsSource="{Binding Recipes.FavoriteList}" Style="{StaticResource HorizontalStackPanelItemsPanelStyle}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Border Style="{StaticResource FavoriteItemBorderStyle}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <common:CornerRadiusImage Source="{Binding FileUri}" Style="{StaticResource CornerRadiusImageStyle}" />
+
+                                            <StackPanel Margin="8,0,0,0" Orientation="Vertical">
+                                                <TextBlock
+                                                    Foreground="#3B8100"
+                                                    Style="{StaticResource Fih1}"
+                                                    Text="{Binding CName}" />
+                                                <TextBlock
+                                                    Foreground="#3B8100"
+                                                    Style="{StaticResource Fih2}"
+                                                    Text="{Binding Refer}" />
+                                                <Border Background="#D6FFAE" Style="{StaticResource FavoriteItemBorderStyle}">
+                                                    <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                                        <TextBlock
+                                                            Foreground="#3B8100"
+                                                            Style="{StaticResource Fih3}"
+                                                            Text="{Binding ItemsCount, UpdateSourceTrigger=PropertyChanged}" />
+                                                        <TextBlock
+                                                            Foreground="#3B8100"
+                                                            Style="{StaticResource Fih3}"
+                                                            Text="个内容" />
+                                                    </StackPanel>
+                                                </Border>
+                                            </StackPanel>
+                                        </StackPanel>
+
+                                        <b:Interaction.Behaviors>
+                                            <behavior:PressReboundBehavior Command="{Binding DataContext.SelectedFavoriteCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type views:FavoriteView}}}" CommandParameter="{Binding}" />
+                                            <behavior:FocusAmplificationBehavior Mod="Weak" />
+                                        </b:Interaction.Behaviors>
+                                    </Border>
+
+
+                                    <Border
+                                        HorizontalAlignment="Right"
+                                        Margin="0,0,10,0"
+                                        VerticalAlignment="Center">
+                                        <StackPanel
+                                            HorizontalAlignment="Right"
+                                            Margin="20,0,0,0"
+                                            Orientation="Horizontal">
+                                            <Image Style="{StaticResource FavoriteItemCloseImageStyle}">
+                                                <b:Interaction.Behaviors>
+                                                    <behavior:PressReboundBehavior Command="{Binding DataContext.RemoveFavoriteCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type views:FavoriteView}}}" CommandParameter="{Binding}" />
+                                                    <behavior:FocusAmplificationBehavior />
+                                                </b:Interaction.Behaviors>
+                                            </Image>
+                                            <Image Style="{StaticResource FavoriteItemMoreImageStyle}">
+                                                <b:Interaction.Behaviors>
+                                                    <behavior:PressReboundBehavior Command="{Binding DataContext.EditFavoriteCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type views:FavoriteView}}}" CommandParameter="{Binding}" />
+                                                    <behavior:FocusAmplificationBehavior />
+                                                </b:Interaction.Behaviors>
+                                            </Image>
+                                        </StackPanel>
+                                    </Border>
+                                </Grid>
+
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Border>
+
+            <Border
+                Background="#B7BBFF"
+                Style="{StaticResource IngredientBorderStyle}"
+                Visibility="{Binding VisibilityMode, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter={x:Static models:ModelFlags.Menu}}">
+                <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock
+                            Foreground="#2C37C2"
+                            Style="{StaticResource IngredientTextBlockStyle}"
+                            Text="菜单" />
+                        <Image Style="{StaticResource AddImageStyle}">
+                            <b:Interaction.Behaviors>
+                                <behavior:PressReboundBehavior Command="{Binding DataContext.AddFavoriteCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type views:FavoriteView}}}" CommandParameter="{Binding Menus}" />
+                                <behavior:FocusAmplificationBehavior />
+                            </b:Interaction.Behaviors>
+                        </Image>
+                    </StackPanel>
+                    <ItemsControl ItemsSource="{Binding Menus.FavoriteList}" Style="{StaticResource HorizontalStackPanelItemsPanelStyle}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Border Style="{StaticResource FavoriteItemBorderStyle}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <common:CornerRadiusImage Source="{Binding FileUri}" Style="{StaticResource CornerRadiusImageStyle}" />
+
+                                            <StackPanel Margin="8,0,0,0" Orientation="Vertical">
+                                                <TextBlock
+                                                    Foreground="#2C37C2"
+                                                    Style="{StaticResource Fih1}"
+                                                    Text="{Binding CName}" />
+                                                <TextBlock
+                                                    Foreground="#2C37C2"
+                                                    Style="{StaticResource Fih2}"
+                                                    Text="{Binding Refer}" />
+                                                <Border Background="#B7BBFF" Style="{StaticResource FavoriteItemBorderStyle}">
+                                                    <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                                        <TextBlock
+                                                            Foreground="#2C37C2"
+                                                            Style="{StaticResource Fih3}"
+                                                            Text="{Binding ItemsCount, UpdateSourceTrigger=PropertyChanged}" />
+                                                        <TextBlock
+                                                            Foreground="#2C37C2"
+                                                            Style="{StaticResource Fih3}"
+                                                            Text="个内容" />
+                                                    </StackPanel>
+                                                </Border>
+                                            </StackPanel>
+                                        </StackPanel>
+
+                                        <b:Interaction.Behaviors>
+                                            <behavior:PressReboundBehavior Command="{Binding DataContext.SelectedFavoriteCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type views:FavoriteView}}}" CommandParameter="{Binding}" />
+                                            <behavior:FocusAmplificationBehavior Mod="Weak" />
+                                        </b:Interaction.Behaviors>
+                                    </Border>
+
+
+                                    <Border
+                                        HorizontalAlignment="Right"
+                                        Margin="0,0,10,0"
+                                        VerticalAlignment="Center">
+                                        <StackPanel
+                                            HorizontalAlignment="Right"
+                                            Margin="20,0,0,0"
+                                            Orientation="Horizontal">
+                                            <Image Style="{StaticResource FavoriteItemCloseImageStyle}">
+                                                <b:Interaction.Behaviors>
+                                                    <behavior:PressReboundBehavior Command="{Binding DataContext.RemoveFavoriteCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type views:FavoriteView}}}" CommandParameter="{Binding}" />
+                                                    <behavior:FocusAmplificationBehavior />
+                                                </b:Interaction.Behaviors>
+                                            </Image>
+                                            <Image Style="{StaticResource FavoriteItemMoreImageStyle}">
+                                                <b:Interaction.Behaviors>
+                                                    <behavior:PressReboundBehavior Command="{Binding DataContext.EditFavoriteCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type views:FavoriteView}}}" CommandParameter="{Binding}" />
+                                                    <behavior:FocusAmplificationBehavior />
+                                                </b:Interaction.Behaviors>
+                                            </Image>
+                                        </StackPanel>
+                                    </Border>
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </Grid>
+</ScrollViewer>

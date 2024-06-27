@@ -1,0 +1,636 @@
+<ScrollViewer
+    mc:Ignorable="d"
+    x:Class="CuisineCompanion.Views.RecipeView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:behavior="clr-namespace:CuisineCompanion.Common.Behavior"
+    xmlns:common="clr-namespace:CuisineCompanion.Common"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModels="clr-namespace:CuisineCompanion.ViewModels"
+    xmlns:views="clr-namespace:CuisineCompanion.Views"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <b:Interaction.Behaviors>
+        <behavior:ScrollSpeedBehavior />
+    </b:Interaction.Behaviors>
+    <ScrollViewer.DataContext>
+        <viewModels:RecipeViewModel />
+    </ScrollViewer.DataContext>
+    <Grid Background="White">
+        <StackPanel
+            Background="White"
+            DataContext="{Binding Recipe}"
+            HorizontalAlignment="Stretch"
+            Margin="34,5"
+            Orientation="Vertical"
+            x:Name="MainPanel">
+            <Border
+                Background="Azure"
+                CornerRadius="55"
+                Padding="5,5">
+                <common:CornerRadiusImage
+                    CornerRadius="55"
+                    Height="550"
+                    Margin="34,5"
+                    Source="{Binding FileUri}" />
+            </Border>
+
+            <TextBlock
+                FontSize="36"
+                FontWeight="Bold"
+                HorizontalAlignment="Left"
+                Margin="34,5"
+                Text="{Binding RName}" />
+            <StackPanel
+                Margin="34,5"
+                Orientation="Horizontal"
+                Visibility="{Binding SpendTime, Converter={StaticResource TimeSpanToVisibilityConverter}, FallbackValue=Collapsed, UpdateSourceTrigger=PropertyChanged}">
+                <Image
+                    Height="20"
+                    HorizontalAlignment="Center"
+                    Source="{StaticResource IconTime}"
+                    VerticalAlignment="Center"
+                    Width="20" />
+                <TextBlock
+                    FontSize="12"
+                    Foreground="{Binding SpendTime, Converter={StaticResource TimeToColorConverter}}"
+                    HorizontalAlignment="Center"
+                    Margin="10,0,0,0"
+                    Text="{Binding SpendTime, Converter={StaticResource TimeSpanConverter}}"
+                    VerticalAlignment="Center" />
+            </StackPanel>
+            <DockPanel Margin="34,10" VerticalAlignment="Center">
+                <ItemsControl ItemsSource="{Binding Category}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border
+                                Background="Orange"
+                                CornerRadius="3"
+                                Padding="10,0">
+                                <TextBlock
+                                    FontSize="14"
+                                    Foreground="White"
+                                    Text="{Binding CName}"
+                                    VerticalAlignment="Center" />
+                                <b:Interaction.Behaviors>
+                                    <behavior:PressReboundBehavior />
+                                    <behavior:FocusAmplificationBehavior />
+                                </b:Interaction.Behaviors>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <StackPanel
+                    DockPanel.Dock="Top"
+                    HorizontalAlignment="Right"
+                    Margin="34,5"
+                    Orientation="Horizontal"
+                    Visibility="{Binding DataContext.IsSaveVisible, RelativeSource={RelativeSource FindAncestor, AncestorType=views:RecipeView}}">
+                    <Image Height="40" Width="40">
+                        <Image.Style>
+                            <Style TargetType="Image">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsLike}" Value="True">
+                                        <Setter Property="Source" Value="{StaticResource IconCollection}" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding IsLike}" Value="False">
+                                        <Setter Property="Source" Value="{StaticResource IconDeCollection}" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Image.Style>
+                        <b:Interaction.Behaviors>
+                            <behavior:PressReboundBehavior Command="{Binding DataContext.CollectionCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type views:RecipeView}}}" />
+                            <behavior:FocusAmplificationBehavior Mod="Ordinary" />
+                        </b:Interaction.Behaviors>
+                    </Image>
+
+                    <Image
+                        Height="40"
+                        Source="{StaticResource IconShare}"
+                        Width="40">
+                        <b:Interaction.Behaviors>
+                            <behavior:PressReboundBehavior Command="{Binding ShareCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=views:RecipeView}}" />
+                            <behavior:FocusAmplificationBehavior Mod="Ordinary" />
+                        </b:Interaction.Behaviors>
+                    </Image>
+                </StackPanel>
+
+            </DockPanel>
+            <TextBlock
+                Margin="38,70,38,100"
+                Style="{StaticResource Text1Style}"
+                Text="{Binding Summary}" />
+            <TextBlock
+                Margin="34,5"
+                Style="{StaticResource TextTitleStyle}"
+                Text="食材清单" />
+
+            <ItemsControl HorizontalContentAlignment="Stretch" ItemsSource="{Binding Ingredients}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel HorizontalAlignment="Stretch" Orientation="Vertical" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border
+                            Background="#F1F7FA"
+                            BorderBrush="#999"
+                            BorderThickness="0,0,0,1"
+                            CornerRadius="10"
+                            Margin="0,2"
+                            Width="600">
+                            <b:Interaction.Behaviors>
+                                <behavior:FocusAmplificationBehavior
+                                    Duration="0.2"
+                                    XFrom="1"
+                                    XTo="1.04"
+                                    YFrom="1"
+                                    YTo="1.04" />
+                            </b:Interaction.Behaviors>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="3*" />
+                                    <ColumnDefinition Width="8*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="4*" />
+                                </Grid.ColumnDefinitions>
+                                <Border
+                                    Background="Cornsilk"
+                                    BorderBrush="Tan"
+                                    BorderThickness="1"
+                                    CornerRadius="10"
+                                    Grid.Column="0"
+                                    Height="54"
+                                    Padding="2,2"
+                                    Width="54">
+                                    <common:CornerRadiusImage CornerRadius="10" Source="{Binding FileUri}" />
+                                    <b:Interaction.Behaviors>
+                                        <behavior:PressReboundBehavior Command="{Binding DataContext.GoToIngredientCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type views:RecipeView}}}" CommandParameter="{Binding}" />
+                                        <behavior:FocusAmplificationBehavior />
+                                    </b:Interaction.Behaviors>
+                                </Border>
+                                <TextBlock
+                                    FontSize="15"
+                                    Foreground="#12937c"
+                                    Grid.Column="1"
+                                    Margin="10,0"
+                                    Text="{Binding IName}"
+                                    VerticalAlignment="Top" />
+
+                                <StackPanel Grid.Column="2" Orientation="Horizontal">
+                                    <Border
+                                        BorderBrush="Gray"
+                                        BorderThickness="0.4"
+                                        CornerRadius="4"
+                                        VerticalAlignment="Center">
+                                        <TextBox
+                                            Padding="2,4"
+                                            Style="{StaticResource DraggableNumericDecimalTextBoxStyle}"
+                                            behavior:DecimalBindingEx.Text="{Binding InputDosage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:0.####}}">
+                                            <b:Interaction.Behaviors>
+                                                <behavior:DraggableNumericBehavior />
+                                                <behavior:DecimalBindingBehavior IsPositive="True" MaxValue="1000000" />
+                                            </b:Interaction.Behaviors>
+                                        </TextBox>
+                                    </Border>
+
+
+                                    <Border Margin="0,5" VerticalAlignment="Center">
+                                        <TextBlock Margin="4,0" Text="{Binding InputUnit, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:0.####}}" />
+                                    </Border>
+
+                                    <TextBlock
+                                        Margin="10,0"
+                                        Text="≈"
+                                        VerticalAlignment="Center"
+                                        Visibility="{Binding Quantity, Converter={StaticResource NullOrEmptyToVisibilityConverter}, FallbackValue={x:Static Visibility.Collapsed}}" />
+                                    <Border
+                                        BorderBrush="Gray"
+                                        BorderThickness="0.4"
+                                        CornerRadius="4"
+                                        VerticalAlignment="Center"
+                                        Visibility="{Binding Quantity, Converter={StaticResource NullOrEmptyToVisibilityConverter}, FallbackValue={x:Static Visibility.Collapsed}}">
+                                        <TextBox
+                                            Padding="2,4"
+                                            Style="{StaticResource DraggableNumericDecimalTextBoxStyle}"
+                                            behavior:DecimalBindingEx.Text="{Binding OutputDosage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:0.####}}">
+                                            <b:Interaction.Behaviors>
+                                                <behavior:DraggableNumericBehavior />
+                                                <behavior:DecimalBindingBehavior IsPositive="True" MaxValue="1000000" />
+                                            </b:Interaction.Behaviors>
+                                        </TextBox>
+                                    </Border>
+
+                                    <Border>
+                                        <TextBlock
+                                            Margin="4,0"
+                                            Text="{Binding OutputUint}"
+                                            VerticalAlignment="Center" />
+                                    </Border>
+
+                                </StackPanel>
+                                <views:MacroNutrientChart Grid.Column="4" ItemsSource="{Binding NutrientContent}" />
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <Border
+                Background="#F1F7FA"
+                BorderBrush="#999"
+                BorderThickness="0,0,0,1"
+                CornerRadius="10"
+                Height="50"
+                Margin="0,20,0,0"
+                Width="600">
+                <DockPanel>
+                    <Border
+                        BorderBrush="Gray"
+                        BorderThickness="0.4"
+                        CornerRadius="4"
+                        Margin="20,0,0,0"
+                        VerticalAlignment="Center">
+                        <TextBox
+                            Padding="2,4"
+                            Style="{StaticResource DraggableNumericDecimalTextBoxStyle}"
+                            behavior:DecimalBindingEx.Text="{Binding Dosage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:0.####}}">
+                            <b:Interaction.Behaviors>
+                                <behavior:DraggableNumericBehavior />
+                                <behavior:DecimalBindingBehavior IsPositive="True" MaxValue="1000000" />
+                            </b:Interaction.Behaviors>
+                        </TextBox>
+                    </Border>
+
+
+                    <Border Margin="0,5" VerticalAlignment="Center">
+                        <TextBlock Margin="4,0" Text="克" />
+                    </Border>
+
+                    <TextBlock
+                        Margin="10,0"
+                        Text="≈ 可食部 "
+                        VerticalAlignment="Center" />
+                    <Border
+                        BorderBrush="Gray"
+                        BorderThickness="0.4"
+                        CornerRadius="4"
+                        VerticalAlignment="Center">
+                        <TextBox
+                            Padding="2,4"
+                            Style="{StaticResource DraggableNumericDecimalTextBoxStyle}"
+                            behavior:DecimalBindingEx.Text="{Binding EstimatedDosage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:0.####}}">
+                            <b:Interaction.Behaviors>
+                                <behavior:DraggableNumericBehavior />
+                                <behavior:DecimalBindingBehavior IsPositive="True" MaxValue="1000000" />
+                            </b:Interaction.Behaviors>
+                        </TextBox>
+                    </Border>
+
+                    <Border>
+                        <TextBlock
+                            Margin="4,0"
+                            Text="克"
+                            VerticalAlignment="Center" />
+                    </Border>
+
+                    <StackPanel Orientation="Horizontal" Visibility="{Binding SpendTime, Converter={StaticResource TimeSpanToVisibilityConverter}, FallbackValue=Collapsed, UpdateSourceTrigger=PropertyChanged}">
+                        <Image
+                            Height="20"
+                            HorizontalAlignment="Center"
+                            Source="{StaticResource IconTime}"
+                            VerticalAlignment="Center"
+                            Width="20" />
+                        <TextBlock
+                            FontSize="12"
+                            Foreground="{Binding SpendTime, Converter={StaticResource TimeToColorConverter}}"
+                            HorizontalAlignment="Center"
+                            Margin="10,0,0,0"
+                            Text="{Binding SpendTime, Converter={StaticResource TimeSpanConverter}}"
+                            VerticalAlignment="Center" />
+                    </StackPanel>
+
+                    <StackPanel
+                        DockPanel.Dock="Top"
+                        HorizontalAlignment="Right"
+                        Margin="10,10"
+                        Orientation="Horizontal"
+                        Visibility="{Binding DataContext.IsSaveVisible, RelativeSource={RelativeSource FindAncestor, AncestorType=views:RecipeView}}">
+                        <Image
+                            Height="30"
+                            Margin="0,0,10,0"
+                            Source="{StaticResource IconReset}"
+                            Width="30">
+                            <b:Interaction.Behaviors>
+                                <behavior:PressReboundBehavior Command="{Binding DataContext.ResetCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type views:RecipeView}}}" />
+                                <behavior:FocusAmplificationBehavior />
+                            </b:Interaction.Behaviors>
+                        </Image>
+                    </StackPanel>
+                </DockPanel>
+            </Border>
+
+            <DockPanel Margin="34,5">
+                <TextBlock
+                    HorizontalAlignment="Left"
+                    Style="{StaticResource TextTitleStyle}"
+                    Text="营养分析" />
+                <Border
+                    Background="#ABFFE2"
+                    BorderThickness="1"
+                    CornerRadius="17.5"
+                    DockPanel.Dock="Top"
+                    HorizontalAlignment="Right"
+                    Margin="20,0,20,0"
+                    VerticalAlignment="Center"
+                    Visibility="{Binding DataContext.IsSaveVisible, RelativeSource={RelativeSource FindAncestor, AncestorType=views:RecipeView}}">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Image
+                            DockPanel.Dock="Top"
+                            Height="35"
+                            HorizontalAlignment="Right"
+                            Source="{StaticResource IconAdd}"
+                            Width="35">
+                            <b:Interaction.Behaviors>
+                                <behavior:PressReboundBehavior Command="{Binding DataContext.AddEatingDiaryCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type views:RecipeView}}}" />
+                                <behavior:FocusAmplificationBehavior Mod="Ordinary" />
+                            </b:Interaction.Behaviors>
+                        </Image>
+                        <TextBlock
+                            FontSize="14"
+                            Foreground="#009765"
+                            Padding="10,0,10,0"
+                            Text="添加到日记"
+                            VerticalAlignment="Center" />
+                    </StackPanel>
+                </Border>
+            </DockPanel>
+
+            <Border
+                Background="#FFF7FF"
+                BorderBrush="#999"
+                BorderThickness="0,0,0,1"
+                CornerRadius="10"
+                Margin="40,20"
+                Padding="5,15,5,15">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*" />
+                        <ColumnDefinition Width="5*" />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" Orientation="Vertical">
+                        <common:PiePanel
+                            Height="200"
+                            Items="{Binding PieSegmentModels, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                            Width="200" />
+
+                        <ItemsControl
+                            ItemsSource="{Binding ProteinContent}"
+                            VerticalAlignment="Center"
+                            Width="180">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Vertical" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="2*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Image
+                                            Grid.Column="0"
+                                            Margin="4,1"
+                                            Source="{Binding Icon}"
+                                            Width="16" />
+                                        <ProgressBar
+                                            Grid.Column="1"
+                                            Height="10"
+                                            Maximum="100"
+                                            Minimum="0"
+                                            Value="{Binding Value}">
+                                            <ProgressBar.Template>
+                                                <ControlTemplate TargetType="ProgressBar">
+                                                    <Border CornerRadius="0,3,3,0">
+                                                        <Grid ClipToBounds="True">
+                                                            <Rectangle Fill="{x:Null}" x:Name="PART_Track" />
+                                                            <Border
+                                                                Background="{Binding GradientBrush}"
+                                                                CornerRadius="2,4,4,2"
+                                                                HorizontalAlignment="Left"
+                                                                x:Name="PART_Indicator" />
+                                                        </Grid>
+                                                    </Border>
+                                                </ControlTemplate>
+                                            </ProgressBar.Template>
+                                        </ProgressBar>
+                                        <TextBlock
+                                            FontSize="11"
+                                            FontWeight="Light"
+                                            Foreground="DimGray"
+                                            Grid.Column="2"
+                                            Text="{Binding Str}"
+                                            VerticalAlignment="Center" />
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+
+                    <StackPanel
+                        Grid.Column="1"
+                        Margin="10,0"
+                        Orientation="Vertical">
+                        <ItemsControl HorizontalAlignment="Center" ItemsSource="{Binding EnergyContent}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Vertical">
+                                        <TextBlock
+                                            FontSize="24"
+                                            Foreground="#A543C8"
+                                            Margin="16,0"
+                                            Text="{Binding Item2, StringFormat={}{0:0.###}}" />
+                                        <TextBlock
+                                            Foreground="Gray"
+                                            HorizontalAlignment="Right"
+                                            Text="{Binding Item1}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+
+                        <ItemsControl ItemsSource="{Binding OtherNutrientContent}" Margin="12,10,0,0">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel Orientation="Horizontal" Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=StackPanel}}" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border
+                                        Background="#FFF4F6"
+                                        BorderBrush="#A543C8"
+                                        BorderThickness="0.5,0.5,0.5,1"
+                                        CornerRadius="8"
+                                        Margin="4,2">
+                                        <StackPanel Orientation="Vertical">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Foreground="{Binding Color}" Text="✿" />
+                                                <TextBlock
+                                                    FontSize="16"
+                                                    Foreground="#8F624B"
+                                                    Text="{Binding Value, StringFormat={}{0:0.##}}" />
+                                                <TextBlock
+                                                    Foreground="#FF7C00"
+                                                    Margin="3,3"
+                                                    Text="{Binding Unit}"
+                                                    VerticalAlignment="Bottom" />
+                                            </StackPanel>
+                                            <TextBlock
+                                                FontWeight="Light"
+                                                Foreground="#4F4F4F"
+                                                Margin="8,0"
+                                                Text="{Binding Name}" />
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <views:EvaluateView DataContext="{Binding}" />
+
+            <TextBlock
+                HorizontalAlignment="Left"
+                Margin="34,5"
+                Style="{StaticResource TextTitleStyle}"
+                Text="烹饪步骤" />
+
+            <ItemsControl ItemsSource="{Binding Steps}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border
+                            Background="#FBFFFF"
+                            BorderBrush="#C3DCC1"
+                            BorderThickness="0.5,0.5,0.5,1"
+                            CornerRadius="8"
+                            Margin="30,5"
+                            Padding="10">
+
+
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock Style="{StaticResource TextTitle2Style}" Text="{Binding Title}" />
+                                <Grid RenderTransformOrigin="0.5,0.5" Visibility="{Binding FileUri, Converter={StaticResource NullOrEmptyToVisibilityConverter}, FallbackValue=Collapsed}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="8*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Border
+                                        Background="#99D3E5"
+                                        CornerRadius="10"
+                                        Grid.Column="1"
+                                        Padding="3,3">
+                                        <common:CornerRadiusImage
+                                            CornerRadius="10"
+                                            Height="550"
+                                            Margin="1"
+                                            Source="{Binding FileUri}" />
+                                    </Border>
+                                </Grid>
+                                <StackPanel
+                                    Margin="0,10"
+                                    Orientation="Horizontal"
+                                    Visibility="{Binding OutputRequiredTime, Converter={StaticResource TimeSpanToVisibilityConverter}, FallbackValue=Collapsed, UpdateSourceTrigger=PropertyChanged}">
+                                    <Image
+                                        Height="20"
+                                        HorizontalAlignment="Center"
+                                        Source="{StaticResource IconTime}"
+                                        VerticalAlignment="Center"
+                                        Width="20" />
+                                    <TextBlock
+                                        FontSize="12"
+                                        Foreground="{Binding OutputRequiredTime, Converter={StaticResource TimeToColorConverter}}"
+                                        HorizontalAlignment="Center"
+                                        Margin="10,0,30,0"
+                                        Text="{Binding OutputRequiredTime, Converter={StaticResource TimeSpanConverter}}"
+                                        VerticalAlignment="Center" />
+                                </StackPanel>
+                                <StackPanel
+                                    Margin="0,10"
+                                    Orientation="Horizontal"
+                                    VerticalAlignment="Center"
+                                    Visibility="{Binding RequiredIngredient.Item1, Converter={StaticResource NullOrEmptyToVisibilityConverter}, FallbackValue=Collapsed}">
+                                    <TextBlock Margin="10,0" Text="用料" />
+
+                                    <ItemsControl ItemsSource="{Binding IngredientRoots, FallbackValue={x:Null}}">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <StackPanel Orientation="Horizontal" />
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border
+                                                    Background="Orange"
+                                                    CornerRadius="3"
+                                                    Margin="5,0"
+                                                    Padding="10,0">
+                                                    <TextBlock
+                                                        FontSize="14"
+                                                        Foreground="White"
+                                                        Text="{Binding IName}"
+                                                        VerticalAlignment="Center" />
+                                                    <b:Interaction.Behaviors>
+                                                        <behavior:PressReboundBehavior Command="{Binding DataContext.GoToIngredientCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type views:RecipeView}}}" CommandParameter="{Binding}" />
+                                                        <behavior:FocusAmplificationBehavior />
+                                                    </b:Interaction.Behaviors>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+
+
+                                </StackPanel>
+                                <TextBlock Style="{StaticResource Text1Style}" Text="{Binding Refer}" />
+                                <Border
+                                    Background="Azure"
+                                    CornerRadius="6"
+                                    Margin="0,10"
+                                    Visibility="{Binding Summary, Converter={StaticResource NullOrEmptyToVisibilityConverter}, FallbackValue=Collapsed}">
+                                    <TextBlock
+                                        FontSize="13"
+                                        FontWeight="Light"
+                                        Foreground="#B1B112"
+                                        Text="{Binding Summary}"
+                                        TextWrapping="Wrap" />
+                                </Border>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </StackPanel>
+    </Grid>
+</ScrollViewer>

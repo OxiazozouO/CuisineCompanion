@@ -1,0 +1,226 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net7.0-windows</TargetFramework>
+        <Nullable>enable</Nullable>
+        <UseWPF>true</UseWPF>
+        <RootNamespace>CuisineCompanion</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+        <PackageReference Include="LiveChartsCore.SkiaSharpView.WPF" Version="2.0.0-rc2"/>
+        <PackageReference Include="MaterialDesignThemes" Version="5.0.0"/>
+        <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.77"/>
+        <PackageReference Include="MvvmLib.Core" Version="0.17.0"/>
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.1"/>
+        <PackageReference Include="RestSharp" Version="106.0.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Compile Remove="Db\Sql\**"/>
+        <Compile Update="MainWindow.xaml.ui.cs">
+            <DependentUpon>MainWindow.xaml</DependentUpon>
+        </Compile>
+        <Compile Update="AssemblyInfo.cs">
+            <DependentUpon>App.xaml</DependentUpon>
+        </Compile>
+        <Compile Update="Resources\Strings.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Strings.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Components\PasswordBindingBehavior.cs">
+            <DependentUpon>PasswordBindingEx.cs</DependentUpon>
+        </Compile>
+        <Compile Update="Views\NavigateControl.xaml.ui.cs">
+            <DependentUpon>NavigateControl.xaml</DependentUpon>
+        </Compile>
+        <Compile Update="Views\Login.xaml.ui.cs">
+            <DependentUpon>Login.xaml</DependentUpon>
+        </Compile>
+        <Compile Update="Views\Regster.xaml.ui.cs">
+            <DependentUpon>Regster.xaml</DependentUpon>
+        </Compile>
+        <Compile Include="..\CuisineCompanion.Core\Helper\FrontendEncryptionHelper.cs">
+            <Link>Helper\FrontendEncryptionHelper.cs</Link>
+        </Compile>
+        <Compile Include="..\CuisineCompanion.Core\Helper\JsonHelper.cs">
+          <Link>Helper\JsonHelper.cs</Link>
+        </Compile>
+        <Compile Include="..\CuisineCompanion.Core\Helper\RegexHelper.cs">
+            <Link>Helper\RegexHelper.cs</Link>
+        </Compile>
+        <Compile Include="..\CuisineCompanion.Core\Helper\StringHelper.cs">
+          <Link>Helper\StringHelper.cs</Link>
+        </Compile>
+        <Compile Include="..\CuisineCompanion.Core\Helper\UnitHelper.cs">
+          <Link>Helper\UnitHelper.cs</Link>
+        </Compile>
+        <Compile Include="..\CuisineCompanion.Core\Http\ApiRequest.cs">
+            <Link>HttpClients\ApiRequest.cs</Link>
+        </Compile>
+        <Compile Include="..\CuisineCompanion.Core\Http\ApiResponse.cs">
+            <Link>HttpClients\ApiResponse.cs</Link>
+        </Compile>
+        <Compile Include="..\CuisineCompanion.Core\Http\HttpRestClient.cs">
+            <Link>HttpClients\HttpRestClient.cs</Link>
+        </Compile>
+        <Compile Remove="Common\DrawerMenu.xaml.cs" />
+        <Compile Remove="Common\Behavior\DecimalTextBoxBindingBehavior.cs" />
+        <Compile Remove="TempJson\**" />
+        <Compile Include="..\CuisineCompanion.Core\Model\FavoriteFlags.cs">
+          <Link>Models\FavoriteFlags.cs</Link>
+        </Compile>
+        <Compile Include="..\CuisineCompanion.Core\Model\SearchFlag.cs">
+          <Link>Models\SearchFlag.cs</Link>
+        </Compile>
+        <Compile Remove="Common\SimpleSearchBox.xaml.cs" />
+        <Compile Include="..\CuisineCompanion.Core\Model\ViewFlagsHelper.cs">
+          <Link>Helper\ViewFlagsHelper.cs</Link>
+        </Compile>
+        <Compile Remove="Views\MenuBar.xaml.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <EmbeddedResource Remove="Db\Sql\**" />
+        <EmbeddedResource Update="Resources\Strings.en.resx">
+            <DependentUpon>Strings.resx</DependentUpon>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Resources\Strings.zh-CN.resx">
+            <DependentUpon>Strings.resx</DependentUpon>
+        </EmbeddedResource>
+        <EmbeddedResource Remove="TempJson\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Page Remove="Db\Sql\**" />
+        <Page Update="MainWindow.xaml">
+            <Generator>MSBuild:Compile</Generator>
+            <XamlRuntime>Wpf</XamlRuntime>
+            <SubType>Designer</SubType>
+            <DependentUpon>App.xaml</DependentUpon>
+        </Page>
+        <Page Update="Resources\Icons.xaml">
+            <Generator>MSBuild:Compile</Generator>
+            <XamlRuntime>Wpf</XamlRuntime>
+            <SubType>Designer</SubType>
+        </Page>
+        <Page Update="Components\TipTextBox.xaml">
+            <Generator>MSBuild:Compile</Generator>
+        </Page>
+        <Page Update="Views\AuthenticationView.xaml">
+            <Generator>MSBuild:Compile</Generator>
+            <XamlRuntime>Wpf</XamlRuntime>
+            <SubType>Designer</SubType>
+        </Page>
+        <Page Update="Views\Login.xaml">
+            <Generator>MSBuild:Compile</Generator>
+            <XamlRuntime>Wpf</XamlRuntime>
+            <SubType>Designer</SubType>
+            <DependentUpon>AuthenticationView.xaml</DependentUpon>
+        </Page>
+        <Page Update="Views\Regster.xaml">
+            <Generator>MSBuild:Compile</Generator>
+            <XamlRuntime>Wpf</XamlRuntime>
+            <SubType>Designer</SubType>
+            <DependentUpon>AuthenticationView.xaml</DependentUpon>
+        </Page>
+        <Page Update="Views\NavigateControl.xaml">
+            <Generator>MSBuild:Compile</Generator>
+            <XamlRuntime>Wpf</XamlRuntime>
+            <SubType>Designer</SubType>
+        </Page>
+        <Page Remove="Common\DrawerMenu.xaml" />
+        <Page Remove="TempJson\**" />
+        <Page Remove="Common\SimpleSearchBox.xaml" />
+        <Page Update="Views\Templates\RecipeInfoTemplate.xaml">
+          <Generator>MSBuild:Compile</Generator>
+          <XamlRuntime>Wpf</XamlRuntime>
+          <SubType>Designer</SubType>
+        </Page>
+        <Page Update="Views\Templates\IngredientInfoTemplate.xaml">
+          <Generator>MSBuild:Compile</Generator>
+          <XamlRuntime>Wpf</XamlRuntime>
+          <SubType>Designer</SubType>
+        </Page>
+        <Page Update="Views\Templates\MacroNutrientChart.xaml">
+          <Generator>MSBuild:Compile</Generator>
+          <XamlRuntime>Wpf</XamlRuntime>
+          <SubType>Designer</SubType>
+        </Page>
+        <Page Update="Views\Templates\EvaluateView.xaml">
+          <Generator>MSBuild:Compile</Generator>
+          <XamlRuntime>Wpf</XamlRuntime>
+          <SubType>Designer</SubType>
+        </Page>
+        <Page Update="Views\Templates\IngredientInfoTemplate.xaml">
+          <Generator>MSBuild:Compile</Generator>
+          <XamlRuntime>Wpf</XamlRuntime>
+          <SubType>Designer</SubType>
+        </Page>
+        <Page Update="Views\Templates\MacroNutrientChart.xaml">
+          <Generator>MSBuild:Compile</Generator>
+          <XamlRuntime>Wpf</XamlRuntime>
+          <SubType>Designer</SubType>
+        </Page>
+        <Page Update="Views\Templates\EvaluateView.xaml">
+          <Generator>MSBuild:Compile</Generator>
+          <XamlRuntime>Wpf</XamlRuntime>
+          <SubType>Designer</SubType>
+        </Page>
+        <Page Update="Views\Templates\RecipeInfoTemplate.xaml">
+          <Generator>MSBuild:Compile</Generator>
+          <XamlRuntime>Wpf</XamlRuntime>
+          <SubType>Designer</SubType>
+        </Page>
+        <Page Update="Common\DateTimeScrollViewer.xaml">
+          <Generator>MSBuild:Compile</Generator>
+          <XamlRuntime>Wpf</XamlRuntime>
+          <SubType>Designer</SubType>
+        </Page>
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Remove="Db\Sql\**" />
+        <None Remove="TempJson\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <EmbeddedResource Update="Resources\Strings.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\CuisineCompanion.Generator\CuisineCompanion.Generator.csproj"  OutputItemType="Analyzer" ReferenceOutputAssembly="false"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="obj\Debug\net7.0-windows\CuisineCompanion.Gui_MarkupCompile.lref" />
+      <None Remove="Images\1.jpg" />
+      <Content Include="Images\1.jpg">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Images\2.jpg" />
+      <Content Include="Images\2.jpg">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Images\3.jpg" />
+      <Content Include="Images\3.jpg">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Images\4.jpg" />
+      <Content Include="Images\4.jpg">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="obj\Debug\net7.0-windows\Common\" />
+      <Folder Include="obj\Debug\net7.0-windows\Test\" />
+      <Folder Include="obj\Debug\net7.0-windows\Views\Templates\" />
+    </ItemGroup>
+</Project>

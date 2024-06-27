@@ -1,0 +1,40 @@
+﻿<Window
+    Height="200"
+    Title="请选择时间"
+    Width="300"
+    mc:Ignorable="d"
+    x:Class="CuisineCompanion.Common.DateTimeDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:common="clr-namespace:CuisineCompanion.Common"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid>
+        <StackPanel>
+            <DatePicker
+                Height="60"
+                Width="200"
+                x:Name="DatePicker" />
+            <DockPanel Margin="20">
+                <Button
+                    Command="{Binding OkCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type common:DateTimeDialog}}}"
+                    Content="确定"
+                    FontSize="16"
+                    HorizontalAlignment="Left"
+                    Margin="0,0,10,10"
+                    Padding="4"
+                    VerticalAlignment="Bottom"
+                    Width="75" />
+                <Button
+                    Command="{Binding CancelCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type common:DateTimeDialog}}}"
+                    Content="取消"
+                    FontSize="16"
+                    HorizontalAlignment="Right"
+                    Margin="0,0,10,10"
+                    Padding="4"
+                    VerticalAlignment="Bottom"
+                    Width="75" />
+            </DockPanel>
+        </StackPanel>
+    </Grid>
+</Window>

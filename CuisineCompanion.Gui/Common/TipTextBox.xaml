@@ -1,0 +1,144 @@
+﻿<StackPanel
+    mc:Ignorable="d"
+    x:Class="CuisineCompanion.Common.TipTextBox"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:behavior="clr-namespace:CuisineCompanion.Common.Behavior"
+    xmlns:components="clr-namespace:CuisineCompanion.Common"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <StackPanel.Resources>
+        <DrawingImage x:Key="IconClose">
+            <DrawingImage.Drawing>
+                <DrawingGroup ClipGeometry="M0,0 V1024 H1024 V0 H0 Z">
+                    <GeometryDrawing Brush="#FF000000" Geometry="F1 M1024,1024z M0,0z M782.426059,824.924989L197.837834,240.197594C185.850825,228.207515 185.852872,208.769814 197.84295,196.782805 209.833029,184.795796 229.27073,184.797843 241.257739,196.787922L825.845964,781.515317C837.832973,793.505396 837.830926,812.943097 825.840848,824.930105 813.851793,836.918137 794.413068,836.915067 782.426059,824.924989z" />
+                    <GeometryDrawing Brush="#FF000000" Geometry="F1 M1024,1024z M0,0z M197.768249,824.856427C185.78124,812.866348,185.783287,793.428647,197.773366,781.441639L782.50076,196.85239C794.490839,184.865381 813.92854,184.867428 825.915549,196.857507 837.902558,208.847586 837.900511,228.285287 825.910433,240.272295L241.183038,824.861544C229.192959,836.848553,209.755258,836.846506,197.768249,824.856427z" />
+                </DrawingGroup>
+            </DrawingImage.Drawing>
+        </DrawingImage>
+
+        <!--#region  NoBorderBoxStyle-->
+        <Style TargetType="Control" x:Key="NoBorderBoxStyle">
+            <Setter Property="Background" Value="{x:Null}" />
+            <Setter Property="BorderBrush" Value="{x:Null}" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Foreground" Value="#878787" />
+            <Setter Property="Validation.ErrorTemplate">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <ControlTemplate.Resources>
+                            <BooleanToVisibilityConverter x:Key="BaseConverter" />
+                        </ControlTemplate.Resources>
+                        <Border BorderBrush="{x:Null}" Visibility="{Binding ElementName=placeholder, Mode=OneWay, Path=AdornedElement.IsVisible, Converter={StaticResource BaseConverter}}">
+                            <AdornedElementPlaceholder x:Name="placeholder" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style
+            BasedOn="{StaticResource NoBorderBoxStyle}"
+            TargetType="TextBox"
+            x:Key="ErrorTipStyle">
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Foreground" Value="#FF6E6C" />
+            <Setter Property="IsReadOnly" Value="True" />
+            <Setter Property="Padding" Value="10,2,10,0" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+            <Setter Property="Width" Value="{Binding (components:TipTextBox.ActualWidth)}" />
+        </Style>
+        <Style BasedOn="{StaticResource NoBorderBoxStyle}" TargetType="TextBox" />
+
+        <Style BasedOn="{StaticResource NoBorderBoxStyle}" TargetType="PasswordBox" />
+        <!--#endregion-->
+
+        <Style TargetType="TextBlock" x:Key="TipStyle">
+            <Setter Property="Panel.ZIndex" Value="1" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Foreground" Value="#ACB0AF" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="IsHitTestVisible" Value="False" />
+            <Setter Property="Margin" Value="10,0,0,0" />
+            <Setter Property="Padding" Value="5,0,0,0" />
+        </Style>
+
+        <Style TargetType="Image">
+            <Setter Property="Height" Value="20" />
+            <Setter Property="Width" Value="{Binding Height}" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+        </Style>
+
+        <Style TargetType="Border">
+            <Setter Property="BorderBrush" Value="{Binding (components:TipTextBox.BorderBrush), Mode=TwoWay}" />
+            <Setter Property="Background" Value="{x:Null}" />
+            <Setter Property="BorderThickness" Value="{Binding (components:TipTextBox.BorderThickness), Mode=TwoWay}" />
+
+            <Setter Property="CornerRadius" Value="5" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="Padding" Value="7,9" />
+            <Setter Property="Width" Value="300" />
+
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding (components:TipTextBox.IsMouseOver)}" Value="True">
+                    <Setter Property="BorderBrush" Value="#FF8899AA" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding (components:TipTextBox.InputView).IsKeyboardFocused}" Value="True">
+                    <Setter Property="BorderBrush" Value="#FF112233" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding (components:TipTextBox.IsError)}" Value="True">
+                    <Setter Property="BorderBrush" Value="#FF403E" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </StackPanel.Resources>
+
+    <Border>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <Image
+                Grid.Column="0"
+                Grid.Row="0"
+                Source="{Binding (components:TipTextBox.IconSource)}" />
+
+            <Grid
+                Grid.Column="1"
+                Grid.Row="0"
+                Margin="10,0,0,0"
+                Name="Input">
+                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+            </Grid>
+
+            <TextBlock
+                Grid.Column="1"
+                Grid.Row="0"
+                Style="{StaticResource TipStyle}"
+                Text="{Binding (components:TipTextBox.TipBoxText), UpdateSourceTrigger=PropertyChanged}"
+                x:Name="Tip" />
+            <Image
+                Grid.Column="1"
+                Grid.Row="0"
+                HorizontalAlignment="Right"
+                Name="ClearImg"
+                Source="{StaticResource IconClose}"
+                Visibility="Collapsed">
+                <b:Interaction.Behaviors>
+                    <behavior:ClearContentBehavior IsClearClose="True" Target="{Binding (components:TipTextBox.InputView)}" />
+                </b:Interaction.Behaviors>
+            </Image>
+        </Grid>
+    </Border>
+    <TextBox
+        Style="{StaticResource ErrorTipStyle}"
+        Visibility="{Binding (components:TipTextBox.ErrorVisibility)}"
+        x:Name="ErrorBox" />
+</StackPanel>

@@ -1,0 +1,36 @@
+﻿<Border
+    Background="White"
+    CornerRadius="8"
+    Padding="4,0"
+    mc:Ignorable="d"
+    x:Class="CuisineCompanion.Views.SimpleSearchBox"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:behavior="clr-namespace:CuisineCompanion.Common.Behavior"
+    xmlns:common="clr-namespace:CuisineCompanion.Common"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+        <common:TipTextBox
+            BorderBrush="#ACB0AF"
+            BorderThickness="1"
+            ErrorVisibility="Collapsed"
+            Margin="0,7"
+            TipBoxText="搜索">
+            <common:TipTextBox.InputView>
+                <TextBox Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+            </common:TipTextBox.InputView>
+        </common:TipTextBox>
+        <Image
+            Height="40"
+            Source="{StaticResource IconSearch}"
+            VerticalAlignment="Top"
+            Width="40">
+            <b:Interaction.Behaviors>
+                <behavior:PressReboundBehavior Command="{Binding SearchCommand}" />
+                <behavior:FocusAmplificationBehavior Mod="Natural" />
+            </b:Interaction.Behaviors>
+        </Image>
+    </StackPanel>
+</Border>

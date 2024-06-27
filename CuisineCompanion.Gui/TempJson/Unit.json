@@ -1,0 +1,65 @@
+﻿{
+  "Unit": {
+    "μg": 0.000001,
+    "mg": 0.001,
+    "g": 1,
+    "kg": 1000,
+    "lb": 453.592,
+    "oz": 28.3495,
+    "ml": 1,
+    "l": 1000,
+    "kJ": 1,
+    "kcal": 4.184
+  },
+  "BaseUnit": {
+    "μg": "g",
+    "mg": "g",
+    "g": null,
+    "kg": "g",
+    "lb": "g",
+    "oz": "g",
+    "ml": null,
+    "l": "ml",
+    "kJ": null,
+    "kcal": "kJ"
+  },
+  "UnitNext": {
+    "μg": "mg",
+    "mg": "g",
+    "g": "kg",
+    "kg": null,
+    "lb": "kg",
+    "oz": "kg",
+    "ml": "l",
+    "l": null,
+    "kJ": "kcal",
+    "kcal": null
+  },
+  "UnitPre": {
+    "μg": null,
+    "mg": "μg",
+    "g": "mg",
+    "kg": "g",
+    "t": "kg",
+    "lb": "g",
+    "oz": "g",
+    "ml": null,
+    "l": "ml",
+    "kJ": null,
+    "kcal": "kJ"
+  },
+  "UnitLocal": {
+    "zh": {
+      "μg": "微克",
+      "mg": "毫克",
+      "g": "克",
+      "kg": "千克",
+      "lb": "磅",
+      "oz": "盎司",
+      "ml": "毫升",
+      "l": "升",
+      "kcal": "千卡",
+      "kJ": "千焦"
+    }
+  }
+}
