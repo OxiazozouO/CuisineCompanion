@@ -11,13 +11,13 @@ public static class UserService
         error = null;
         user = db.Users.FirstOrDefault(u => u.UserId == token.UserId && u.IsLogout == false);
         if (user is not null) return true;
-        
+
         error = new ApiResponses
         {
             Code = -1,
             Message = "用户不存在"
         };
-        
+
         return false;
     }
 }

@@ -20,31 +20,24 @@ public class FavoritesController : MyControllerBase
     [HttpPost]
     public IActionResult AddFavorite(FavoriteCreationDto dto)
     {
-        if (!DbFlagsHelper.TryDeFlags(dto.Flag, out sbyte authority, out sbyte idCategory))
-        {
+        if (!DbFlagsHelper.TryDeFlags(dto.Flag, out var authority, out var idCategory))
             return Ok(new ApiResponses { Code = -1, Message = "参数错误" });
-        }
 
-        int userid = dto.UserToken.UserId;
+        var userid = dto.UserToken.UserId;
 
         try
         {
-            int count = _db.Favorites.Count(f => f.UserId == userid && f.IdCategory == idCategory);
+            var count = _db.Favorites.Count(f => f.UserId == userid && f.IdCategory == idCategory);
             if (count >= 200)
-            {
                 return Ok(new ApiResponses
                 {
                     Code = -1,
                     Message = $"{IdCategoryConstant.GetName(idCategory)}收藏夹数量已满"
                 });
-            }
 
-            Favorite? favorite =
+            var favorite =
                 _db.Favorites.FirstOrDefault(f => f.UserId == userid && f.CName == dto.CName);
-            if (favorite is not null)
-            {
-                return Ok(new ApiResponses { Code = -1, Message = "此收藏夹已存在" });
-            }
+            if (favorite is not null) return Ok(new ApiResponses { Code = -1, Message = "此收藏夹已存在" });
 
             favorite = new Favorite
             {
@@ -56,17 +49,12 @@ public class FavoritesController : MyControllerBase
             };
 
             if (FileUrlHelper.TryMove(dto.FileUrl, FileUrlHelper.Favorites))
-            {
                 favorite.FileUri = dto.FileUrl;
-            }
             else
-            {
                 goto bad;
-            }
 
             _db.Favorites.Add(favorite);
             if (_db.SaveChanges() == 1)
-            {
                 return Ok(new ApiResponses
                 {
                     Code = 1, Message = "添加收藏夹成功",
@@ -76,7 +64,6 @@ public class FavoritesController : MyControllerBase
                         FileUri = Url.GetFavoriteUrl(Request, favorite.FileUri)
                     }
                 });
-            }
         }
         catch (Exception e)
         {
@@ -98,12 +85,10 @@ public class FavoritesController : MyControllerBase
     [HttpPost]
     public IActionResult RemoveFavorite(FavoriteRemoveDto favoriteDto)
     {
-        if (!DbFlagsHelper.TryDeFlags(favoriteDto.Flag, out sbyte authority, out sbyte idCategory))
-        {
+        if (!DbFlagsHelper.TryDeFlags(favoriteDto.Flag, out var authority, out var idCategory))
             return Ok(new ApiResponses { Code = -1, Message = "参数错误" });
-        }
 
-        int userid = favoriteDto.UserToken.UserId;
+        var userid = favoriteDto.UserToken.UserId;
 
         try
         {
@@ -113,10 +98,7 @@ public class FavoritesController : MyControllerBase
                 f.Authority == authority &&
                 f.IdCategory == idCategory
             );
-            if (favorite is null)
-            {
-                return Ok(new ApiResponses { Code = -1, Message = "收藏夹不存在" });
-            }
+            if (favorite is null) return Ok(new ApiResponses { Code = -1, Message = "收藏夹不存在" });
 
             _db.FavoriteItems.RemoveRange(_db.FavoriteItems.Where(fi => fi.FavoriteId == favorite.FavoriteId));
             _db.Favorites.Remove(favorite);
@@ -137,20 +119,15 @@ public class FavoritesController : MyControllerBase
     [HttpPost]
     public IActionResult EditFavorite(FavoriteUpdateDto dto)
     {
-        if (!DbFlagsHelper.TryDeFlags(dto.Flag, out sbyte authority, out sbyte idCategory))
-        {
+        if (!DbFlagsHelper.TryDeFlags(dto.Flag, out var authority, out var idCategory))
             return Ok(new ApiResponses { Code = -1, Message = "参数错误" });
-        }
-        
-        int userid = dto.UserToken.UserId;
+
+        var userid = dto.UserToken.UserId;
 
         try
         {
             var favorite = _db.Favorites.FirstOrDefault(f => f.FavoriteId == dto.FavoriteId && f.UserId == userid);
-            if (favorite is null)
-            {
-                return Ok(new ApiResponses { Code = -1, Message = "收藏夹不存在" });
-            }
+            if (favorite is null) return Ok(new ApiResponses { Code = -1, Message = "收藏夹不存在" });
 
             if (dto.FileName != "")
             {
@@ -160,13 +137,9 @@ public class FavoritesController : MyControllerBase
                         FileUrlHelper.Favorites,
                         FileUrlHelper.DeletedFavorites)
                    )
-                {
                     favorite.FileUri = dto.FileName;
-                }
                 else
-                {
                     goto ret;
-                }
             }
 
             favorite.CName = dto.CName;
@@ -177,14 +150,12 @@ public class FavoritesController : MyControllerBase
             _db.Favorites.Update(favorite);
 
             if (_db.SaveChanges() == 1)
-            {
                 return Ok(new ApiResponses
                 {
                     Code = 1,
                     Message = "更改成功",
                     Data = dto.FileName == "" ? null : Url.GetFavoriteUrl(Request, favorite.FileUri)
                 });
-            }
         }
         catch (Exception e)
         {
@@ -198,7 +169,7 @@ public class FavoritesController : MyControllerBase
             Code = -1, Message = "更改失败"
         });
     }
-    
+
     #endregion
 
     #region Select
@@ -208,11 +179,8 @@ public class FavoritesController : MyControllerBase
     {
         try
         {
-            if (!UserService.TryVerifyUserToken(_db, dto, out _, out var error))
-            {
-                return Ok(error);
-            }
-            
+            if (!UserService.TryVerifyUserToken(_db, dto, out _, out var error)) return Ok(error);
+
             var ret = _db.Favorites
                 .Where(f => f.UserId == dto.UserId)
                 .Select(f => new
@@ -244,19 +212,14 @@ public class FavoritesController : MyControllerBase
     [HttpPost]
     public IActionResult FavoriteListItems(FavoriteListItemDto dto)
     {
-        if (!DbFlagsHelper.TryDeFlags(dto.Flag, out sbyte authority, out sbyte idCategory))
-        {
+        if (!DbFlagsHelper.TryDeFlags(dto.Flag, out var authority, out var idCategory))
             return Ok(new ApiResponses { Code = -1, Message = "参数错误" });
-        }
 
         try
         {
             var ret = _db.Favorites.FirstOrDefault(f =>
                 f.FavoriteId == dto.FavoriteId && f.Authority == authority && f.IdCategory == idCategory);
-            if (ret is null)
-            {
-                goto bad;
-            }
+            if (ret is null) goto bad;
 
             object data = null;
             switch (ret.IdCategory)
@@ -276,7 +239,7 @@ public class FavoritesController : MyControllerBase
                             i.Allergy,
                             i.Content,
                             FileUri = Url.GetIngredientUrl(Request, i.FileUri),
-                            Dosage = 100,
+                            Dosage = 100
                         }).ToList();
                     break;
                 case IdCategoryConstant.Recipe:
@@ -291,7 +254,7 @@ public class FavoritesController : MyControllerBase
                                     FileUri = Url.GetRecipeUrl(Request, r.FileUri),
                                     r.RecipeId,
                                     r.Title,
-                                    r.Summary,
+                                    r.Summary
                                 }).ToList();
                             break;
                         case FavoriteAuthorityConstant.Public:
@@ -303,10 +266,11 @@ public class FavoritesController : MyControllerBase
                                     FileUri = Url.GetRecipeUrl(Request, r.FileUri),
                                     r.RecipeId,
                                     r.Title,
-                                    r.Summary,
+                                    r.Summary
                                 }).ToList();
                             break;
                     }
+
                     break;
                 default:
                     goto bad;

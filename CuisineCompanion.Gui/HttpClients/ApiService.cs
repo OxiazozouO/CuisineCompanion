@@ -29,7 +29,7 @@ public static class ApiService
         {
             var list = res.Data.ToEntity<List<EatingDiaryModel>>();
             var viewModel =
-                list.Select(i => new EatingDiaryAtViewModel() { EatingDiary = i }).ToList();
+                list.Select(i => new EatingDiaryAtViewModel { EatingDiary = i }).ToList();
             return viewModel;
         }
 
@@ -41,13 +41,9 @@ public static class ApiService
         var req = ApiEndpoints.IngredientAt(new { MainViewModel.UserToken, Id = id });
         IngredientModel? ingredient = null;
         if (req.Execute(out var res))
-        {
             ingredient = res.Data.ToEntity<IngredientModel>();
-        }
         else
-        {
             MsgBoxHelper.TryError(res.Message);
-        }
 
         return ingredient;
     }
@@ -61,10 +57,7 @@ public static class ApiService
             recipe = res.Data.ToEntity<RecipeModel>();
             recipe.Init();
             var req2 = ApiEndpoints.IsLike(new { MainViewModel.UserToken, TId = id, Flag = ModelFlags.Recipe });
-            if (req2.Execute(out var res2))
-            {
-                recipe.IsLike = bool.Parse(res2.Data.ToString());
-            }
+            if (req2.Execute(out var res2)) recipe.IsLike = bool.Parse(res2.Data.ToString());
         }
         else
         {
@@ -77,22 +70,16 @@ public static class ApiService
     public static (List<CategoryModel>? category, bool isLike) GetIngredientInfo(int id)
     {
         List<CategoryModel> category = null;
-        bool isLike = false;
+        var isLike = false;
 
         var req = ApiEndpoints.IngredientCategory(new
             { MainViewModel.UserToken, Id = id });
 
-        if (req.Execute(out var res))
-        {
-            category = res.Data.ToEntity<List<CategoryModel>>();
-        }
+        if (req.Execute(out var res)) category = res.Data.ToEntity<List<CategoryModel>>();
 
         var req2 = ApiEndpoints.IsLike(new
             { MainViewModel.UserToken, TId = id, Flag = ModelFlags.Ingredient });
-        if (req2.Execute(out var res2))
-        {
-            isLike = bool.Parse(res2?.Data?.ToString() ?? "False");
-        }
+        if (req2.Execute(out var res2)) isLike = bool.Parse(res2?.Data?.ToString() ?? "False");
 
         return (category, isLike);
     }

@@ -6,8 +6,8 @@ namespace CuisineCompanion.Common.Converter;
 
 public class TimeSpanConverter : IValueConverter
 {
-    private string? _fmt;
     private string? _day;
+    private string? _fmt;
     private string? _h;
     private string? _min;
     private string? _s;
@@ -15,7 +15,7 @@ public class TimeSpanConverter : IValueConverter
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         if (_fmt == null) InitFmt(parameter);
-        string ret = "";
+        var ret = "";
         // @formatter:off
         if (value is TimeSpan timeSpan)
             if (timeSpan.Days != 0)

@@ -11,31 +11,18 @@ public partial class EatingDiaryViewModel : ObservableObject
 {
     [ObservableProperty] private List<EatingDiaryAtViewModel> eatingDiaries;
 
-    #region 计算出来的变量
 
-    [ObservableProperty] private ObservableCollection<EnergyViewModel> energies;
+    [ObservableProperty] private EnergyViewModel selectedItem;
 
-    [ObservableProperty] private decimal maxEnergy;
-
-    #endregion
-
-    #region 辅助变量
-
-    [ObservableProperty] private double maxWidth = 0;
-
-    [ObservableProperty] private MainViewModel mainRoot;
-
-    #endregion
+    public EatingDiaryViewModel()
+    {
+        MainRoot = MainViewModel.Instance;
+    }
 
     partial void OnEnergiesChanged(ObservableCollection<EnergyViewModel>? oldValue,
         ObservableCollection<EnergyViewModel> newValue)
     {
         InitEnergies(Energies);
-    }
-
-    public EatingDiaryViewModel()
-    {
-        MainRoot = MainViewModel.Instance;
     }
 
     public static void InitEnergies(ObservableCollection<EnergyViewModel> value)
@@ -44,15 +31,9 @@ public partial class EatingDiaryViewModel : ObservableObject
         for (var i = 1; i < value.Count; i++)
         {
             value[i].Flag = 0;
-            if (value[i].Date.Year != value[i - 1].Date.Year)
-            {
-                value[i].Flag += 1;
-            }
+            if (value[i].Date.Year != value[i - 1].Date.Year) value[i].Flag += 1;
 
-            if (value[i].Date.Month != value[i - 1].Date.Month)
-            {
-                value[i].Flag += 2;
-            }
+            if (value[i].Date.Month != value[i - 1].Date.Month) value[i].Flag += 2;
         }
     }
 
@@ -82,14 +63,8 @@ public partial class EatingDiaryViewModel : ObservableObject
             .Select(x => new EnergyViewModel { Date = x.Key, Energy = x.Value, Flag = 0 })
             .OrderBy(e => e.Date));
 
-        foreach (var diary in EatingDiaries)
-        {
-            diary.InitNutritional((decimal)MainRoot.MyInfo.Tdee);
-        }
+        foreach (var diary in EatingDiaries) diary.InitNutritional((decimal)MainRoot.MyInfo.Tdee);
     }
-
-
-    [ObservableProperty] private EnergyViewModel selectedItem;
 
     partial void OnSelectedItemChanged(EnergyViewModel? oldValue, EnergyViewModel newValue)
     {
@@ -99,11 +74,27 @@ public partial class EatingDiaryViewModel : ObservableObject
             {
                 EatingDiary = this
             };
-            MainViewModel.Navigate.Navigate($"饮食日记详情",
+            MainViewModel.Navigate.Navigate("饮食日记详情",
                 new EditEatingDiaryView
                 {
                     DataContext = model
                 }, true);
         }
     }
+
+    #region 计算出来的变量
+
+    [ObservableProperty] private ObservableCollection<EnergyViewModel> energies;
+
+    [ObservableProperty] private decimal maxEnergy;
+
+    #endregion
+
+    #region 辅助变量
+
+    [ObservableProperty] private double maxWidth;
+
+    [ObservableProperty] private MainViewModel mainRoot;
+
+    #endregion
 }

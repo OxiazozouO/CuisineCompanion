@@ -1,8 +1,9 @@
-﻿using System.Windows.Controls;
-
-namespace CuisineCompanion.Views;
+﻿namespace CuisineCompanion.Views;
 
 public partial class IngredientInfoTemplate
 {
-    public IngredientInfoTemplate() => InitializeComponent();
+    public IngredientInfoTemplate()
+    {
+        InitializeComponent();
+    }
 }

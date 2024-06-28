@@ -12,45 +12,19 @@ namespace CuisineCompanion.ViewModels;
 
 public partial class EditFavoriteViewModel : ObservableValidator
 {
-    [ObservableProperty] private FavoriteModel fmodel;
-
-    [ObservableProperty] private FavoriteModel oldFavoriteModel;
-
     [ObservableProperty] private ModelFlags authoritiesFlag;
 
 
     [ObservableProperty] private Visibility authorityVisibility = Visibility.Collapsed;
 
+    [ObservableProperty] private ModelFlags flags;
+    [ObservableProperty] private FavoriteModel fmodel;
+
     [ObservableProperty] private Visibility modelTypeVisibility = Visibility.Collapsed;
 
-    [ObservableProperty] private ModelFlags flags;
+    [ObservableProperty] private FavoriteModel oldFavoriteModel;
 
     [ObservableProperty] private Func<ModelFlags, FavoriteModel, FavoriteModel, bool> saveFun;
-
-    #region 辅助变量
-
-    [ObservableProperty] private List<Tuple<string, ModelFlags>> authorities = new List<ModelFlags>
-    {
-        ModelFlags.Private,
-        ModelFlags.Public
-    }.Select(x => new Tuple<string, ModelFlags>(x.GetAuthorityName(), x)).ToList();
-
-    [ObservableProperty] private List<Tuple<string, ModelFlags>> modelTypes = new List<ModelFlags>
-    {
-        ModelFlags.Ingredient,
-        ModelFlags.Recipe,
-        ModelFlags.Menu
-    }.Select(x => new Tuple<string, ModelFlags>(x.GetName(), x)).ToList();
-
-    #endregion
-
-
-    partial void OnFmodelChanged(FavoriteModel? oldValue, FavoriteModel newValue)
-    {
-        Flags = (ModelFlags)Fmodel.Flag;
-        AuthorityVisibility = Flags.GetAuthority();
-        AuthoritiesFlag = Flags & (ModelFlags.Private | ModelFlags.Public);
-    }
 
     public EditFavoriteViewModel(FavoriteModel model)
     {
@@ -68,6 +42,14 @@ public partial class EditFavoriteViewModel : ObservableValidator
 
     public EditFavoriteViewModel()
     {
+    }
+
+
+    partial void OnFmodelChanged(FavoriteModel? oldValue, FavoriteModel newValue)
+    {
+        Flags = (ModelFlags)Fmodel.Flag;
+        AuthorityVisibility = Flags.GetAuthority();
+        AuthoritiesFlag = Flags & (ModelFlags.Private | ModelFlags.Public);
     }
 
     /***
@@ -102,7 +84,7 @@ public partial class EditFavoriteViewModel : ObservableValidator
     [RelayCommand]
     private void SelectFile()
     {
-        OpenFileDialog openFileDialog = new OpenFileDialog
+        var openFileDialog = new OpenFileDialog
         {
             Filter = "图片 |*.jpg;*.jpeg;*.png;*.gif;*.bmp;*.webp"
         };
@@ -112,4 +94,21 @@ public partial class EditFavoriteViewModel : ObservableValidator
             Fmodel.FileUri = openFileDialog.FileName;
         }
     }
+
+    #region 辅助变量
+
+    [ObservableProperty] private List<Tuple<string, ModelFlags>> authorities = new List<ModelFlags>
+    {
+        ModelFlags.Private,
+        ModelFlags.Public
+    }.Select(x => new Tuple<string, ModelFlags>(x.GetAuthorityName(), x)).ToList();
+
+    [ObservableProperty] private List<Tuple<string, ModelFlags>> modelTypes = new List<ModelFlags>
+    {
+        ModelFlags.Ingredient,
+        ModelFlags.Recipe,
+        ModelFlags.Menu
+    }.Select(x => new Tuple<string, ModelFlags>(x.GetName(), x)).ToList();
+
+    #endregion
 }

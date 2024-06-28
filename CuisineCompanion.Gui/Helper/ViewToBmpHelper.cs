@@ -30,7 +30,7 @@ public static class ViewToBmpHelper
         }
         catch (Exception e)
         {
-           MsgBoxHelper.TryError(e.Message);
+            MsgBoxHelper.TryError(e.Message);
             return false;
         }
 
@@ -38,7 +38,7 @@ public static class ViewToBmpHelper
     }
 
     /// <summary>
-    /// 选择导出路径并保存
+    ///     选择导出路径并保存
     /// </summary>
     /// <param name="element">需要导出的界面元素</param>
     public static void ShowSaveToBmp(this FrameworkElement element, string filename)
@@ -51,13 +51,11 @@ public static class ViewToBmpHelper
         if (dialog.ShowDialog() == false) return;
         if (!element.SaveToBmp(dialog.FileName)) return;
         if (MsgBoxHelper.Confirmation("保存成功, 是否打开？"))
-        {
             Process.Start(new ProcessStartInfo
             {
                 FileName = dialog.FileName,
                 UseShellExecute = true,
                 Verb = "open"
             });
-        }
     }
 }

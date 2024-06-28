@@ -1,10 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CuisineCompanion.Helper;
 using CuisineCompanion.HttpClients;
-using CuisineCompanion.Views;
 
 namespace CuisineCompanion.ViewModels;
 
@@ -30,6 +28,15 @@ public partial class LoginViewModel : ObservableValidator
         Password = "qwq1714050472";
     }
 
+    public string Error
+    {
+        get
+        {
+            ValidateAllProperties();
+            return string.Join('\n', GetErrors());
+        }
+    }
+
 
     [RelayCommand]
     private void Login()
@@ -46,15 +53,6 @@ public partial class LoginViewModel : ObservableValidator
         else
         {
             MsgBoxHelper.TryError(res.Message);
-        }
-    }
-
-    public string Error
-    {
-        get
-        {
-            ValidateAllProperties();
-            return string.Join('\n', GetErrors());
         }
     }
 }

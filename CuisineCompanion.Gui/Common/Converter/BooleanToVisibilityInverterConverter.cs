@@ -7,7 +7,7 @@ namespace CuisineCompanion.Common.Converter;
 
 public class BooleanToVisibilityInverterConverter : IValueConverter
 {
-    private BooleanToVisibilityConverter help = new();
+    private readonly BooleanToVisibilityConverter help = new();
 
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {

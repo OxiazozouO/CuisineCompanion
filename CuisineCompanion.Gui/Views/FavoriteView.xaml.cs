@@ -2,5 +2,8 @@
 
 public partial class FavoriteView
 {
-    public FavoriteView() => InitializeComponent();
+    public FavoriteView()
+    {
+        InitializeComponent();
+    }
 }

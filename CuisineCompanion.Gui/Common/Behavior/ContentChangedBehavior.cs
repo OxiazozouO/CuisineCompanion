@@ -15,6 +15,60 @@ public class ContentChangedBehavior : Behavior<UIElement>
     {
         _contentChangedAction = contentChangedAction;
     }
+
+    private void AssociatedObject_ContentChanged(object? sender, EventArgs? args)
+    {
+        if (_contentChangedAction is null) return;
+        object? obj = null;
+        switch (AssociatedObject)
+        {
+            // 删除任何内容
+            case TextBox textBox:
+                obj = textBox.Text;
+                break;
+            case PasswordBox passwordBox:
+                obj = passwordBox.Password;
+                break;
+            case ComboBox comboBox:
+                obj = comboBox.SelectedItem;
+                break;
+            case DatePicker datePicker:
+                obj = datePicker.SelectedDate;
+                break;
+            case CheckBox checkBox:
+                obj = checkBox.IsChecked;
+                break;
+            case RadioButton radioButton:
+                obj = radioButton.IsChecked;
+                break;
+            case ToggleButton toggleButton:
+                obj = toggleButton.IsChecked;
+                break;
+            case Slider slider:
+                obj = slider.Value;
+                break;
+            case ProgressBar progressBar:
+                obj = progressBar.Value;
+                break;
+            case ListBox listBox:
+                obj = listBox.SelectedItem;
+                break;
+            case TabControl tabControl:
+                obj = tabControl.SelectedItem;
+                break;
+            case DataGrid dataGrid:
+                obj = dataGrid.SelectedItem;
+                break;
+            case RichTextBox richTextBox:
+                obj = new TextRange(richTextBox.Document.ContentStart, richTextBox.Document.ContentEnd);
+                break;
+            default:
+                return;
+        }
+
+        _contentChangedAction(sender, args, obj);
+    }
+
 // @formatter:off
     protected override void OnAttached()
     {
@@ -123,55 +177,4 @@ public class ContentChangedBehavior : Behavior<UIElement>
         }
     }
 // @formatter:on
-    private void AssociatedObject_ContentChanged(object? sender, EventArgs? args)
-    {
-        if (_contentChangedAction is null) return;
-        object? obj = null;
-        switch (AssociatedObject)
-        {
-            // 删除任何内容
-            case TextBox textBox:
-                obj = textBox.Text;
-                break;
-            case PasswordBox passwordBox:
-                obj = passwordBox.Password;
-                break;
-            case ComboBox comboBox:
-                obj = comboBox.SelectedItem;
-                break;
-            case DatePicker datePicker:
-                obj = datePicker.SelectedDate;
-                break;
-            case CheckBox checkBox:
-                obj = checkBox.IsChecked;
-                break;
-            case RadioButton radioButton:
-                obj = radioButton.IsChecked;
-                break;
-            case ToggleButton toggleButton:
-                obj = toggleButton.IsChecked;
-                break;
-            case Slider slider:
-                obj = slider.Value;
-                break;
-            case ProgressBar progressBar:
-                obj = progressBar.Value;
-                break;
-            case ListBox listBox:
-                obj = listBox.SelectedItem;
-                break;
-            case TabControl tabControl:
-                obj = tabControl.SelectedItem;
-                break;
-            case DataGrid dataGrid:
-                obj = dataGrid.SelectedItem;
-                break;
-            case RichTextBox richTextBox:
-                obj = new TextRange(richTextBox.Document.ContentStart, richTextBox.Document.ContentEnd);
-                break;
-            default:
-                return;
-        }
-        _contentChangedAction(sender, args, obj);
-    }
 }

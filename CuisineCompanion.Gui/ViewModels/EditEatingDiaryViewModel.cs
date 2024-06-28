@@ -15,55 +15,16 @@ public partial class EditEatingDiaryViewModel : ObservableObject
 {
     [ObservableProperty] private EatingDiaryViewModel eatingDiary;
 
-
-    #region 计算出来的变量
-
-    [ObservableProperty] private Dictionary<DateTime, EnergyViewModel>? energiesCache;
-
-    [ObservableProperty] private ObservableCollection<EatingDiaryAtViewModel> selectedEatingDiaries;
-
-
-    [ObservableProperty] private ObservableCollection<EnergyViewModel> energies;
-
-    [ObservableProperty] private Dictionary<string, decimal> allNutrients;
-
-    [ObservableProperty] private ObservableCollection<NutrientContentRatioViewModel> otherNutrientContent;
-
-    [ObservableProperty] private List<NutrientContentViewModel> proteinContent; //三大营养素模型
-
-    #endregion
-
-    #region 辅助变量
-
-    [ObservableProperty] private bool isUpdate;
-
-    [ObservableProperty] private double maxWidth;
-
-    [ObservableProperty] private EnergyViewModel selectedItem;
-
-    [ObservableProperty] private int proMaxCount;
-    [ObservableProperty] private int nextMaxCount;
-    private readonly DateTime _baseObject = DateTime.Now;
-
-
-    [ObservableProperty] private decimal energy; //总能量
-
-    [ObservableProperty] private TimeModel time;
-
-    [ObservableProperty] private Func<DateTime, EatingDiaryAtViewModel> addTo;
-
-    #endregion
-
     partial void OnEatingDiaryChanged(EatingDiaryViewModel? oldValue, EatingDiaryViewModel newValue)
     {
         EatingDiary.PropertyChanged += EatingDiaryOnPropertyChanged;
         SelectedItem = EatingDiary.SelectedItem;
         MaxWidth = 200;
         Energies = EatingDiary.Energies;
-        DateTime? date = MainViewModel.Instance.MyInfo?.BirthDate;
+        var date = MainViewModel.Instance.MyInfo?.BirthDate;
         if (date is not null)
         {
-            DateTime dateTime = (DateTime)date;
+            var dateTime = (DateTime)date;
             ProMaxCount = Math.Max(0, (_baseObject - dateTime).Days);
             NextMaxCount = Math.Max(0, (dateTime.AddYears(100) - _baseObject).Days);
         }
@@ -83,13 +44,13 @@ public partial class EditEatingDiaryViewModel : ObservableObject
 
     private void AdditionalEatingDiariesInfo()
     {
-        HashSet<KeyValuePair<ModelFlags, int>> IdFlags = EatingDiary.EatingDiaries
+        var IdFlags = EatingDiary.EatingDiaries
             .Where(diary => diary.EatingDiary.FileUrl is null || diary.EatingDiary.Name is null)
             .Select(diary => new KeyValuePair<ModelFlags, int>(diary.EatingDiary.Flag, diary.EatingDiary.TId))
             .ToHashSet();
         var req = ApiEndpoints.GetGetEatingEatingDiaryInfos(new
         {
-            IdFlags = IdFlags,
+            IdFlags
         });
         if (req.Execute(out var ret))
         {
@@ -98,12 +59,10 @@ public partial class EditEatingDiaryViewModel : ObservableObject
                 d => (d.Flag, d.TId),
                 d => (d.Name, d.FileUrl));
             foreach (var diary in EatingDiary.EatingDiaries)
-            {
                 (diary.EatingDiary.Name, diary.EatingDiary.FileUrl) =
                     mp.TryGetValue((diary.EatingDiary.Flag, diary.EatingDiary.TId), out var item)
                         ? item
                         : (null, null);
-            }
         }
     }
 
@@ -126,12 +85,10 @@ public partial class EditEatingDiaryViewModel : ObservableObject
         newValue ??= new ObservableCollection<EatingDiaryAtViewModel>();
         var dic = new Dictionary<string, decimal>();
         foreach (var model in newValue)
+        foreach (var (key, value) in model.EatingDiary.Nutrients)
         {
-            foreach (var (key, value) in model.EatingDiary.Nutrients)
-            {
-                dic.TryAdd(key, 0);
-                dic[key] += value;
-            }
+            dic.TryAdd(key, 0);
+            dic[key] += value;
         }
 
         dic = dic.OrderByDescending(kv => kv.Value)
@@ -146,10 +103,7 @@ public partial class EditEatingDiaryViewModel : ObservableObject
                 Name = i.Key,
                 Value = i.Value
             }));
-        foreach (var model in OtherNutrientContent)
-        {
-            model.InitMaxValue();
-        }
+        foreach (var model in OtherNutrientContent) model.InitMaxValue();
     }
 
     partial void OnIsUpdateChanged(bool oldValue, bool newValue)
@@ -189,10 +143,7 @@ public partial class EditEatingDiaryViewModel : ObservableObject
         var en = new EnergyViewModel { Date = time.Date };
         EnergyViewModel? obj = null;
         EnergiesCache?.TryGetValue(en.Date.Date, out obj);
-        if (obj != null)
-        {
-            en.Energy = obj.Energy;
-        }
+        if (obj != null) en.Energy = obj.Energy;
 
         Energies.Add(en);
 
@@ -201,18 +152,15 @@ public partial class EditEatingDiaryViewModel : ObservableObject
 
     public int Top(int pro)
     {
-        int addLen = 10;
+        var addLen = 10;
 
         var time = _baseObject;
-        for (int i = 0; i < addLen; i++)
+        for (var i = 0; i < addLen; i++)
         {
             var en = new EnergyViewModel { Date = time.AddDays(pro--).Date, Energy = 0, Flag = 0 };
             EnergyViewModel? obj = null;
             EnergiesCache?.TryGetValue(en.Date.Date, out obj);
-            if (obj != null)
-            {
-                en.Energy = obj.Energy;
-            }
+            if (obj != null) en.Energy = obj.Energy;
 
             Energies.Insert(0, en);
         }
@@ -224,19 +172,16 @@ public partial class EditEatingDiaryViewModel : ObservableObject
 
     public int Bottom(int nex)
     {
-        int addLen = 10;
+        var addLen = 10;
 
         var time = _baseObject;
 
-        for (int i = 0; i < addLen; i++)
+        for (var i = 0; i < addLen; i++)
         {
             var en = new EnergyViewModel { Date = time.AddDays(nex++).Date, Energy = 0, Flag = 0 };
             EnergyViewModel? obj = null;
             EnergiesCache?.TryGetValue(en.Date.Date, out obj);
-            if (obj != null)
-            {
-                en.Energy = obj.Energy;
-            }
+            if (obj != null) en.Energy = obj.Energy;
 
             Energies.Add(en);
         }
@@ -262,8 +207,8 @@ public partial class EditEatingDiaryViewModel : ObservableObject
         var req = ApiEndpoints.DeleteEatingDiary(new
         {
             MainViewModel.UserToken,
-            Flag = eatingDiaryAtViewModel.EatingDiary.Flag,
-            EdId = eatingDiaryAtViewModel.EatingDiary.EdId,
+            eatingDiaryAtViewModel.EatingDiary.Flag,
+            eatingDiaryAtViewModel.EatingDiary.EdId
         });
         if (req.Execute(out var ret))
         {
@@ -292,13 +237,13 @@ public partial class EditEatingDiaryViewModel : ObservableObject
             MsgBoxHelper.Info("添加成功！");
         }
     }
-    
+
     // private async Task UpdateUIAsync(EatingDiaryAtViewModel model, int i)
     // {
     //     await Task.Run(() => { UpdateUI(model, i); });
     // }
     /// <summary>
-    /// 更新ui
+    ///     更新ui
     /// </summary>
     /// <param name="model"></param>
     /// <param name="i">1：添加  2：删除</param>
@@ -313,26 +258,24 @@ public partial class EditEatingDiaryViewModel : ObservableObject
                 EatingDiary.EatingDiaries.Add(model);
                 SelectedEatingDiaries.Add(model);
                 instance.EatingDiary.EatingDiaries.Add(model);
-                
+
                 item.Energy += model.Energy;
-                var list = new List<ObservableCollection<EnergyViewModel>>() { instance.EatingDiary.Energies, EatingDiary.Energies };
+                var list = new List<ObservableCollection<EnergyViewModel>>
+                    { instance.EatingDiary.Energies, EatingDiary.Energies };
                 foreach (var models in list)
                 {
                     var item3 = models.FirstOrDefault(e => e.Date.Date == item.Date.Date);
                     if (item3 is null)
-                    {
                         models.Add(new EnergyViewModel
                         {
                             Date = item.Date,
                             Energy = model.Energy,
                             Flag = item.Flag
                         });
-                    }
                     else
-                    {
                         item3.Energy += model.Energy;
-                    }
                 }
+
                 break;
             case 2:
                 EatingDiary.EatingDiaries.Remove(model);
@@ -361,6 +304,45 @@ public partial class EditEatingDiaryViewModel : ObservableObject
         SelectedEatingDiaries = null;
         SelectedEatingDiaries = item2;
     }
+
+
+    #region 计算出来的变量
+
+    [ObservableProperty] private Dictionary<DateTime, EnergyViewModel>? energiesCache;
+
+    [ObservableProperty] private ObservableCollection<EatingDiaryAtViewModel> selectedEatingDiaries;
+
+
+    [ObservableProperty] private ObservableCollection<EnergyViewModel> energies;
+
+    [ObservableProperty] private Dictionary<string, decimal> allNutrients;
+
+    [ObservableProperty] private ObservableCollection<NutrientContentRatioViewModel> otherNutrientContent;
+
+    [ObservableProperty] private List<NutrientContentViewModel> proteinContent; //三大营养素模型
+
+    #endregion
+
+    #region 辅助变量
+
+    [ObservableProperty] private bool isUpdate;
+
+    [ObservableProperty] private double maxWidth;
+
+    [ObservableProperty] private EnergyViewModel selectedItem;
+
+    [ObservableProperty] private int proMaxCount;
+    [ObservableProperty] private int nextMaxCount;
+    private readonly DateTime _baseObject = DateTime.Now;
+
+
+    [ObservableProperty] private decimal energy; //总能量
+
+    [ObservableProperty] private TimeModel time;
+
+    [ObservableProperty] private Func<DateTime, EatingDiaryAtViewModel> addTo;
+
+    #endregion
 }
 
 public record EatingDiaryRetInfoDTO

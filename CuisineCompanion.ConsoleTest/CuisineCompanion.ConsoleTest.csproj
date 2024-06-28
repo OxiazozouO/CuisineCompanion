@@ -10,27 +10,32 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Compile Include="..\CuisineCompanion.Core\Helper\FrontendEncryptionHelper.cs">
-        <Link>Helper\FrontendEncryptionHelper.cs</Link>
-      </Compile>
-      <Compile Include="..\CuisineCompanion.Core\Helper\JsonHelper.cs">
-        <Link>Helper\JsonHelper.cs</Link>
-      </Compile>
-      <Compile Include="..\CuisineCompanion.Core\Helper\RegexHelper.cs">
-        <Link>Helper\RegexHelper.cs</Link>
-      </Compile>
-      <Compile Include="..\CuisineCompanion.Core\Helper\StringHelper.cs">
-        <Link>Helper\StringHelper.cs</Link>
-      </Compile>
-      <Compile Include="..\CuisineCompanion.Core\Http\ApiResponse.cs">
-        <Link>Http\ApiResponse.cs</Link>
-      </Compile>
+        <Compile Include="..\CuisineCompanion.Core\Helper\FrontendEncryptionHelper.cs">
+            <Link>Helper\FrontendEncryptionHelper.cs</Link>
+        </Compile>
+        <Compile Include="..\CuisineCompanion.Core\Helper\JsonHelper.cs">
+            <Link>Helper\JsonHelper.cs</Link>
+        </Compile>
+        <Compile Include="..\CuisineCompanion.Core\Helper\RegexHelper.cs">
+            <Link>Helper\RegexHelper.cs</Link>
+        </Compile>
+        <Compile Include="..\CuisineCompanion.Core\Helper\StringHelper.cs">
+            <Link>Helper\StringHelper.cs</Link>
+        </Compile>
+        <Compile Include="..\CuisineCompanion.Core\Http\ApiResponse.cs">
+            <Link>Http\ApiResponse.cs</Link>
+        </Compile>
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
-      <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-      <PackageReference Include="RestSharp" Version="106.0.1" />
+        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2"/>
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.1"/>
+        <PackageReference Include="RestSharp" Version="106.0.1"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="NewFile2.txt" />
+      <None Remove="NewFile2_JSON.json" />
     </ItemGroup>
 
 </Project>

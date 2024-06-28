@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Globalization;
 using System.Linq;
 using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -11,39 +10,23 @@ using CuisineCompanion.Helper;
 using CuisineCompanion.HttpClients;
 using CuisineCompanion.Models;
 using CuisineCompanion.Views;
-using Enumerable = System.Linq.Enumerable;
 
 namespace CuisineCompanion.ViewModels;
 
 public partial class IngredientViewModel : ObservableObject, ILike
 {
+    [ObservableProperty] private List<CategoryModel> category;
     [ObservableProperty] private IngredientModel ingredientModel;
 
-    [ObservableProperty] private List<CategoryModel> category;
+    public void DeLike()
+    {
+        IsLike = false;
+    }
 
-    #region 计算出来的变量
-
-    [ObservableProperty] private Dictionary<EvaluateTag, List<string>> evaluate;
-
-    [ObservableProperty] private List<PieSegmentModel> proteinPieSegmentModels; //百分比饼图模型
-
-    [ObservableProperty] private List<PieSegmentModel> otherPieSegmentModels; //百分比饼图模型
-
-    [ObservableProperty] private List<Tuple<string, decimal>> energyContent; //简单评价
-
-    [ObservableProperty] private List<NutrientContentViewModel> proteinContent; //三大营养素模型
-
-    //其他营养素
-    [ObservableProperty] private List<NutrientContentModel> otherNutrientContent;
-
-    #endregion
-
-    #region 辅助变量
-
-    [ObservableProperty] private Visibility isSaveVisible = Visibility.Visible;
-    [ObservableProperty] private bool isLike;
-
-    #endregion
+    public void Like()
+    {
+        IsLike = true;
+    }
 
     partial void OnIngredientModelChanged(IngredientModel? oldValue, IngredientModel newValue)
     {
@@ -51,18 +34,14 @@ public partial class IngredientViewModel : ObservableObject, ILike
 
         (Category, IsLike) = ApiService.GetIngredientInfo(IngredientModel.IngredientId);
 
-        decimal ans = UnitHelper.ConvertToBaseUnit(IngredientModel.Dosage, IngredientModel.Unit) *
-                      (decimal)IngredientModel.Content;
+        var ans = UnitHelper.ConvertToBaseUnit(IngredientModel.Dosage, IngredientModel.Unit) *
+                  (decimal)IngredientModel.Content;
         var list = NutritionalHelper.GetEvaluateTag(IngredientModel.Nutritional, ans);
         if (IngredientModel is { Allergy: not null, InputDosage: > 0 })
-        {
             list.Add(new Tuple<EvaluateTag, string>(EvaluateTag.Allergy, IngredientModel.Allergy));
-        }
 
-        if (Category is not null && Enumerable.Any(Category, model => model.CName.Contains("酒")))
-        {
+        if (Category is not null && Category.Any(model => model.CName.Contains("酒")))
             list.Add(new Tuple<EvaluateTag, string>(EvaluateTag.Negative, "含酒精"));
-        }
 
         Evaluate = NutritionalHelper.ToDictionary(list);
     }
@@ -71,10 +50,8 @@ public partial class IngredientViewModel : ObservableObject, ILike
     private void IngredientModelOnPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName == nameof(IngredientModel.EstimatedDosage))
-        {
             if (IngredientModel.EstimatedDosage > 0)
                 InitAllNutritional();
-        }
     }
 
     public void InitAllNutritional()
@@ -107,26 +84,19 @@ public partial class IngredientViewModel : ObservableObject, ILike
                 var req = ApiEndpoints.RemoveFavoriteItems(new
                     { MainViewModel.UserToken, TId = IngredientModel.IngredientId, Flag = ModelFlags.Ingredient });
                 if (!req.Execute(out var res))
-                {
                     MsgBoxHelper.TryError(res.Message);
-                }
                 else
-                {
                     DeLike();
-                }
 
                 return;
             }
 
-            if (!MsgBoxHelper.OkCancel($"添加到收藏夹？"))
-            {
-                return;
-            }
+            if (!MsgBoxHelper.OkCancel("添加到收藏夹？")) return;
         }
 
         MainViewModel.Navigate.Navigate(
-            text: $"添加{IngredientModel.IName} 到个人收藏夹",
-            view: new FavoriteView
+            $"添加{IngredientModel.IName} 到个人收藏夹",
+            new FavoriteView
             {
                 DataContext = new FavoriteViewModel
                 {
@@ -138,7 +108,7 @@ public partial class IngredientViewModel : ObservableObject, ILike
                     }
                 }
             },
-            isOnlyNavigate: true
+            true
         );
     }
 
@@ -146,21 +116,21 @@ public partial class IngredientViewModel : ObservableObject, ILike
     private void AddEatingDiary()
     {
         var e = ApiService.GetEatingDiaries();
-        bool isAll = e?.Count == 0;
+        var isAll = e?.Count == 0;
         MainViewModel.Navigate.Navigate($"添加{IngredientModel.IName} 到饮食日记",
-            view: new EditEatingDiaryView
+            new EditEatingDiaryView
             {
                 DataContext = new EditEatingDiaryViewModel
                 {
                     EatingDiary = new EatingDiaryViewModel
                     {
-                        EatingDiaries = e,
+                        EatingDiaries = e
                     },
                     IsUpdate = isAll,
                     AddTo = AddTo
                 }
             },
-            isOnlyNavigate: true
+            true
         );
     }
 
@@ -184,7 +154,6 @@ public partial class IngredientViewModel : ObservableObject, ILike
 
 
         if (req.Execute(out var res))
-        {
             try
             {
                 var model = new EatingDiaryAtViewModel
@@ -198,7 +167,7 @@ public partial class IngredientViewModel : ObservableObject, ILike
                         Name = IngredientModel.IName,
                         Dosages = dos.ToDictionary(d => d.Key.ToString(), d => d.Value),
                         Nutrients = n,
-                        UpdateTime = time,
+                        UpdateTime = time
                     }
                 };
                 return model;
@@ -208,13 +177,38 @@ public partial class IngredientViewModel : ObservableObject, ILike
                 MsgBoxHelper.TryError("ui初始化失败");
                 return null;
             }
-        }
 
         MsgBoxHelper.TryError("添加失败");
         return null;
     }
+    
+    [RelayCommand]
+    private static void GotoCategory(string name)
+    {
+        MainViewModel.Navigate.GoHome(SearchFlags.Category, name);
+    }
 
-    public void DeLike() => IsLike = false;
+    #region 计算出来的变量
 
-    public void Like() => IsLike = true;
+    [ObservableProperty] private Dictionary<EvaluateTag, List<string>> evaluate;
+
+    [ObservableProperty] private List<PieSegmentModel> proteinPieSegmentModels; //百分比饼图模型
+
+    [ObservableProperty] private List<PieSegmentModel> otherPieSegmentModels; //百分比饼图模型
+
+    [ObservableProperty] private List<Tuple<string, decimal>> energyContent; //简单评价
+
+    [ObservableProperty] private List<NutrientContentViewModel> proteinContent; //三大营养素模型
+
+    //其他营养素
+    [ObservableProperty] private List<NutrientContentModel> otherNutrientContent;
+
+    #endregion
+
+    #region 辅助变量
+
+    [ObservableProperty] private Visibility isSaveVisible = Visibility.Visible;
+    [ObservableProperty] private bool isLike;
+
+    #endregion
 }

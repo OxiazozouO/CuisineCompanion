@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CuisineCompanion.Helper;
 using CuisineCompanion.HttpClients;
 using CuisineCompanion.Models;
 using CuisineCompanion.Views;
@@ -41,8 +40,8 @@ public partial class HomeViewModel : ObservableObject
                 break;
             case Collection:
                 MainViewModel.Navigate.Navigate(
-                    text: SelectedItem.PageName,
-                    view: new FavoriteView
+                    SelectedItem.PageName,
+                    new FavoriteView
                     {
                         DataContext = new FavoriteViewModel
                         {
@@ -53,7 +52,7 @@ public partial class HomeViewModel : ObservableObject
                             }
                         }
                     },
-                    isOnlyNavigate: true
+                    true
                 );
                 break;
             case MyInfo:
@@ -64,20 +63,20 @@ public partial class HomeViewModel : ObservableObject
                 break;
             case Analysis:
                 var e = ApiService.GetEatingDiaries();
-                bool isAll = e?.Count == 0;
+                var isAll = e?.Count == 0;
                 MainViewModel.Navigate.Navigate("饮食日记详情",
-                    view: new EditEatingDiaryView
+                    new EditEatingDiaryView
                     {
                         DataContext = new EditEatingDiaryViewModel
                         {
                             EatingDiary = new EatingDiaryViewModel
                             {
-                                EatingDiaries = e,
+                                EatingDiaries = e
                             },
                             IsUpdate = isAll
                         }
                     },
-                    isOnlyNavigate: true
+                    true
                 );
                 break;
         }

@@ -11,33 +11,29 @@ namespace CuisineCompanion.ViewModels;
 
 public partial class FavoriteItemViewModel : ObservableObject
 {
-    [ObservableProperty] private ObservableCollection<RecipeInfoViewModel> recipes;
-    [ObservableProperty] private ObservableCollection<RecipeInfoViewModel> menus;
+    private readonly Dictionary<string, object> _searchCache = new();
     [ObservableProperty] private ObservableCollection<IngredientInfoViewModel> ingredients;
-
-    private readonly Dictionary<string, object> _searchCache = new Dictionary<string, object>();
-    [ObservableProperty] private string searchText = "";
-    [ObservableProperty] private FavoriteModel root;
     [ObservableProperty] private bool isEdit = true;
+    [ObservableProperty] private ObservableCollection<RecipeInfoViewModel> menus;
+    [ObservableProperty] private ObservableCollection<RecipeInfoViewModel> recipes;
+    [ObservableProperty] private FavoriteModel root;
+    [ObservableProperty] private string searchText = "";
 
     partial void OnRootChanged(FavoriteModel? oldValue, FavoriteModel newValue)
     {
         var f = (ModelFlags)Root.Flag;
         var req = ApiEndpoints.FavoriteListItems(new
-            { MainViewModel.UserToken, Flag = Root.Flag, FavoriteId = Root.FavoriteId });
+        {
+            MainViewModel.UserToken,
+            Root.Flag,
+            Root.FavoriteId
+        });
         if (!req.Execute(out var res)) return;
         if (f.Exists(ModelFlags.Ingredient))
-        {
             Ingredients = IngredientInfoViewModel.Create(res.Data.ToEntity<IEnumerable<IngredientModel>>());
-        }
         else if (f.Exists(ModelFlags.Recipe))
-        {
             Recipes = res.Data.ToEntity<ObservableCollection<RecipeInfoViewModel>>();
-        }
-        else if (f.Exists(ModelFlags.Menu))
-        {
-            Menus = res.Data.ToEntity<ObservableCollection<RecipeInfoViewModel>>();
-        }
+        else if (f.Exists(ModelFlags.Menu)) Menus = res.Data.ToEntity<ObservableCollection<RecipeInfoViewModel>>();
     }
 
     partial void OnIngredientsChanged(ObservableCollection<IngredientInfoViewModel>? oldValue,
@@ -71,7 +67,7 @@ public partial class FavoriteItemViewModel : ObservableObject
     private void Search()
     {
         var f = (ModelFlags)Root.Flag;
-        bool isExists = _searchCache.TryGetValue(SearchText, out var res);
+        var isExists = _searchCache.TryGetValue(SearchText, out var res);
         if (f.Exists(ModelFlags.Ingredient))
         {
             if (isExists)
@@ -135,14 +131,14 @@ public partial class FavoriteItemViewModel : ObservableObject
     [RelayCommand]
     private void DeleteItem(int id)
     {
-        if (!MsgBoxHelper.Confirmation($"是否删除？"))
-        {
-            return;
-        }
+        if (!MsgBoxHelper.Confirmation("是否删除？")) return;
 
         var f = (ModelFlags)Root.Flag;
         var req = ApiEndpoints.RemoveFavoriteItem(new
-            { MainViewModel.UserToken, TId = id, Flag = f, FavoriteId = Root.FavoriteId });
+        {
+            MainViewModel.UserToken, TId = id, Flag = f,
+            Root.FavoriteId
+        });
         if (!req.Execute(out var res))
         {
             MsgBoxHelper.TryError(res.Message);

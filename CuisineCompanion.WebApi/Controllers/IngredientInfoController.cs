@@ -19,10 +19,7 @@ public class IngredientInfoController : MyControllerBase
     {
         try
         {
-            if (!UserService.TryVerifyUserToken(_db, dto.UserToken, out var user, out var error))
-            {
-                return Ok(error);
-            }
+            if (!UserService.TryVerifyUserToken(_db, dto.UserToken, out var user, out var error)) return Ok(error);
 
             var categories = (from ci in _db.CategoryItems
                 join c in _db.Categories on ci.CategoryId equals c.CategoryId
@@ -52,10 +49,7 @@ public class IngredientInfoController : MyControllerBase
     {
         try
         {
-            if (!UserService.TryVerifyUserToken(_db, dto.UserToken, out var user, out var error))
-            {
-                return Ok(error);
-            }
+            if (!UserService.TryVerifyUserToken(_db, dto.UserToken, out var user, out var error)) return Ok(error);
 
             var i = _db.Ingredients
                 .FirstOrDefault(i => i.IngredientId == dto.Id);
@@ -72,7 +66,7 @@ public class IngredientInfoController : MyControllerBase
                     i.Allergy,
                     i.Content,
                     Dosage = 100,
-                    FileUri = Url.GetIngredientUrl(Request, i.FileUri),
+                    FileUri = Url.GetIngredientUrl(Request, i.FileUri)
                 };
             return Ok(new ApiResponses
             {

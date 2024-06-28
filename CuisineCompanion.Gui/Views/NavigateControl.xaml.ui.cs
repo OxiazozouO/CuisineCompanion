@@ -3,17 +3,23 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Media.Animation;
 using CommunityToolkit.Mvvm.Input;
-using CuisineCompanion.Helper;
 using CuisineCompanion.HttpClients;
+using CuisineCompanion.Models;
 using CuisineCompanion.ViewModels;
 
 namespace CuisineCompanion.Views;
 
 public partial class NavigateControl
 {
+    private readonly DoubleAnimation _height;
+
+
+    private readonly Stack<(object, string, bool)> _lStack = new();
+    private readonly Stack<(object, string, bool)> _rStack = new();
     private readonly Storyboard _storyboard;
     private readonly DoubleAnimation _width;
-    private readonly DoubleAnimation _height;
+
+    private bool _isOnlyNavigate;
 
     public NavigateControl()
     {
@@ -24,13 +30,13 @@ public partial class NavigateControl
         // 创建宽度的 DoubleAnimation
         _width = new DoubleAnimation
         {
-            Duration = TimeSpan.FromSeconds(0.2),
+            Duration = TimeSpan.FromSeconds(0.2)
         };
 
         // 创建高度的 DoubleAnimation
         _height = new DoubleAnimation
         {
-            Duration = TimeSpan.FromSeconds(0.2),
+            Duration = TimeSpan.FromSeconds(0.2)
         };
         Run();
     }
@@ -43,7 +49,7 @@ public partial class NavigateControl
         // 将动画添加到 Storyboard 中
         _storyboard.Children.Add(_width);
         _storyboard.Children.Add(_height);
-        bool switch1 = false;
+        var switch1 = false;
         _storyboard.Completed += (_, _) =>
         {
             if (switch1)
@@ -82,12 +88,6 @@ public partial class NavigateControl
         Panel1.BeginStoryboard(_storyboard);
     }
 
-
-    private readonly Stack<(object, string, bool)> _lStack = new();
-    private readonly Stack<(object, string, bool)> _rStack = new();
-
-    private bool _isOnlyNavigate = false;
-
     public void ReNavigate(string text, object view, bool isOnlyNavigate = false)
     {
         _lStack.Clear();
@@ -119,13 +119,9 @@ public partial class NavigateControl
 
 
         if (_isOnlyNavigate)
-        {
             _rStack.Clear();
-        }
         else
-        {
             _rStack.Push((HomeContentControl.Content, TitleTextBlock.Text, false));
-        }
 
         (HomeContentControl.Content, TitleTextBlock.Text, _isOnlyNavigate) = _lStack.Pop();
     }
@@ -157,18 +153,27 @@ public partial class NavigateControl
     [RelayCommand]
     public void GoHome()
     {
+        GoHome(null, null);
+    }
+    
+    public void GoHome(SearchFlags? flags, string? searchText)
+    {
+        flags ??= SearchFlags.Recipe;
+        searchText ??= "";
+        var home = HomeIndexViewModel._instance;
         _rStack.Clear();
         _lStack.Clear();
         MainViewModel.MainFrame.Navigate(MainViewModel.Navigate);
 
         var e = ApiService.GetEatingDiaries();
 
-        HomeIndexViewModel._instance.EatingDiary = new EatingDiaryViewModel { EatingDiaries = e, };
-        
+        home.EatingDiary = new EatingDiaryViewModel { EatingDiaries = e };
+        home.SearchText = searchText;
+        home.InitOption((SearchFlags)flags);
         ReNavigate($"你好，{MainViewModel.UserToken.UserName}！欢迎来到 食谱信息管理系统！",
             new HomeIndexView
             {
-                DataContext = HomeIndexViewModel._instance
+                DataContext = home
             });
     }
 }

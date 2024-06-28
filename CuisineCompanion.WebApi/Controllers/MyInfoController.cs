@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using CuisineCompanion.WebApi.DataModel;
+﻿using CuisineCompanion.WebApi.DataModel;
 using CuisineCompanion.WebApi.DTOs;
 using CuisineCompanion.WebApi.Service;
 using Microsoft.AspNetCore.Mvc;
@@ -19,10 +18,7 @@ public class MyInfoController : MyControllerBase
     {
         try
         {
-            if (!UserService.TryVerifyUserToken(_db, dto.UserToken, out var user, out var error))
-            {
-                return Ok(error);
-            }
+            if (!UserService.TryVerifyUserToken(_db, dto.UserToken, out var user, out var error)) return Ok(error);
 
             var data = _db.UserPhysicalInfos
                 .Where(u => u.UId == user.UserId)
@@ -47,7 +43,7 @@ public class MyInfoController : MyControllerBase
                     UserName = user.UName,
                     user.Gender,
                     user.BirthDate,
-                    UserInfoList = data,
+                    UserInfoList = data
                 }
             });
         }
@@ -64,12 +60,9 @@ public class MyInfoController : MyControllerBase
     {
         try
         {
-            if (!UserService.TryVerifyUserToken(_db, dto.UserToken, out var user, out var error))
-            {
-                return Ok(error);
-            }
+            if (!UserService.TryVerifyUserToken(_db, dto.UserToken, out var user, out var error)) return Ok(error);
 
-            var info = new UserPhysicalInfo()
+            var info = new UserPhysicalInfo
             {
                 UId = user.UserId,
                 Height = dto.Height,
@@ -77,13 +70,12 @@ public class MyInfoController : MyControllerBase
                 ActivityLevel = dto.ActivityLevel,
                 ProteinRequirement = dto.ProteinRequirement,
                 FatPercentage = dto.FatPercentage,
-                UpdateTime = DateTime.Now,
+                UpdateTime = DateTime.Now
             };
 
             _db.UserPhysicalInfos.Add(info);
 
             if (_db.SaveChanges() == 1)
-            {
                 return Ok(new ApiResponses
                 {
                     Code = 1,
@@ -94,15 +86,11 @@ public class MyInfoController : MyControllerBase
                         info.UpdateTime
                     }
                 });
-            }
-            else
+            return Ok(new ApiResponses
             {
-                return Ok(new ApiResponses
-                {
-                    Code = -1,
-                    Message = "添加失败"
-                });
-            }
+                Code = -1,
+                Message = "添加失败"
+            });
         }
         catch (Exception e)
         {
@@ -117,10 +105,7 @@ public class MyInfoController : MyControllerBase
     {
         try
         {
-            if (!UserService.TryVerifyUserToken(_db, dto.UserToken, out var user, out var error))
-            {
-                return Ok(error);
-            }
+            if (!UserService.TryVerifyUserToken(_db, dto.UserToken, out var user, out var error)) return Ok(error);
 
             var info = _db.UserPhysicalInfos.FirstOrDefault(u => u.UpiId == dto.UpiId);
             if (info is not null)
@@ -132,20 +117,15 @@ public class MyInfoController : MyControllerBase
                 info.FatPercentage = dto.FatPercentage;
                 _db.UserPhysicalInfos.Update(info);
                 if (_db.SaveChanges() == 1)
-                {
                     return Ok(new ApiResponses
                     {
-                        Code = 1,
+                        Code = 1
                     });
-                }
-                else
+                return Ok(new ApiResponses
                 {
-                    return Ok(new ApiResponses
-                    {
-                        Code = -1,
-                        Message = "更新失败"
-                    });
-                }
+                    Code = -1,
+                    Message = "更新失败"
+                });
             }
         }
         catch (Exception e)
@@ -161,30 +141,22 @@ public class MyInfoController : MyControllerBase
     {
         try
         {
-            if (!UserService.TryVerifyUserToken(_db, dto.UserToken, out var user, out var error))
-            {
-                return Ok(error);
-            }
+            if (!UserService.TryVerifyUserToken(_db, dto.UserToken, out var user, out var error)) return Ok(error);
 
             var info = _db.UserPhysicalInfos.FirstOrDefault(u => u.UpiId == dto.Id);
             if (info is not null)
             {
                 _db.UserPhysicalInfos.Remove(info);
                 if (_db.SaveChanges() == 1)
-                {
                     return Ok(new ApiResponses
                     {
-                        Code = 1,
+                        Code = 1
                     });
-                }
-                else
+                return Ok(new ApiResponses
                 {
-                    return Ok(new ApiResponses
-                    {
-                        Code = -1,
-                        Message = "删除失败"
-                    });
-                }
+                    Code = -1,
+                    Message = "删除失败"
+                });
             }
         }
         catch (Exception e)

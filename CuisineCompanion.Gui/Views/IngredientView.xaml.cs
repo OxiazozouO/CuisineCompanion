@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
 using CuisineCompanion.Helper;
 using CuisineCompanion.Models;
@@ -9,7 +8,10 @@ namespace CuisineCompanion.Views;
 
 public partial class IngredientView
 {
-    public IngredientView() => InitializeComponent();
+    public IngredientView()
+    {
+        InitializeComponent();
+    }
 
     public void Init(IngredientModel model)
     {

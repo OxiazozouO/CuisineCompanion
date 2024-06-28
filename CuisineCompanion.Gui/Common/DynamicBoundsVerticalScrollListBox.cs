@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -7,7 +6,25 @@ namespace CuisineCompanion.Common;
 
 public class DynamicBoundsVerticalScrollListBox : ListBox
 {
-    public int Pro { get; set; } = 0;
+    public static readonly DependencyProperty IsUpdateProperty =
+        DependencyProperty.Register(nameof(IsUpdate), typeof(bool), typeof(DynamicBoundsVerticalScrollListBox),
+            new PropertyMetadata(false, OnIsUpdatePropertyChanged));
+
+    public static readonly DependencyProperty ProMaxCountProperty =
+        DependencyProperty.Register(nameof(ProMaxCount), typeof(int), typeof(DynamicBoundsVerticalScrollListBox),
+            new PropertyMetadata(100));
+
+    public static readonly DependencyProperty NextMaxCountProperty =
+        DependencyProperty.Register(nameof(NextMaxCount), typeof(int), typeof(DynamicBoundsVerticalScrollListBox),
+            new PropertyMetadata(100));
+
+
+    public DynamicBoundsVerticalScrollListBox()
+    {
+        AddHandler(ScrollViewer.ScrollChangedEvent, new ScrollChangedEventHandler(OnScrollChanged));
+    }
+
+    public int Pro { get; set; }
     public int Nex { get; set; } = 1;
 
     public bool IsUpdate
@@ -16,29 +33,21 @@ public class DynamicBoundsVerticalScrollListBox : ListBox
         set => SetValue(IsUpdateProperty, value);
     }
 
-    public static readonly DependencyProperty IsUpdateProperty =
-        DependencyProperty.Register(nameof(IsUpdate), typeof(bool), typeof(DynamicBoundsVerticalScrollListBox),
-            new PropertyMetadata(false, OnIsUpdatePropertyChanged));
-    
     public int ProMaxCount
     {
         get => (int)GetValue(ProMaxCountProperty);
         set => SetValue(ProMaxCountProperty, value);
     }
 
-    public static readonly DependencyProperty ProMaxCountProperty =
-        DependencyProperty.Register(nameof(ProMaxCount), typeof(int), typeof(DynamicBoundsVerticalScrollListBox),
-            new PropertyMetadata(100));
-    
     public int NextMaxCount
     {
         get => (int)GetValue(NextMaxCountProperty);
         set => SetValue(NextMaxCountProperty, value);
     }
 
-    public static readonly DependencyProperty NextMaxCountProperty =
-        DependencyProperty.Register(nameof(NextMaxCount), typeof(int), typeof(DynamicBoundsVerticalScrollListBox),
-            new PropertyMetadata(100));
+    public Func<int, int> GetTop { get; set; } = i => i;
+
+    public Func<int, int> GetBottom { get; set; } = i => i;
 
     private static void OnIsUpdatePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
@@ -46,16 +55,6 @@ public class DynamicBoundsVerticalScrollListBox : ListBox
         box.Pro = 1;
         box.Nex = 1;
     }
-
-
-    public DynamicBoundsVerticalScrollListBox()
-    {
-        AddHandler(ScrollViewer.ScrollChangedEvent, new ScrollChangedEventHandler(OnScrollChanged));
-    }
-
-    public Func<int, int> GetTop { get; set; } = i => i;
-
-    public Func<int, int> GetBottom { get; set; } = i => i;
 
     private void OnScrollChanged(object sender, ScrollChangedEventArgs e)
     {
@@ -68,7 +67,7 @@ public class DynamicBoundsVerticalScrollListBox : ListBox
 
         if (scroll.VerticalOffset == 0 && -Pro <= ProMaxCount)
         {
-            object? pos = Items[0];
+            var pos = Items[0];
             Pro = GetTop(Pro);
             UpdateLayout();
             ScrollIntoView(pos);

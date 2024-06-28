@@ -17,7 +17,7 @@ public partial class PatientsEditForm : EditForm<PatientDTO, PatientsEditForm>
     }
 
     /// <summary>
-    /// model赋值到view
+    ///     model赋值到view
     /// </summary>
     public sealed override void SetEnt()
     {
@@ -27,12 +27,12 @@ public partial class PatientsEditForm : EditForm<PatientDTO, PatientsEditForm>
         comboBox1.SelectedItem = _model.Gender;
         dateTimePicker1.Value = _model.DateOfBirth;
         textBox3.Text = _model.Email;
-        label7.Text = (_model.PatientID == 0) ? "" : _model.PatientID.ToString();
+        label7.Text = _model.PatientID == 0 ? "" : _model.PatientID.ToString();
         label9.Text = _model.RegDate.ToString("yyyy-MM-dd dddd");
     }
 
     /// <summary>
-    /// view赋值到model
+    ///     view赋值到model
     /// </summary>
     protected sealed override PatientDTO GetEnt()
     {

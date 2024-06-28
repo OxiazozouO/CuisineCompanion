@@ -25,5 +25,8 @@ public partial class Form1 : Form
         }
     }
 
-    private void ExitButtonClick(object sender, EventArgs e) => Close();
+    private void ExitButtonClick(object sender, EventArgs e)
+    {
+        Close();
+    }
 }

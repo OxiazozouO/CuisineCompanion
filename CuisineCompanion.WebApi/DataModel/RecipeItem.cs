@@ -1,30 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace CuisineCompanion.WebApi.DataModel;
+﻿namespace CuisineCompanion.WebApi.DataModel;
 
 /// <summary>
-/// 食谱项目
+///     食谱项目
 /// </summary>
-public partial class RecipeItem
+public class RecipeItem
 {
     /// <summary>
-    /// 食谱项目id
+    ///     食谱项目id
     /// </summary>
     public int RecipeItemId { get; set; }
 
     /// <summary>
-    /// 食谱id
+    ///     食谱id
     /// </summary>
     public int RecipeId { get; set; }
 
     /// <summary>
-    /// 食材id
+    ///     食材id
     /// </summary>
     public int IngredientId { get; set; }
 
     /// <summary>
-    /// 用量
+    ///     用量
     /// </summary>
     public decimal Dosage { get; set; }
 

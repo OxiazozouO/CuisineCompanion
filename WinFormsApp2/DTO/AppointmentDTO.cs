@@ -4,6 +4,13 @@ namespace WinFormsApp2.DTO;
 
 public class AppointmentDTO
 {
+    public static readonly Dictionary<string, int> StatusDict = new()
+    {
+        { "已预约", 1 },
+        { "已取消", 2 },
+        { "已完成", 3 }
+    };
+
     public int DID { get; set; }
     public int PID { get; set; }
     public int AID { get; set; }
@@ -30,18 +37,10 @@ public class AppointmentDTO
     [DataType(DataType.Time)]
     public TimeSpan AppointmentTime { get; set; }
 
-    [Required(ErrorMessage = "预约状态是必填项")]
-    public int Status { get; set; }
+    [Required(ErrorMessage = "预约状态是必填项")] public int Status { get; set; }
 
     [StringLength(100, ErrorMessage = "备注长度不能超过{1}个字符")]
     public string Notes { get; set; }
-
-    public static readonly Dictionary<string, int> StatusDict = new()
-    {
-        { "已预约", 1 },
-        { "已取消", 2 },
-        { "已完成", 3 },
-    };
 
     public string StringStatus
     {

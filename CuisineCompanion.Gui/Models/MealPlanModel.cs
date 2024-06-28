@@ -5,9 +5,9 @@ namespace CuisineCompanion.Models;
 
 public partial class MealPlanModel : ObservableObject
 {
-    [ObservableProperty] private int mealPlanId;
-    [ObservableProperty] private string mpName;
     [ObservableProperty] private string fileUri;
-    [ObservableProperty] private string refer;
+    [ObservableProperty] private int mealPlanId;
     [ObservableProperty] private DateTime mpiTime;
+    [ObservableProperty] private string mpName;
+    [ObservableProperty] private string refer;
 }

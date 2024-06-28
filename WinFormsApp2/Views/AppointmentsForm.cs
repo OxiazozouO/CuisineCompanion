@@ -6,6 +6,14 @@ namespace WinFormsApp2.Views;
 
 public partial class AppointmentsForm : Form
 {
+    private readonly SqlManager<AppointmentDTO> _delete;
+    private readonly SqlManager<AppointmentDTO> _findById;
+    private readonly SqlManager<AppointmentDTO> _insert;
+    private readonly SqlManager<AppointmentDTO> _likeSelect;
+
+    private readonly SqlManager<AppointmentDTO> _select;
+    private readonly SqlManager<AppointmentDTO> _update;
+
     public AppointmentsForm()
     {
         InitializeComponent();
@@ -57,8 +65,8 @@ public partial class AppointmentsForm : Form
             }
         );
 
-        string dbName = "medical_management_system";
-        string baseSelectSql =
+        var dbName = "medical_management_system";
+        var baseSelectSql =
             "SELECT d.DoctorID        as did," +
             "       p.PatientID       as pid," +
             "       a.AppointmentID   as aid," +
@@ -117,13 +125,6 @@ public partial class AppointmentsForm : Form
         _delete = new SqlManager<AppointmentDTO>(dbName, "DELETE FROM appointments a WHERE a.AppointmentID = {0};");
     }
 
-    private readonly SqlManager<AppointmentDTO> _select;
-    private readonly SqlManager<AppointmentDTO> _findById;
-    private readonly SqlManager<AppointmentDTO> _likeSelect;
-    private readonly SqlManager<AppointmentDTO> _update;
-    private readonly SqlManager<AppointmentDTO> _insert;
-    private readonly SqlManager<AppointmentDTO> _delete;
-
     public void Init()
     {
         _select.Query(out var list);
@@ -132,11 +133,11 @@ public partial class AppointmentsForm : Form
     }
 
     /// <summary>
-    /// 查找
+    ///     查找
     /// </summary>
     private void QueryButtonClick(object sender, EventArgs e)
     {
-        string? s = textBox1.Text;
+        var s = textBox1.Text;
         List<AppointmentDTO> list;
         if (s is null or "")
         {
@@ -153,7 +154,7 @@ public partial class AppointmentsForm : Form
     }
 
     /// <summary>
-    /// 添加一行
+    ///     添加一行
     /// </summary>
     private void AddButtonClick(object sender, EventArgs e)
     {
@@ -176,14 +177,14 @@ public partial class AppointmentsForm : Form
     }
 
     /// <summary>
-    /// 删除
+    ///     删除
     /// </summary>
     private void DeleteButtonClick(object sender, EventArgs e)
     {
         dataGridView1.GetSelectedIndex<AppointmentDTO>(out var list, out var set);
 
 
-        foreach (int item in set)
+        foreach (var item in set)
         {
             _delete.BuildParameters(list[item].AID);
             var dialogResult = list[item].DoctorName.ShowWarning();
@@ -198,13 +199,13 @@ public partial class AppointmentsForm : Form
     }
 
     /// <summary>
-    /// 修改
+    ///     修改
     /// </summary>
     private void UpdateButtonClick(object sender, EventArgs e)
     {
         dataGridView1.GetSelectedIndex<AppointmentDTO>(out var list, out var set);
 
-        List<AppointmentsEditForm> listView = new List<AppointmentsEditForm>(set.Count);
+        var listView = new List<AppointmentsEditForm>(set.Count);
         listView.AddRange(set.Select(item => new AppointmentsEditForm(list[item], $"修改 {list[item].AID} 预约信息")
             .BuildRunning(a =>
             {
@@ -218,16 +219,16 @@ public partial class AppointmentsForm : Form
     }
 
     /// <summary>
-    /// 医师详情
+    ///     医师详情
     /// </summary>
     private void button5_Click(object sender, EventArgs e)
     {
         dataGridView1.GetSelectedIndex<AppointmentDTO>(out var list, out var set);
 
-        List<DoctorsForm> listView = new List<DoctorsForm>(set.Count);
-        foreach (int item in set)
+        var listView = new List<DoctorsForm>(set.Count);
+        foreach (var item in set)
         {
-            DoctorsForm pf = new DoctorsForm();
+            var pf = new DoctorsForm();
             pf.Init(list[item].DID);
             listView.Add(pf);
         }
@@ -236,16 +237,16 @@ public partial class AppointmentsForm : Form
     }
 
     /// <summary>
-    /// 病人详情
+    ///     病人详情
     /// </summary>
     private void button6_Click(object sender, EventArgs e)
     {
         dataGridView1.GetSelectedIndex<AppointmentDTO>(out var list, out var set);
 
-        List<PatientsForm> listView = new List<PatientsForm>(set.Count);
-        foreach (int item in set)
+        var listView = new List<PatientsForm>(set.Count);
+        foreach (var item in set)
         {
-            PatientsForm pf = new PatientsForm();
+            var pf = new PatientsForm();
             pf.Init(list[item].PID);
             listView.Add(pf);
         }
@@ -254,13 +255,15 @@ public partial class AppointmentsForm : Form
     }
 
     /// <summary>
-    /// 双击修改
+    ///     双击修改
     /// </summary>
-    private void DataGridView1OnDoubleClick(object? sender, EventArgs e) =>
+    private void DataGridView1OnDoubleClick(object? sender, EventArgs e)
+    {
         UpdateButtonClick(sender, e);
+    }
 
     /// <summary>
-    /// 按下delete键删除
+    ///     按下delete键删除
     /// </summary>
     private void DataGridView1OnKeyDown(object? sender, KeyEventArgs e)
     {

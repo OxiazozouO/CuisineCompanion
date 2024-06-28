@@ -8,7 +8,6 @@ namespace CuisineCompanion.Views;
 
 public partial class Login
 {
-
     public Login()
     {
         InitializeComponent();
@@ -17,7 +16,7 @@ public partial class Login
 
     private void Longin_OnClick(object sender, RoutedEventArgs e)
     {
-        Button clickedButton = (Button)sender;
+        var clickedButton = (Button)sender;
 
         string str;
         string icon;

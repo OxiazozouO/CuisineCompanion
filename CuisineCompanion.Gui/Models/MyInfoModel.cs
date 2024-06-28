@@ -12,8 +12,14 @@ namespace CuisineCompanion.Models;
 
 public partial class MyInfoModel : ObservableValidator
 {
-    [ObservableProperty] private ObservableCollection<UserInfoModel> userInfoList;
+    [Required(ErrorMessage = "生日为必填项")] [NotifyDataErrorInfo] [ObservableProperty]
+    private DateTime birthDate;
+
+    [Required(ErrorMessage = "性别为必填项")] [NotifyDataErrorInfo] [ObservableProperty]
+    private bool gender;
+
     [ObservableProperty] private int userId;
+    [ObservableProperty] private ObservableCollection<UserInfoModel> userInfoList;
 
     [Required(ErrorMessage = "昵称为必填项")]
     [StringLength(20, ErrorMessage = "长度必须比{1}短")]
@@ -22,32 +28,16 @@ public partial class MyInfoModel : ObservableValidator
     [ObservableProperty]
     private string userName;
 
-    [Required(ErrorMessage = "性别为必填项")] [NotifyDataErrorInfo] [ObservableProperty]
-    private bool gender;
-
-    [Required(ErrorMessage = "生日为必填项")] [NotifyDataErrorInfo] [ObservableProperty]
-    private DateTime birthDate;
-
     [ObservableProperty] private UserInfoModel userNowInfo;
 
-    #region 辅助变量
-
-    [ObservableProperty] private double bmi;
-    [ObservableProperty] private string bmiStr;
-
-    /// <summary>
-    /// 静息代谢
-    /// </summary>
-    [ObservableProperty] private double ree;
-
-    /// <summary>
-    /// 基础代谢
-    /// </summary>
-    [ObservableProperty] private double tdee;
-
-    [ObservableProperty] private double maxTdee;
-
-    #endregion
+    public string Error
+    {
+        get
+        {
+            ValidateAllProperties();
+            return string.Join('\n', GetErrors());
+        }
+    }
 
 
     public void Init()
@@ -65,13 +55,9 @@ public partial class MyInfoModel : ObservableValidator
 
             UserNowInfo.ProteinRni = MainViewModel.ProteinRequirement[Gender][BirthDate.GetAge()];
             if (UserNowInfo.ProteinPercentage == 0)
-            {
                 UserNowInfo.ProteinPercentage = Math.Min(Math.Max(0.10, UserNowInfo.ProteinRni * 4 / Tdee), 0.20);
-            }
             else
-            {
                 UserNowInfo.ProteinPercentage = Math.Min(Math.Max(0.10, UserNowInfo.ProteinPercentage), 0.20);
-            }
 
             UserNowInfo.ProteinRequirement = (double)((decimal)UserNowInfo.ProteinPercentage * (decimal)Tdee / 4);
 
@@ -105,10 +91,7 @@ public partial class MyInfoModel : ObservableValidator
         ObservableCollection<UserInfoModel> newValue)
     {
         UserInfoList.CollectionChanged += UserInfoListOnCollectionChanged;
-        if (UserInfoList.Count > 0)
-        {
-            GetNowInfo();
-        }
+        if (UserInfoList.Count > 0) GetNowInfo();
     }
 
     private void UserInfoListOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
@@ -119,13 +102,9 @@ public partial class MyInfoModel : ObservableValidator
     partial void OnUserNowInfoChanged(UserInfoModel? oldValue, UserInfoModel newValue)
     {
         if (UserNowInfo is null)
-        {
             Init();
-        }
         else
-        {
             UserNowInfo.PropertyChanged += UserNowInfoOnPropertyChanged;
-        }
     }
 
     private void UserNowInfoOnPropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -160,15 +139,6 @@ public partial class MyInfoModel : ObservableValidator
         Init();
     }
 
-    public string Error
-    {
-        get
-        {
-            ValidateAllProperties();
-            return string.Join('\n', GetErrors());
-        }
-    }
-
     public void GetNowInfo()
     {
         if (UserInfoList is not null)
@@ -176,4 +146,23 @@ public partial class MyInfoModel : ObservableValidator
                 .OrderBy(user => Math.Abs((user.UpdateTime - DateTime.Now).TotalSeconds))
                 .FirstOrDefault() ?? new UserInfoModel();
     }
+
+    #region 辅助变量
+
+    [ObservableProperty] private double bmi;
+    [ObservableProperty] private string bmiStr;
+
+    /// <summary>
+    ///     静息代谢
+    /// </summary>
+    [ObservableProperty] private double ree;
+
+    /// <summary>
+    ///     基础代谢
+    /// </summary>
+    [ObservableProperty] private double tdee;
+
+    [ObservableProperty] private double maxTdee;
+
+    #endregion
 }

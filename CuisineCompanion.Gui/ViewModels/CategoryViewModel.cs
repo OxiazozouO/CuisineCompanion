@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CuisineCompanion.Models;
 
@@ -9,10 +8,10 @@ public partial class CategoryViewModel : ObservableObject
 {
     [ObservableProperty] private CategoryModel category;
     [ObservableProperty] private ObservableCollection<IngredientInfoViewModel> ingredientInfos;
-    [ObservableProperty] private ObservableCollection<RecipeInfoViewModel> recipes;
-    
-    
+
+
     [ObservableProperty] private ObservableCollection<IngredientModel> ingredients;
+    [ObservableProperty] private ObservableCollection<RecipeInfoViewModel> recipes;
 
     partial void OnIngredientsChanged(ObservableCollection<IngredientModel>? oldValue,
         ObservableCollection<IngredientModel> newValue)

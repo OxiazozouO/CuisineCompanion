@@ -11,7 +11,7 @@ public partial class Form1 : Form
 
     private void JumpPage_Click(object sender, EventArgs e)
     {
-        Button? button = sender as Button;
+        var button = sender as Button;
         if (button == PatientsButton)
         {
             var patientsForm = new PatientsForm { Text = "患者信息管理" };

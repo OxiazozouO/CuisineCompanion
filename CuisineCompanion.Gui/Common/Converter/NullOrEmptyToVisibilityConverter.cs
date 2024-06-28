@@ -24,16 +24,18 @@ public class NullOrEmptyToVisibilityConverter : IValueConverter
 
         if (value is < 0.00001m)
             return Visibility.Collapsed;
-        
+
         if (value is < 0.00001)
             return Visibility.Collapsed;
-        
+
         if (value is 0)
             return Visibility.Collapsed;
 
         return Visibility.Visible;
     }
 
-    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
-        Visibility.Collapsed;
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+    {
+        return Visibility.Collapsed;
+    }
 }

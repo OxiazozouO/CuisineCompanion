@@ -1,34 +1,30 @@
 ﻿using System.Windows.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 using CuisineCompanion.Helper;
-using CuisineCompanion.Models;
-using CuisineCompanion.Views;
 
 namespace CuisineCompanion.ViewModels;
 
 /// <summary>
-/// 系统导航栏视图模型
+///     系统导航栏视图模型
 /// </summary>
 public partial class MenuBarViewModel : ObservableObject
 {
-    [ObservableProperty] private string title;
-
-    public string IconStr
-    {
-        set => Icon = XamlResourceHelper.Icon(value);
-    }
-
-    [ObservableProperty] private ImageSource icon;
-
-    [ObservableProperty] private PageUrl url;
-
     public enum PageUrl
     {
         Home = 1,
         Collection,
         Analysis,
-        MyInfo,
+        MyInfo
+    }
+
+    [ObservableProperty] private ImageSource icon;
+    [ObservableProperty] private string title;
+
+    [ObservableProperty] private PageUrl url;
+
+    public string IconStr
+    {
+        set => Icon = XamlResourceHelper.Icon(value);
     }
 
     public string PageName

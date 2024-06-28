@@ -2,8 +2,6 @@
 
 namespace CuisineCompanion.WebApi.DTOs;
 
-
-
 public record UserInfoUpdateDto : UserInfoAddDto
 {
     [Required(ErrorMessage = "参数错误")]

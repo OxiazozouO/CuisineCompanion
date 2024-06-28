@@ -31,6 +31,27 @@ public partial class TipTextBox
     public static readonly DependencyProperty BorderThicknessProperty = DependencyProperty.Register(
         nameof(BorderThickness), typeof(Thickness), typeof(TipTextBox));
 
+    public TipTextBox()
+    {
+        InitializeComponent();
+        Loaded += (sender, args) =>
+        {
+            if (InputView is null)
+            {
+                DataContext = this;
+                return;
+            }
+
+            if (!Input.Children.Contains(InputView))
+            {
+                Input.DataContext = DataContext;
+                DataContext = this;
+                Input.Children.Add(InputView);
+                AddBinding();
+            }
+        };
+    }
+
     public Brush BorderBrush
     {
         get => (Brush)GetValue(BorderBrushProperty);
@@ -74,40 +95,19 @@ public partial class TipTextBox
         set => SetValue(IsErrorProperty, value);
     }
 
-    public TipTextBox()
-    {
-        InitializeComponent();
-        Loaded += (sender, args) =>
-        {
-            if (InputView is null)
-            {
-                DataContext = this;
-                return;
-            }
-
-            if (!Input.Children.Contains(InputView))
-            {
-                Input.DataContext = DataContext;
-                DataContext = this;
-                Input.Children.Add(InputView);
-                AddBinding();
-            }
-        };
-    }
-
     private void AddBinding()
     {
-        ErrorBox.SetBinding(TextBox.TextProperty, new Binding()
+        ErrorBox.SetBinding(TextBox.TextProperty, new Binding
             {
                 Source = InputView,
-                Path = new PropertyPath("(Validation.Errors)[0].ErrorContent"),
+                Path = new PropertyPath("(Validation.Errors)[0].ErrorContent")
             }
         );
 
         SetBinding(IsErrorProperty, new Binding
         {
             Source = InputView,
-            Path = new PropertyPath("(Validation.HasError)"),
+            Path = new PropertyPath("(Validation.HasError)")
         });
 
 
@@ -119,7 +119,7 @@ public partial class TipTextBox
 
     private void Changed(string? s)
     {
-        bool b = !string.IsNullOrEmpty(s) && s.Length > 0;
+        var b = !string.IsNullOrEmpty(s) && s.Length > 0;
         ClearImg.Visibility = b
             ? Visibility.Visible
             : Visibility.Collapsed;

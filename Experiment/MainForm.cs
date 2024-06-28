@@ -1,4 +1,3 @@
-using Experiment.Views;
 using Tmp.Helper;
 
 namespace Experiment;
@@ -26,10 +25,10 @@ public partial class MainForm : Form
     {
         try
         {
-            Button button = (Button)sender;
+            var button = (Button)sender;
 
             var type = Type.GetType("Experiment.Views.Form" + button.Name[^1]);
-            Form form = (Form)Activator.CreateInstance(type);
+            var form = (Form)Activator.CreateInstance(type);
             form.Show();
         }
         catch (Exception exception)

@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
 
 namespace CuisineCompanion.Models;
@@ -19,24 +16,15 @@ public static class FavoriteFlagsViewHelper
     {
         if (model.Exists(ModelFlags.Private | ModelFlags.Public))
         {
-            model -= (model & ModelFlags.Public);
-            model |= (model & ModelFlags.Private);
+            model -= model & ModelFlags.Public;
+            model |= model & ModelFlags.Private;
         }
 
-        if (model.Exists(ModelFlags.Ingredient))
-        {
-            return ModelFlags.Ingredient | ModelFlags.Private;
-        }
+        if (model.Exists(ModelFlags.Ingredient)) return ModelFlags.Ingredient | ModelFlags.Private;
 
-        if (model.Exists(ModelFlags.Recipe | ModelFlags.Public))
-        {
-            return ModelFlags.Menu | ModelFlags.Public;
-        }
+        if (model.Exists(ModelFlags.Recipe | ModelFlags.Public)) return ModelFlags.Menu | ModelFlags.Public;
 
-        if (model.Exists(ModelFlags.Menu | ModelFlags.Private))
-        {
-            return ModelFlags.Recipe | ModelFlags.Private;
-        }
+        if (model.Exists(ModelFlags.Menu | ModelFlags.Private)) return ModelFlags.Recipe | ModelFlags.Private;
 
         return model;
     }
@@ -45,20 +33,11 @@ public static class FavoriteFlagsViewHelper
     {
         model = CheckFlags(model);
 
-        if (model.Exists(ModelFlags.Ingredient))
-        {
-            return Visibility.Collapsed;
-        }
+        if (model.Exists(ModelFlags.Ingredient)) return Visibility.Collapsed;
 
-        if (model.Exists(ModelFlags.Menu))
-        {
-            return Visibility.Visible;
-        }
+        if (model.Exists(ModelFlags.Menu)) return Visibility.Visible;
 
-        if (model.Exists(ModelFlags.Recipe))
-        {
-            return Visibility.Visible;
-        }
+        if (model.Exists(ModelFlags.Recipe)) return Visibility.Visible;
 
         return Visibility.Collapsed;
     }

@@ -59,7 +59,7 @@
                     Text="{Binding SpendTime, Converter={StaticResource TimeSpanConverter}}"
                     VerticalAlignment="Center" />
             </StackPanel>
-            <DockPanel Margin="34,10" VerticalAlignment="Center">
+            <DockPanel Margin="38,10" VerticalAlignment="Center">
                 <ItemsControl ItemsSource="{Binding Category}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
@@ -78,7 +78,7 @@
                                     Text="{Binding CName}"
                                     VerticalAlignment="Center" />
                                 <b:Interaction.Behaviors>
-                                    <behavior:PressReboundBehavior />
+                                    <behavior:PressReboundBehavior Command="{Binding DataContext.GotoCategoryCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=views:RecipeView}}" CommandParameter="{Binding CName}" />
                                     <behavior:FocusAmplificationBehavior />
                                 </b:Interaction.Behaviors>
                             </Border>
@@ -540,7 +540,10 @@
 
 
                             <StackPanel Orientation="Vertical">
-                                <TextBlock Style="{StaticResource TextTitle2Style}" Text="{Binding Title}" />
+                                <TextBlock
+                                    Margin="65,0"
+                                    Style="{StaticResource TextTitle2Style}"
+                                    Text="{Binding Title}" />
                                 <Grid RenderTransformOrigin="0.5,0.5" Visibility="{Binding FileUri, Converter={StaticResource NullOrEmptyToVisibilityConverter}, FallbackValue=Collapsed}">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
@@ -560,7 +563,7 @@
                                     </Border>
                                 </Grid>
                                 <StackPanel
-                                    Margin="0,10"
+                                    Margin="60,10"
                                     Orientation="Horizontal"
                                     Visibility="{Binding OutputRequiredTime, Converter={StaticResource TimeSpanToVisibilityConverter}, FallbackValue=Collapsed, UpdateSourceTrigger=PropertyChanged}">
                                     <Image
@@ -578,7 +581,7 @@
                                         VerticalAlignment="Center" />
                                 </StackPanel>
                                 <StackPanel
-                                    Margin="0,10"
+                                    Margin="60,10"
                                     Orientation="Horizontal"
                                     VerticalAlignment="Center"
                                     Visibility="{Binding RequiredIngredient.Item1, Converter={StaticResource NullOrEmptyToVisibilityConverter}, FallbackValue=Collapsed}">
@@ -613,11 +616,14 @@
 
 
                                 </StackPanel>
-                                <TextBlock Style="{StaticResource Text1Style}" Text="{Binding Refer}" />
+                                <TextBlock
+                                    Margin="65,10"
+                                    Style="{StaticResource Text1Style}"
+                                    Text="{Binding Refer}" />
                                 <Border
                                     Background="Azure"
                                     CornerRadius="6"
-                                    Margin="0,10"
+                                    Margin="65,10"
                                     Visibility="{Binding Summary, Converter={StaticResource NullOrEmptyToVisibilityConverter}, FallbackValue=Collapsed}">
                                     <TextBlock
                                         FontSize="13"

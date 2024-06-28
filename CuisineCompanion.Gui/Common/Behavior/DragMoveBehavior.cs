@@ -8,30 +8,15 @@ namespace CuisineCompanion.Common.Behavior;
 
 public class DragMoveBehavior : Behavior<Border>
 {
-    // @formatter:off
-    protected override void OnAttached()
-    {
-       AssociatedObject.MouseLeftButtonDown += AssociatedObject_MouseLeftButtonDown;
-       AssociatedObject.MouseLeftButtonUp   += AssociatedObject_MouseLeftButtonUp;
-       AssociatedObject.MouseMove           += AssociatedObject_MouseMove;
-    }
-    
-    protected override void OnDetaching()
-    {
-        AssociatedObject.MouseLeftButtonDown -= AssociatedObject_MouseLeftButtonDown;
-        AssociatedObject.MouseLeftButtonUp   -= AssociatedObject_MouseLeftButtonUp;
-        AssociatedObject.MouseMove           -= AssociatedObject_MouseMove;
-    }
-    // @formatter:on
-    private Canvas? _parentCanvas = null;
-    private bool _isDragging = false;
+    private bool _isDragging;
     private Point _mouseCurrentPoint;
+    private Canvas? _parentCanvas;
 
     private void AssociatedObject_MouseMove(object sender, MouseEventArgs e)
     {
         if (!_isDragging) return;
         // 相对于Canvas的坐标
-        Point point = e.GetPosition(_parentCanvas);
+        var point = e.GetPosition(_parentCanvas);
         // 设置最新坐标
         AssociatedObject.SetValue(Canvas.TopProperty, point.Y - _mouseCurrentPoint.Y);
         AssociatedObject.SetValue(Canvas.LeftProperty, point.X - _mouseCurrentPoint.X);
@@ -54,4 +39,20 @@ public class DragMoveBehavior : Behavior<Border>
         _mouseCurrentPoint = e.GetPosition(ui);
         Mouse.Capture(AssociatedObject);
     }
+
+// @formatter:off
+    protected override void OnAttached()
+    {
+       AssociatedObject.MouseLeftButtonDown += AssociatedObject_MouseLeftButtonDown;
+       AssociatedObject.MouseLeftButtonUp   += AssociatedObject_MouseLeftButtonUp;
+       AssociatedObject.MouseMove           += AssociatedObject_MouseMove;
+    }
+    
+    protected override void OnDetaching()
+    {
+        AssociatedObject.MouseLeftButtonDown -= AssociatedObject_MouseLeftButtonDown;
+        AssociatedObject.MouseLeftButtonUp   -= AssociatedObject_MouseLeftButtonUp;
+        AssociatedObject.MouseMove           -= AssociatedObject_MouseMove;
+    }
+    // @formatter:on
 }

@@ -8,14 +8,6 @@ namespace CuisineCompanion.Common.Behavior;
 
 public class FocusAmplificationBehavior : Behavior<FrameworkElement>
 {
-    private static readonly Storyboard Amplification = XamlResourceHelper.Anime("Amplification");
-
-    public double XFrom { get; set; }
-    public double YFrom { get; set; }
-    public double XTo { get; set; }
-    public double YTo { get; set; }
-    public double Duration { get; set; }
-
     public enum Mods
     {
         Weak,
@@ -23,6 +15,22 @@ public class FocusAmplificationBehavior : Behavior<FrameworkElement>
         Ordinary,
         Exaggerate
     }
+
+    private static readonly Storyboard Amplification = XamlResourceHelper.Anime("Amplification");
+
+    private readonly Storyboard _amplification = new();
+    private readonly Storyboard _amplificationBack = new();
+
+    public FocusAmplificationBehavior()
+    {
+        Mod = Mods.Natural;
+    }
+
+    public double XFrom { get; set; }
+    public double YFrom { get; set; }
+    public double XTo { get; set; }
+    public double YTo { get; set; }
+    public double Duration { get; set; }
 
     public Mods Mod
     {
@@ -63,14 +71,6 @@ public class FocusAmplificationBehavior : Behavior<FrameworkElement>
             }
         }
     }
-
-    public FocusAmplificationBehavior()
-    {
-        Mod = Mods.Natural;
-    }
-
-    private readonly Storyboard _amplification = new Storyboard();
-    private readonly Storyboard _amplificationBack = new Storyboard();
 
 
     protected override void OnAttached()

@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Windows;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CuisineCompanion.Helper;
 using CuisineCompanion.HttpClients;
@@ -12,12 +9,11 @@ namespace CuisineCompanion.ViewModels;
 
 public partial class FavoriteViewModel : ObservableObject
 {
+    [ObservableProperty] private ILike data;
     [ObservableProperty] private MyFavoritesViewModel myFavorites;
 
-    [ObservableProperty] private ILike data;
 
-
-    private bool tag = false;
+    private bool tag;
 
     [RelayCommand]
     private void AddFavorite(FavoriteAtModel at)
@@ -36,7 +32,7 @@ public partial class FavoriteViewModel : ObservableObject
 
     private bool Add(ModelFlags f, FavoriteModel _, FavoriteModel model)
     {
-        if (!HttpRestClient.FileUpload(model.FileUri, out string fileName)) return false;
+        if (!HttpRestClient.FileUpload(model.FileUri, out var fileName)) return false;
         var req = ApiEndpoints.AddFavorite(new
         {
             MainViewModel.UserToken,
@@ -77,8 +73,8 @@ public partial class FavoriteViewModel : ObservableObject
 
     private bool Edit(ModelFlags f, FavoriteModel oldModel, FavoriteModel model)
     {
-        string filePath = model.FileUri;
-        string fileName = "";
+        var filePath = model.FileUri;
+        var fileName = "";
         if (!filePath.Contains("http") && !HttpRestClient.FileUpload(filePath, out fileName)) return false;
 
         model.FavoriteId = model.FavoriteId;
@@ -133,13 +129,9 @@ public partial class FavoriteViewModel : ObservableObject
                 model.FavoriteId
             });
             if (req.Execute(out var ret))
-            {
                 MyFavorites.Favorite.Remove(model);
-            }
             else
-            {
                 MsgBoxHelper.TryError(ret.Message);
-            }
         }
     }
 
@@ -154,8 +146,8 @@ public partial class FavoriteViewModel : ObservableObject
 
         var flag = (ModelFlags)model.Flag;
 
-        int tid = -1;
-        string name = "";
+        var tid = -1;
+        var name = "";
         if (flag.Exists(ModelFlags.Ingredient) && Data is IngredientViewModel i)
         {
             (tid, name) = (i.IngredientModel.IngredientId, i.IngredientModel.IName);

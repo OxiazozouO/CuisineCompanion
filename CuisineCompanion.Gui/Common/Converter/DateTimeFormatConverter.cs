@@ -9,10 +9,7 @@ public class DateTimeFormatConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        if (value is DateTime date)
-        {
-            return date.ToString(parameter.ToString(), MainViewModel.I18N);
-        }
+        if (value is DateTime date) return date.ToString(parameter.ToString(), MainViewModel.I18N);
 
         return value; // 如果输入不是DateTime类型，则原样返回
     }

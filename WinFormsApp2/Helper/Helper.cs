@@ -8,8 +8,8 @@ public static class Helpers
     public static string GetError(object ret)
     {
         var results = new List<ValidationResult>();
-        var context = new ValidationContext(ret, serviceProvider: null, items: null);
-        Validator.TryValidateObject(ret, context, results, validateAllProperties: true);
+        var context = new ValidationContext(ret, null, null);
+        Validator.TryValidateObject(ret, context, results, true);
         if (results.Count > 0)
         {
             var sb = new StringBuilder().Append("存在以下错误：\n");
@@ -31,8 +31,10 @@ public static class Helpers
             set.Add(dataGridView.Rows[cell.RowIndex].Index);
     }
 
-    public static string Age(this DateTime time) =>
-        ((DateTime.Now - time).Days / 365).ToString();
+    public static string Age(this DateTime time)
+    {
+        return ((DateTime.Now - time).Days / 365).ToString();
+    }
 
     public static void QueueOpen<T>(this List<T> list) where T : Form
     {

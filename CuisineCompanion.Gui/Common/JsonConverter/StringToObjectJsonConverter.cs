@@ -13,7 +13,7 @@ public class StringToObjectJsonConverter : Newtonsoft.Json.JsonConverter
         }
         else
         {
-            string jsonString = JsonConvert.SerializeObject(value);
+            var jsonString = JsonConvert.SerializeObject(value);
             writer.WriteValue(jsonString);
         }
     }
@@ -21,19 +21,16 @@ public class StringToObjectJsonConverter : Newtonsoft.Json.JsonConverter
     public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue,
         JsonSerializer serializer)
     {
-        if (reader.TokenType == JsonToken.Null)
-        {
-            return null;
-        }
+        if (reader.TokenType == JsonToken.Null) return null;
 
-        string? jsonString = reader.Value as string;
-        if (string.IsNullOrEmpty(jsonString))
-        {
-            return null;
-        }
+        var jsonString = reader.Value as string;
+        if (string.IsNullOrEmpty(jsonString)) return null;
 
         return JsonConvert.DeserializeObject(jsonString, objectType);
     }
 
-    public override bool CanConvert(Type objectType) => true;
+    public override bool CanConvert(Type objectType)
+    {
+        return true;
+    }
 }

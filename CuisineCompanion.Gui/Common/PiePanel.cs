@@ -10,6 +10,10 @@ namespace CuisineCompanion.Common;
 
 public class PiePanel : Canvas
 {
+    public static readonly DependencyProperty ItemsProperty =
+        DependencyProperty.Register(nameof(Items), typeof(List<PieSegmentModel>), typeof(PiePanel),
+            new PropertyMetadata(null, OnItemsPropertyChanged));
+
     static PiePanel()
     {
         DefaultStyleKeyProperty.OverrideMetadata(typeof(PiePanel), new FrameworkPropertyMetadata(typeof(PiePanel)));
@@ -21,16 +25,9 @@ public class PiePanel : Canvas
         set => SetValue(ItemsProperty, value);
     }
 
-    public static readonly DependencyProperty ItemsProperty =
-        DependencyProperty.Register(nameof(Items), typeof(List<PieSegmentModel>), typeof(PiePanel),
-            new PropertyMetadata(null, OnItemsPropertyChanged));
-
     private static void OnItemsPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if (d is PiePanel piePanel)
-        {
-            piePanel.InitView();
-        }
+        if (d is PiePanel piePanel) piePanel.InitView();
     }
 
 
@@ -38,18 +35,18 @@ public class PiePanel : Canvas
     {
         Children.Clear();
         if (Width == 0 || Height == 0 || Items is null || Items.Count == 0) return;
-        List<PieSegmentModel> array = Items;
+        var array = Items;
 
         array.Sort((a, b) => b.Value.CompareTo(a.Value));
 
 
-        decimal ans = array.Sum(w => w.Value);
+        var ans = array.Sum(w => w.Value);
         if (ans == 0) return;
         double angleNum = 0;
-        double r = Math.Min(Width, Height) / 2;
+        var r = Math.Min(Width, Height) / 2;
         foreach (var model in array)
         {
-            Sector sector = new Sector()
+            var sector = new Sector
             {
                 Center = new Point(r, r),
                 Fill = model.Color,
@@ -67,11 +64,10 @@ public class PiePanel : Canvas
 
 public partial class PieSegmentModel : ObservableObject
 {
-    [ObservableProperty] private decimal value;
+    [ObservableProperty] private Brush color;
 
     [ObservableProperty] private int id;
 
     [ObservableProperty] private object item;
-
-    [ObservableProperty] private Brush color;
+    [ObservableProperty] private decimal value;
 }

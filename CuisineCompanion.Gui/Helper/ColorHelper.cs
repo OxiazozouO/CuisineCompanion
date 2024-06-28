@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 
@@ -83,21 +82,25 @@ public static class ColorHelper
         };
     }
 
-    public static LinearGradientBrush Create(Color l, Color r) =>
-        new LinearGradientBrush()
+    public static LinearGradientBrush Create(Color l, Color r)
+    {
+        return new LinearGradientBrush()
         {
             StartPoint = new Point(0, 0),
             EndPoint = new Point(1, 0),
             GradientStops = new GradientStopCollection { new(l, 0), new(r, 1) }
         };
+    }
 
-    public static LinearGradientBrush Create(string l, string r) =>
-        new LinearGradientBrush()
+    public static LinearGradientBrush Create(string l, string r)
+    {
+        return new LinearGradientBrush()
         {
             StartPoint = new Point(0, 0),
             EndPoint = new Point(1, 0),
             GradientStops = new GradientStopCollection { new(l.ToColor(), 0), new(r.ToColor(), 1) }
         };
+    }
 
     private static readonly List<LinearGradientBrush> Mp;
 
@@ -108,7 +111,7 @@ public static class ColorHelper
     {
         get
         {
-            int ind = new Random().Next(0, Mp.Count);
+            var ind = new Random().Next(0, Mp.Count);
             return Mp[ind];
         }
     }
@@ -123,7 +126,7 @@ public static class ColorHelper
     {
         decimal a, b, c;
         a = b = c = 0;
-        int flag = (ear > 0 ? 1 : 0) + (rni > 0 ? 2 : 0) + (ul > 0 ? 4 : 0);
+        var flag = (ear > 0 ? 1 : 0) + (rni > 0 ? 2 : 0) + (ul > 0 ? 4 : 0);
 
         switch (flag)
         {
@@ -166,20 +169,14 @@ public static class ColorHelper
                 break;
         }
 
-        if (value < a)
-        {
-            return Y;
-        }
+        if (value < a) return Y;
 
-        if (value < b)
-        {
-            return A;
-        }
+        if (value < b) return A;
 
         if (value < c)
         {
-            decimal l = Math.Min(b * 1.2m, c * 0.6m);
-            decimal r = Math.Max(b * 1.6m, c * 0.8m);
+            var l = Math.Min(b * 1.2m, c * 0.6m);
+            var r = Math.Max(b * 1.6m, c * 0.8m);
             if (value < l)
                 return A;
             if (value < r)

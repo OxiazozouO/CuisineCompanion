@@ -12,12 +12,9 @@ public class EnumToVisibilityConverter : IValueConverter
     {
         try
         {
-            long l = Ct.ToInt64(value);
-            long r = Ct.ToInt64(parameter);
-            if ((l & r) == r)
-            {
-                return Visibility.Visible;
-            }
+            var l = Ct.ToInt64(value);
+            var r = Ct.ToInt64(parameter);
+            if ((l & r) == r) return Visibility.Visible;
         }
         catch
         {

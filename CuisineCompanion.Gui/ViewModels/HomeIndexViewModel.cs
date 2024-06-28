@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
+using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CuisineCompanion.Helper;
@@ -14,28 +14,19 @@ namespace CuisineCompanion.ViewModels;
 
 public partial class HomeIndexViewModel : ObservableObject
 {
-    [ObservableProperty] private ObservableCollection<RecipeInfoViewModel> recipes;
-    [ObservableProperty] private ObservableCollection<IngredientInfoViewModel> ingredients;
+    public static HomeIndexViewModel _instance = new();
     [ObservableProperty] private ObservableCollection<CategoryViewModel> categories;
 
     [ObservableProperty] private EatingDiaryViewModel eatingDiary;
-
-    [ObservableProperty] private MyFavoritesViewModel myFavoritesViewModel;
-
-    [ObservableProperty] private ObservableCollection<FavoriteModel> menus;
-
-    public ObservableCollection<FilterOptionViewModel> FilterOptions { get; set; }
-    [ObservableProperty] private FilterOptionViewModel option;
+    [ObservableProperty] private ObservableCollection<IngredientInfoViewModel> ingredients;
 
     [ObservableProperty] private MainViewModel mainRoot;
 
-    public static HomeIndexViewModel _instance = new HomeIndexViewModel();
+    [ObservableProperty] private ObservableCollection<FavoriteModel> menus;
 
-    public HomeIndexViewModel Instance
-    {
-        get => _instance;
-        set => SetProperty(ref _instance, value);
-    }
+    [ObservableProperty] private MyFavoritesViewModel myFavoritesViewModel;
+    [ObservableProperty] private FilterOptionViewModel option;
+    [ObservableProperty] private ObservableCollection<RecipeInfoViewModel> recipes;
 
 
     public HomeIndexViewModel()
@@ -45,11 +36,31 @@ public partial class HomeIndexViewModel : ObservableObject
             new() { ImageSource = "../Images/1.jpg", Label = "食材", SearchFlag = SearchFlags.Food },
             new() { ImageSource = "../Images/2.jpg", Label = "食谱", SearchFlag = SearchFlags.Recipe },
             new() { ImageSource = "../Images/4.jpg", Label = "分类", SearchFlag = SearchFlags.Category },
-            new() { ImageSource = "../Images/3.jpg", Label = "菜单", SearchFlag = SearchFlags.Menu },
+            new() { ImageSource = "../Images/3.jpg", Label = "菜单", SearchFlag = SearchFlags.Menu }
         };
-        Option = FilterOptions[1];
         MainRoot = MainViewModel.Instance;
     }
+
+    public void InitOption(SearchFlags flags)
+    {
+        var op = Option;
+        Option = FilterOptions.FirstOrDefault(x => x.SearchFlag == flags);
+        if (op == Option)
+        {
+            Search();
+        }
+    }
+
+    public ObservableCollection<FilterOptionViewModel> FilterOptions { get; set; }
+
+    public HomeIndexViewModel Instance
+    {
+        get => _instance;
+        set => SetProperty(ref _instance, value);
+    }
+
+
+    public string? SearchText { get; set; } = "";
 
 
     partial void OnEatingDiaryChanged(EatingDiaryViewModel? oldValue, EatingDiaryViewModel newValue)
@@ -57,9 +68,6 @@ public partial class HomeIndexViewModel : ObservableObject
         if (EatingDiary is not null)
             EatingDiary.MaxWidth = 160;
     }
-
-
-    public string? SearchText { get; set; } = "";
 
     [RelayCommand]
     private void Search()
@@ -85,9 +93,7 @@ public partial class HomeIndexViewModel : ObservableObject
                     var list2 = obj["ingredients"].ToObject<List<CategoryViewModel>>();
                     if (list2 != null)
                         foreach (var model in list2)
-                        {
                             Categories.Add(model);
-                        }
                 }
             }
             else if (Option.SearchFlag == SearchFlags.Menu)

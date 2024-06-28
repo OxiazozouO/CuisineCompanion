@@ -1,14 +1,14 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using CuisineCompanion.Common.Converter;
 using Microsoft.Xaml.Behaviors;
-using DecimalConverter = CuisineCompanion.Common.Converter.DecimalConverter;
 
 namespace CuisineCompanion.Common.Behavior;
 
 public class DecimalBindingBehavior : Behavior<TextBox>
 {
-    private readonly DecimalConverter _converter = new DecimalConverter();
+    private readonly DecimalConverter _converter = new();
 
     public decimal MaxValue
     {
@@ -44,11 +44,11 @@ public class DecimalBindingBehavior : Behavior<TextBox>
 
     private void AssociatedObject_TextChanged(object sender, RoutedEventArgs e)
     {
-        TextBox tb = AssociatedObject;
-        string text = tb.Text;
+        var tb = AssociatedObject;
+        var text = tb.Text;
         if (!_converter.FilterInput(text, DecimalBindingEx.GetText(tb), out text)) return;
 
-        int ind = tb.CaretIndex;
+        var ind = tb.CaretIndex;
         tb.Text = text;
         tb.CaretIndex = ind;
     }
@@ -56,19 +56,19 @@ public class DecimalBindingBehavior : Behavior<TextBox>
 
     private void AssociatedObjectOnLostFocus(object sender, RoutedEventArgs e)
     {
-        string text = _converter.FormatString(AssociatedObject.Text);
+        var text = _converter.FormatString(AssociatedObject.Text);
         DecimalBindingEx.SetText(AssociatedObject, text);
         AssociatedObject.Text = DecimalBindingEx.GetText(AssociatedObject);
     }
-    
+
     private void AssociatedObjectOnLoaded(object sender, RoutedEventArgs e)
     {
-        BindingExpression? existingBindingExpression = AssociatedObject.GetBindingExpression(TextBox.TextProperty);
+        var existingBindingExpression = AssociatedObject.GetBindingExpression(TextBox.TextProperty);
         if (existingBindingExpression?.ParentBinding is { } b)
         {
             // 创建一个新的绑定
             // @formatter:off
-            Binding newBinding = new Binding
+            var newBinding = new Binding
             {
                 Mode                        = b.Mode,
                 Path                        = b.Path,
@@ -92,8 +92,8 @@ public class DecimalBindingBehavior : Behavior<TextBox>
                 BindsDirectlyToSource       = b.BindsDirectlyToSource,
                 NotifyOnValidationError     = b.NotifyOnValidationError,
                 UpdateSourceExceptionFilter = b.UpdateSourceExceptionFilter,
-                ValidatesOnNotifyDataErrors = b.ValidatesOnNotifyDataErrors,
-                
+                ValidatesOnNotifyDataErrors = b.ValidatesOnNotifyDataErrors
+
             };
             // @formatter:on
             // 应用新的绑定

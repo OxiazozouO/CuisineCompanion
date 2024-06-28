@@ -2,5 +2,8 @@
 
 public partial class HomeIndexView
 {
-    public HomeIndexView() => InitializeComponent();
+    public HomeIndexView()
+    {
+        InitializeComponent();
+    }
 }

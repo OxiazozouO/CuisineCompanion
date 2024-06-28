@@ -6,6 +6,7 @@ namespace CuisineCompanion.WebApi;
 
 public static class FileUrlHelper
 {
+    public const string OldFilePath = "File";
     public static string Recipes => TryCreate();
     public static string Favorites => TryCreate();
     public static string DeletedFavorites => TryCreate();
@@ -18,38 +19,35 @@ public static class FileUrlHelper
     {
         if (name == "") return "";
         var dir = Path.Combine(OldFilePath, name);
-        if (!Directory.Exists(dir))
-        {
-            Directory.CreateDirectory(dir);
-        }
+        if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
 
         return name;
     }
 
-
-    public const string OldFilePath = "File";
-
-    public static string? GetRecipeUrl(this IUrlHelper urlHelper, HttpRequest request, string? fileName) =>
-        urlHelper.Action("GetImageFile", "File", new { path = Recipes, fileName }, request.Scheme,
+    public static string? GetRecipeUrl(this IUrlHelper urlHelper, HttpRequest request, string? fileName)
+    {
+        return urlHelper.Action("GetImageFile", "File", new { path = Recipes, fileName }, request.Scheme,
             request.Host.Value);
+    }
 
-    public static string? GetFavoriteUrl(this IUrlHelper urlHelper, HttpRequest request, string? fileName) =>
-        urlHelper.Action("GetImageFile", "File", new { path = Favorites, fileName }, request.Scheme,
+    public static string? GetFavoriteUrl(this IUrlHelper urlHelper, HttpRequest request, string? fileName)
+    {
+        return urlHelper.Action("GetImageFile", "File", new { path = Favorites, fileName }, request.Scheme,
             request.Host.Value);
+    }
 
-    public static string? GetIngredientUrl(this IUrlHelper urlHelper, HttpRequest request, string? fileName) =>
-        urlHelper.Action("GetImageFile", "File", new { path = Ingredients, fileName }, request.Scheme,
+    public static string? GetIngredientUrl(this IUrlHelper urlHelper, HttpRequest request, string? fileName)
+    {
+        return urlHelper.Action("GetImageFile", "File", new { path = Ingredients, fileName }, request.Scheme,
             request.Host.Value);
+    }
 
 
     public static bool MoveTo(string path, string fileName, string filePathName)
     {
         try
         {
-            if (!ExistsForm(path, fileName, out string fileUrl))
-            {
-                return false;
-            }
+            if (!ExistsForm(path, fileName, out var fileUrl)) return false;
 
             var filePath = Path.Combine(OldFilePath, filePathName, fileName);
 
@@ -66,18 +64,18 @@ public static class FileUrlHelper
     public static bool TryMove(string inputFileName, string inputPath, string? oldFileName, string oldPath,
         string backPath)
     {
-        StringBuilder sb = new StringBuilder();
+        var sb = new StringBuilder();
         try
         {
-            if (ExistsForm(inputPath, inputFileName, out string inputFilePath))
+            if (ExistsForm(inputPath, inputFileName, out var inputFilePath))
             {
-                string toFilePath = Path.Combine(OldFilePath, oldPath, inputFileName);
+                var toFilePath = Path.Combine(OldFilePath, oldPath, inputFileName);
                 try
                 {
                     File.Move(inputFilePath, toFilePath);
-                    if (ExistsForm(oldPath, oldFileName, out string oldFilePath))
+                    if (ExistsForm(oldPath, oldFileName, out var oldFilePath))
                     {
-                        string backToFilePath = Path.Combine(OldFilePath, backPath, oldFileName);
+                        var backToFilePath = Path.Combine(OldFilePath, backPath, oldFileName);
                         try
                         {
                             File.Move(oldFilePath, backToFilePath);
@@ -119,16 +117,14 @@ public static class FileUrlHelper
 
     public static bool TryMove(string inputFileName, string toPath)
     {
-        StringBuilder sb = new StringBuilder();
+        var sb = new StringBuilder();
         try
         {
-            if (ExistsForm(Temps, inputFileName, out string inputFilePath))
+            if (ExistsForm(Temps, inputFileName, out var inputFilePath))
             {
-                string toFilePath = Path.Combine(OldFilePath, toPath, inputFileName);
+                var toFilePath = Path.Combine(OldFilePath, toPath, inputFileName);
                 if (File.Exists(toFilePath)) //文件重名或者
-                {
                     return false;
-                }
 
                 try
                 {
@@ -163,10 +159,7 @@ public static class FileUrlHelper
     {
         try
         {
-            if (ExistsForm(Temps, fileName, out string fileUrl))
-            {
-                File.Delete(fileUrl);
-            }
+            if (ExistsForm(Temps, fileName, out var fileUrl)) File.Delete(fileUrl);
         }
         catch (Exception e)
         {

@@ -13,7 +13,7 @@ public partial class AppointmentsEditForm : EditForm<AppointmentDTO, Appointment
     }
 
     /// <summary>
-    /// model赋值到view
+    ///     model赋值到view
     /// </summary>
     public sealed override void SetEnt()
     {
@@ -32,7 +32,7 @@ public partial class AppointmentsEditForm : EditForm<AppointmentDTO, Appointment
     }
 
     /// <summary>
-    /// view赋值到model
+    ///     view赋值到model
     /// </summary>
     protected override AppointmentDTO GetEnt()
     {
@@ -53,9 +53,7 @@ public partial class AppointmentsEditForm : EditForm<AppointmentDTO, Appointment
             Notes = richTextBox1.Text
         };
         if (AppointmentDTO.StatusDict.TryGetValue((string)comboBox1.SelectedItem, out var status))
-        {
             result.Status = status;
-        }
 
         return result;
     }
@@ -68,7 +66,7 @@ public partial class AppointmentsEditForm : EditForm<AppointmentDTO, Appointment
     }
 
     /// <summary>
-    /// 相关医生信息
+    ///     相关医生信息
     /// </summary>
     private void Label4OnClick(object? sender, EventArgs e)
     {
@@ -91,7 +89,7 @@ public partial class AppointmentsEditForm : EditForm<AppointmentDTO, Appointment
     }
 
     /// <summary>
-    /// 相关病人信息
+    ///     相关病人信息
     /// </summary>
     private void Label7OnClick(object? sender, EventArgs e)
     {

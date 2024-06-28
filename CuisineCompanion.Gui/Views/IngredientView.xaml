@@ -39,6 +39,7 @@
                 Text="{Binding IngredientModel.IName}" />
             <TextBlock
                 Foreground="#B07300"
+                Margin="40,10"
                 Style="{StaticResource Text1Style}"
                 Text="{Binding IngredientModel.Refer}" />
 
@@ -80,7 +81,7 @@
 
             </StackPanel>
 
-            <ItemsControl ItemsSource="{Binding Category}">
+            <ItemsControl ItemsSource="{Binding Category}" Margin="40,10">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Orientation="Horizontal" />
@@ -99,7 +100,7 @@
                                 Text="{Binding CName}"
                                 VerticalAlignment="Center" />
                             <b:Interaction.Behaviors>
-                                <behavior:PressReboundBehavior />
+                                <behavior:PressReboundBehavior Command="{Binding DataContext.GotoCategoryCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=views:IngredientView}}" CommandParameter="{Binding CName}" />
                                 <behavior:FocusAmplificationBehavior />
                             </b:Interaction.Behaviors>
                         </Border>

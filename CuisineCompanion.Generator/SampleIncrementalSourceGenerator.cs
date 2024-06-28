@@ -7,12 +7,13 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 
-
 namespace CuisineCompanion.Generator;
 
 /// <summary>
-/// A sample source generator that creates a custom report based on class properties. The target class should be annotated with the 'Generators.ReportAttribute' attribute.
-/// When using the source code as a baseline, an incremental source generator is preferable because it reduces the performance overhead.
+///     A sample source generator that creates a custom report based on class properties. The target class should be
+///     annotated with the 'Generators.ReportAttribute' attribute.
+///     When using the source code as a baseline, an incremental source generator is preferable because it reduces the
+///     performance overhead.
 /// </summary>
 [Generator(LanguageNames.CSharp)]
 public sealed class SampleIncrementalSourceGenerator : IIncrementalGenerator
@@ -35,7 +36,6 @@ public sealed class SampleIncrementalSourceGenerator : IIncrementalGenerator
 
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
-
         context.RegisterPostInitializationOutput(ctx => ctx.AddSource(
             $"{AttributeName}Attribute.g.cs",
             SourceText.From(AttributeSourceCode, Encoding.UTF8)));
@@ -87,7 +87,6 @@ public sealed class SampleIncrementalSourceGenerator : IIncrementalGenerator
     }
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="context"></param>
     /// <param name="fields"></param>
@@ -100,14 +99,12 @@ public sealed class SampleIncrementalSourceGenerator : IIncrementalGenerator
             var (namespaceName, className) = tuples.Key;
             var properties = new List<(string, string)>();
             foreach (var fieldDeclaration in tuples)
-            {
                 // 提取字段信息
                 properties.AddRange(fieldDeclaration.Declaration.Variables
                     .Select(variable => (
                         FirstCharToUpper(variable.Identifier.Text),
                         fieldDeclaration.Declaration.Type.ToString()
                     )));
-            }
 
             if (properties.Count > 0)
             {
@@ -118,7 +115,6 @@ public sealed class SampleIncrementalSourceGenerator : IIncrementalGenerator
     }
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="input"></param>
     /// <returns></returns>
@@ -132,7 +128,7 @@ public sealed class SampleIncrementalSourceGenerator : IIncrementalGenerator
     }
 
     /// <summary>
-    /// 生成包含属性的类模型的源代码。
+    ///     生成包含属性的类模型的源代码。
     /// </summary>
     /// <param name="namespace">命名空间</param>
     /// <param name="className">类名</param>
@@ -140,7 +136,7 @@ public sealed class SampleIncrementalSourceGenerator : IIncrementalGenerator
     /// <returns>生成的类模型的源代码</returns>
     public static string GenerateModel(string @namespace, string className, List<(string Name, string Type)> properties)
     {
-        StringBuilder code = new StringBuilder();
+        var code = new StringBuilder();
 
         // 添加类声明的起始部分
         code.Append(
@@ -160,7 +156,6 @@ public sealed class SampleIncrementalSourceGenerator : IIncrementalGenerator
 
         // 为每个属性添加代码
         foreach (var property in properties)
-        {
             code.Append(
                 $$"""
                           /// <inheritdoc cref="{{property.Name}}"/>
@@ -173,7 +168,6 @@ public sealed class SampleIncrementalSourceGenerator : IIncrementalGenerator
 
                   """
             );
-        }
 
         // 添加 OnlyUpdate 方法
         code.Append(
@@ -192,7 +186,7 @@ public sealed class SampleIncrementalSourceGenerator : IIncrementalGenerator
                       {
                           return OnlyUpdateFlag.TryGetValue(caller, out var v) && v > 0;
                       }
-              
+
               """
         );
 
@@ -205,10 +199,7 @@ public sealed class SampleIncrementalSourceGenerator : IIncrementalGenerator
             """);
 
         // 为每个属性添加字典项
-        foreach (var property in properties)
-        {
-            code.AppendLine($"            [nameof({property.Name})] = 0,");
-        }
+        foreach (var property in properties) code.AppendLine($"            [nameof({property.Name})] = 0,");
 
         // 结束类声明
         code.Append("        };\n    }\n}\n");

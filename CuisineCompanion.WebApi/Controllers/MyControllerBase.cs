@@ -6,6 +6,7 @@ namespace CuisineCompanion.WebApi.Controllers;
 public class MyControllerBase : ControllerBase
 {
     protected readonly RecipeManagementSystemContext _db;
+
     public MyControllerBase(RecipeManagementSystemContext db)
     {
         _db = db;

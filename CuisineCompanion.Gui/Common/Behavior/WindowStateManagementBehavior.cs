@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Microsoft.Xaml.Behaviors;
@@ -18,10 +17,10 @@ public class WindowStateManagementBehavior : Behavior<UIElement>
         DoubleClickMaximize
     }
 
-    public EventMod Mod { get; set; }
-
 
     private readonly Window _window = Application.Current.MainWindow;
+
+    public EventMod Mod { get; set; }
 
     protected override void OnAttached()
     {
@@ -123,22 +122,25 @@ public class WindowStateManagementBehavior : Behavior<UIElement>
         }
     }
 
-    private void CloseButtonOnClick(object sender, RoutedEventArgs e) =>
+    private void CloseButtonOnClick(object sender, RoutedEventArgs e)
+    {
         _window.Close();
+    }
 
-    private void MinimizeButtonOnClick(object sender, RoutedEventArgs e) =>
+    private void MinimizeButtonOnClick(object sender, RoutedEventArgs e)
+    {
         _window.WindowState = WS.Minimized;
+    }
 
-    private void MaximizeButtonOnClick(object sender, RoutedEventArgs e) =>
+    private void MaximizeButtonOnClick(object sender, RoutedEventArgs e)
+    {
         _window.WindowState = _window.WindowState == WS.Maximized ? WS.Normal : WS.Maximized;
+    }
 
     private void DragMoveResizeUIElement_MouseDown(object sender, MouseButtonEventArgs e)
     {
         if (e.ChangedButton != MouseButton.Left) return;
-        if (_window.WindowState == WS.Maximized)
-        {
-            _window.WindowState = WS.Normal;
-        }
+        if (_window.WindowState == WS.Maximized) _window.WindowState = WS.Normal;
 
         try
         {

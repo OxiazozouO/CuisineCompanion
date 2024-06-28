@@ -12,14 +12,13 @@ namespace CuisineCompanion.ViewModels;
 
 public partial class EatingDiaryAtViewModel : ObservableObject
 {
+    [ObservableProperty] [AddOnlyUpdate] private decimal dosage;
     [ObservableProperty] private EatingDiaryModel eatingDiary;
 
     [ObservableProperty] private decimal energy;
 
-    [ObservableProperty, AddOnlyUpdate] private decimal dosage;
-    [ObservableProperty] private string outUnit;
-
     [ObservableProperty] private List<NutrientContentViewModel> nutrientContent;
+    [ObservableProperty] private string outUnit;
 
 
     partial void OnEatingDiaryChanged(EatingDiaryModel? oldValue, EatingDiaryModel newValue)
@@ -47,12 +46,8 @@ public partial class EatingDiaryAtViewModel : ObservableObject
                 var r = ApiService.GetRecipeAt(EatingDiary.TId);
                 if (r is null) return;
                 foreach (var ingredient in r.Ingredients)
-                {
                     if (EatingDiary.Dosages.TryGetValue(ingredient.IngredientId.ToString(), out var d))
-                    {
                         ingredient.Dosage = d;
-                    }
-                }
 
                 MainViewModel.Navigate.Navigate($"{r.RName} 详细页", new RecipeView
                 {
@@ -68,14 +63,14 @@ public partial class EatingDiaryAtViewModel : ObservableObject
 
                 var ivm = new IngredientViewModel
                 {
-                    IngredientModel = i,
+                    IngredientModel = i
                 };
 
                 ivm.InitAllNutritional();
 
                 var view = new IngredientView
                 {
-                    DataContext = ivm,
+                    DataContext = ivm
                 };
 
                 MainViewModel.Navigate.Navigate($"{EatingDiary.Name} 详情页", view);

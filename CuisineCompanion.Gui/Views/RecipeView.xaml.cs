@@ -1,7 +1,6 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CuisineCompanion.Helper;
 using CuisineCompanion.ViewModels;
@@ -10,11 +9,15 @@ namespace CuisineCompanion.Views;
 
 public partial class RecipeView
 {
-    public RecipeView() => InitializeComponent();
-
-    private bool isDragging = false;
-    private double initialValue;
     private Point initialMousePosition;
+    private double initialValue;
+
+    private bool isDragging;
+
+    public RecipeView()
+    {
+        InitializeComponent();
+    }
 
 
     private void NumericTextBox_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -27,13 +30,9 @@ public partial class RecipeView
         initialMousePosition = e.GetPosition(this);
 
         if (double.TryParse(t.Text, out initialValue))
-        {
             Mouse.Capture(t);
-        }
         else
-        {
             initialValue = 0;
-        }
 
         t.PreviewMouseLeftButtonUp += NumericTextBox_PreviewMouseLeftButtonUp;
     }
@@ -43,9 +42,9 @@ public partial class RecipeView
         if (sender is not TextBox t) return;
         if (!isDragging || e.LeftButton != MouseButtonState.Pressed) return;
 
-        Point currentMousePosition = e.GetPosition(this);
-        double delta = currentMousePosition.X - initialMousePosition.X;
-        double newValue = initialValue + delta;
+        var currentMousePosition = e.GetPosition(this);
+        var delta = currentMousePosition.X - initialMousePosition.X;
+        var newValue = initialValue + delta;
 
         t.Text = newValue.ToString();
     }
@@ -62,10 +61,7 @@ public partial class RecipeView
     {
         if (sender is not TextBox t) return;
 
-        if (!double.TryParse(t.Text, out _))
-        {
-            t.Text = initialValue.ToString();
-        }
+        if (!double.TryParse(t.Text, out _)) t.Text = initialValue.ToString();
     }
 
 

@@ -8,14 +8,14 @@ namespace WinFormsApp2.Helper;
 public class SqlManager<T>
 {
     private const string ConnectionString = "server=localhost;user=root;password=123456;database={0}";
-    private List<PropertyInfo>? _readerPropertyInfos;
-    private List<PropertyInfo>? _propertyInfos;
-    private Func<DataRow, T>? _read;
-    private readonly Type _type = typeof(T);
+    private readonly MySqlCommand _command;
 
     private readonly MySqlConnection _connection;
-    private readonly MySqlCommand _command;
-    private string _sql;
+    private readonly Type _type = typeof(T);
+    private List<PropertyInfo>? _propertyInfos;
+    private Func<DataRow, T>? _read;
+    private List<PropertyInfo>? _readerPropertyInfos;
+    private readonly string _sql;
 
 
     public SqlManager(string dbName, string sql)
@@ -62,15 +62,13 @@ public class SqlManager<T>
     public bool Execute(T obj)
     {
         if (_propertyInfos is null) return false;
-        bool ret = false;
+        var ret = false;
         try
         {
             Execute(com =>
             {
                 for (var i = 0; i < _propertyInfos.Count; i++)
-                {
                     com.Parameters.AddWithValue("@" + (char)('a' + i), _propertyInfos[i].GetValue(obj));
-                }
 
                 ret = com.ExecuteNonQuery() != -1;
             });
@@ -86,7 +84,7 @@ public class SqlManager<T>
 
     public bool Execute()
     {
-        bool ret = false;
+        var ret = false;
         try
         {
             Execute(com => { ret = com.ExecuteNonQuery() != -1; });
@@ -145,7 +143,7 @@ public static class SqlHelper
         return row =>
         {
             var obj = Activator.CreateInstance<T>();
-            int ind = 0;
+            var ind = 0;
             foreach (var info in readerPropertyInfos)
             {
                 var ww = row[parameters[ind]];

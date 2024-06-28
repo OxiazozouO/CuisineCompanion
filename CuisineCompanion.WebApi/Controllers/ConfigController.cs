@@ -18,10 +18,7 @@ public class ConfigController : MyControllerBase
         var arr = dto.Key.Split(',');
         var list = _db.Cfgs.Where(c => arr.Contains(c.CfgK)).ToList();
         var result = new Dictionary<string, string>();
-        foreach (var cfg in list)
-        {
-            result[cfg.CfgK] = cfg.CfgV;
-        }
+        foreach (var cfg in list) result[cfg.CfgK] = cfg.CfgV;
         return Ok(new ApiResponses
         {
             Code = 1,

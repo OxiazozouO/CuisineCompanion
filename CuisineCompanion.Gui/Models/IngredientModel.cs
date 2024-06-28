@@ -10,49 +10,26 @@ namespace CuisineCompanion.Models;
 
 public partial class IngredientModel : ObservableObject
 {
-    [ObservableProperty] private int ingredientId;
-    [ObservableProperty] private string iName;
-    [ObservableProperty] private string fileUri;
+    [ObservableProperty] private string? allergy;
+    [ObservableProperty] private double content;
     [ObservableProperty] private decimal dosage;
-    [ObservableProperty] private string refer;
+    [ObservableProperty] private string fileUri;
+    [ObservableProperty] private string iName;
+    [ObservableProperty] private int ingredientId;
+
+    [ObservableProperty] private List<NutrientContentViewModel> nutrientContent;
     [ObservableProperty] private decimal price;
+    [ObservableProperty] private string refer;
     [ObservableProperty] private string unit;
 
     /// <summary>
-    /// 计量单位转换表
+    ///     计量单位转换表
     /// </summary>
     [JsonConverter(typeof(StringToObjectJsonConverter))]
     public Dictionary<string, decimal> Quantity { get; set; }
 
     [JsonConverter(typeof(StringToObjectJsonConverter))]
     public Dictionary<string, decimal> Nutritional { get; set; }
-
-    [ObservableProperty] private string? allergy;
-    [ObservableProperty] private double content;
-
-    [ObservableProperty] private List<NutrientContentViewModel> nutrientContent;
-
-    #region 计算出来的变量
-
-    [ObservableProperty, AddOnlyUpdate] private decimal inputDosage;
-
-    [ObservableProperty, AddOnlyUpdate] private string inputUnit;
-
-    [ObservableProperty, AddOnlyUpdate] private decimal outputDosage;
-
-    [ObservableProperty, AddOnlyUpdate] private string outputUint;
-
-    [ObservableProperty] private decimal estimatedDosage; //净重
-
-    #endregion
-
-    #region Root
-
-    public RecipeModel? RecipeRoot;
-    public List<StepModel> stepRoots = new List<StepModel>();
-    private decimal stepDosageAns = 0m;
-
-    #endregion
 
     public Dictionary<string, decimal> GetUpdatedNutritional()
     {
@@ -86,9 +63,9 @@ public partial class IngredientModel : ObservableObject
     {
         if (IsOnlyUpdate(nameof(OutputDosage))) return;
         OnlyUpdateFlag[nameof(OutputDosage)]++;
-        if (Quantity.TryGetValue(OutputUint, out decimal vv))
+        if (Quantity.TryGetValue(OutputUint, out var vv))
         {
-            decimal result = UnitHelper.ConvertBaseUnitTo(value * vv, InputUnit);
+            var result = UnitHelper.ConvertBaseUnitTo(value * vv, InputUnit);
             InputDosage = result;
         }
 
@@ -99,7 +76,7 @@ public partial class IngredientModel : ObservableObject
     partial void OnInputDosageChanged(decimal oldValue, decimal newValue)
     {
         UnitHelper.ConvertToClosestUnit(newValue, InputUnit, out var a, out var b);
-        string oldUnit = InputUnit;
+        var oldUnit = InputUnit;
 
         if (InputUnit != b)
         {
@@ -112,8 +89,8 @@ public partial class IngredientModel : ObservableObject
         {
             RecipeRoot.AddDosage(UnitHelper.ConvertToBaseUnit(newValue - oldValue, oldUnit), Content);
 
-            bool isNotUpdateAllNutritional = RecipeRoot.IsOnlyUpdate(nameof(RecipeModel.Dosage))
-                                             || RecipeRoot.IsOnlyUpdate(nameof(RecipeModel.EstimatedDosage));
+            var isNotUpdateAllNutritional = RecipeRoot.IsOnlyUpdate(nameof(RecipeModel.Dosage))
+                                            || RecipeRoot.IsOnlyUpdate(nameof(RecipeModel.EstimatedDosage));
             if (!isNotUpdateAllNutritional)
             {
                 if (RecipeRoot.Dosage < 0.00000001m)
@@ -135,15 +112,12 @@ public partial class IngredientModel : ObservableObject
         newValue = UnitHelper.ConvertToBaseUnit(InputDosage, InputUnit);
         EstimatedDosage = InputDosage * (decimal)Content;
 
-        List<(decimal, string, decimal)> ret = new List<(decimal, string, decimal)>();
+        var ret = new List<(decimal, string, decimal)>();
         foreach (var (key, value1) in Quantity) //3 5 7.6 9.8    7
         {
-            decimal t = newValue / value1;
+            var t = newValue / value1;
             t %= 1;
-            if (t > (decimal)0.5)
-            {
-                t = 1 - t;
-            }
+            if (t > (decimal)0.5) t = 1 - t;
 
             ret.Add((t, key, value1));
         }
@@ -156,4 +130,26 @@ public partial class IngredientModel : ObservableObject
             OnlyUpdateOutputDosage = newValue / ret[0].Item3;
         }
     }
+
+    #region 计算出来的变量
+
+    [ObservableProperty] [AddOnlyUpdate] private decimal inputDosage;
+
+    [ObservableProperty] [AddOnlyUpdate] private string inputUnit;
+
+    [ObservableProperty] [AddOnlyUpdate] private decimal outputDosage;
+
+    [ObservableProperty] [AddOnlyUpdate] private string outputUint;
+
+    [ObservableProperty] private decimal estimatedDosage; //净重
+
+    #endregion
+
+    #region Root
+
+    public RecipeModel? RecipeRoot;
+    public List<StepModel> stepRoots = new();
+    private decimal stepDosageAns = 0m;
+
+    #endregion
 }

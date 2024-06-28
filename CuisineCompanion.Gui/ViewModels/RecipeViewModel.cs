@@ -1,11 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CuisineCompanion.Common;
 using CuisineCompanion.Helper;
 using CuisineCompanion.HttpClients;
 using CuisineCompanion.Models;
@@ -15,15 +13,10 @@ namespace CuisineCompanion.ViewModels;
 
 public partial class RecipeViewModel : ObservableObject
 {
+    [ObservableProperty] private Visibility isSaveVisible = Visibility.Visible;
     [ObservableProperty] private RecipeModel recipe;
 
-    [ObservableProperty] private Visibility isSaveVisible = Visibility.Visible;
-
-    public RecipeViewModel()
-    {
-        // var json = File.ReadAllText(@"..\..\..\TempJson\Recipe.json");
-        // Recipe = json.ToEntity<RecipeModel>();
-    }
+    private bool tag;
 
     partial void OnRecipeChanged(RecipeModel? oldValue, RecipeModel newValue)
     {
@@ -80,8 +73,6 @@ public partial class RecipeViewModel : ObservableObject
         MainViewModel.Navigate.Navigate($"{model.IName} 详情页", view);
     }
 
-    private bool tag = false;
-
     [RelayCommand]
     private void Reset()
     {
@@ -102,26 +93,19 @@ public partial class RecipeViewModel : ObservableObject
                 var req = ApiEndpoints.RemoveFavoriteItems(new
                     { MainViewModel.UserToken, TId = Recipe.RecipeId, Flag = ModelFlags.Recipe });
                 if (!req.Execute(out var res))
-                {
                     MsgBoxHelper.TryError(res.Message);
-                }
                 else
-                {
                     Recipe.DeLike();
-                }
 
                 return;
             }
 
-            if (!MsgBoxHelper.OkCancel($"添加到收藏夹？"))
-            {
-                return;
-            }
+            if (!MsgBoxHelper.OkCancel("添加到收藏夹？")) return;
         }
 
         MainViewModel.Navigate.Navigate(
-            text: $"添加{Recipe.RName} 到个人收藏夹",
-            view: new FavoriteView
+            $"添加{Recipe.RName} 到个人收藏夹",
+            new FavoriteView
             {
                 DataContext = new FavoriteViewModel
                 {
@@ -133,7 +117,7 @@ public partial class RecipeViewModel : ObservableObject
                     }
                 }
             },
-            isOnlyNavigate: true
+            true
         );
     }
 
@@ -142,21 +126,21 @@ public partial class RecipeViewModel : ObservableObject
     private void AddEatingDiary()
     {
         var e = ApiService.GetEatingDiaries();
-        bool isAll = e?.Count == 0;
+        var isAll = e?.Count == 0;
         MainViewModel.Navigate.Navigate($"添加{Recipe.RName} 到饮食日记",
-            view: new EditEatingDiaryView
+            new EditEatingDiaryView
             {
                 DataContext = new EditEatingDiaryViewModel
                 {
                     EatingDiary = new EatingDiaryViewModel
                     {
-                        EatingDiaries = e,
+                        EatingDiaries = e
                     },
                     IsUpdate = isAll,
                     AddTo = AddTo
                 }
             },
-            isOnlyNavigate: true
+            true
         );
     }
 
@@ -175,7 +159,6 @@ public partial class RecipeViewModel : ObservableObject
         });
 
         if (req.Execute(out var res))
-        {
             try
             {
                 var model = new EatingDiaryAtViewModel
@@ -185,11 +168,11 @@ public partial class RecipeViewModel : ObservableObject
                         TId = Recipe.RecipeId,
                         Flag = ModelFlags.Recipe,
                         EdId = int.Parse(res.Data.ToString()),
-                        FileUrl =  Recipe.FileUri,
+                        FileUrl = Recipe.FileUri,
                         Name = Recipe.RName,
                         Dosages = dic.ToDictionary(d => d.Key.ToString(), d => d.Value),
                         Nutrients = Recipe.AllNutritional,
-                        UpdateTime = time,
+                        UpdateTime = time
                     }
                 };
                 return model;
@@ -199,9 +182,15 @@ public partial class RecipeViewModel : ObservableObject
                 MsgBoxHelper.TryError("ui初始化失败");
                 return null;
             }
-        }
 
         MsgBoxHelper.TryError("添加失败");
         return null;
+    }
+
+
+    [RelayCommand]
+    private static void GotoCategory(string name)
+    {
+        MainViewModel.Navigate.GoHome(SearchFlags.Category, name);
     }
 }

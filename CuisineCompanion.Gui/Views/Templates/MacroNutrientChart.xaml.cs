@@ -2,5 +2,8 @@
 
 public partial class MacroNutrientChart
 {
-    public MacroNutrientChart() => InitializeComponent();
+    public MacroNutrientChart()
+    {
+        InitializeComponent();
+    }
 }

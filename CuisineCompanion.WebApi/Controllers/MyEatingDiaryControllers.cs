@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using CuisineCompanion.Models;
+﻿using CuisineCompanion.Models;
 using CuisineCompanion.WebApi.Constant;
 using CuisineCompanion.WebApi.DataModel;
 using CuisineCompanion.WebApi.DTOs;
@@ -20,25 +19,18 @@ public class MyEatingDiaryController : MyControllerBase
     [HttpPost]
     public IActionResult AddEatingDiary(EatingDiaryAddDto dto)
     {
-        if (!DbFlagsHelper.TryGetIdCategory(dto.Flag, out sbyte idCategory))
-        {
+        if (!DbFlagsHelper.TryGetIdCategory(dto.Flag, out var idCategory))
             return Ok(new ApiResponses { Code = -1, Message = "参数错误" });
-        }
 
-        int userid = dto.UserToken.UserId;
+        var userid = dto.UserToken.UserId;
 
         try
         {
-            if (!UserService.TryVerifyUserToken(_db, dto.UserToken, out var user, out var error))
-            {
-                return Ok(error);
-            }
+            if (!UserService.TryVerifyUserToken(_db, dto.UserToken, out var user, out var error)) return Ok(error);
             //时间是用户出生之后，100年之前
 
             if (dto.UpdateTime < user.BirthDate || dto.UpdateTime > user.BirthDate.AddYears(100))
-            {
                 return Ok(new ApiResponses { Code = -1, Message = "选择的时间错误" });
-            }
 
             var eatingDiary = new EatingDiary
             {
@@ -47,7 +39,7 @@ public class MyEatingDiaryController : MyControllerBase
                 UpdateTime = dto.UpdateTime,
                 Tid = dto.TId,
                 Dosages = dto.Dosages.ToJson(),
-                ShortNutrientContent = dto.Nutrients.ToJson(),
+                ShortNutrientContent = dto.Nutrients.ToJson()
             };
             _db.Add(eatingDiary);
             if (_db.SaveChanges() == 1)
@@ -92,31 +84,20 @@ public class MyEatingDiaryController : MyControllerBase
     [HttpPost]
     public IActionResult DeleteEatingDiary(EatingDiaryDeleteDto dto)
     {
-        if (!DbFlagsHelper.TryGetIdCategory(dto.Flag, out sbyte idCategory))
-        {
+        if (!DbFlagsHelper.TryGetIdCategory(dto.Flag, out var idCategory))
             return Ok(new ApiResponses { Code = -1, Message = "参数错误" });
-        }
 
-        int userid = dto.UserToken.UserId;
+        var userid = dto.UserToken.UserId;
         try
         {
-            if (!UserService.TryVerifyUserToken(_db, dto.UserToken, out var user, out var error))
-            {
-                return Ok(error);
-            }
+            if (!UserService.TryVerifyUserToken(_db, dto.UserToken, out var user, out var error)) return Ok(error);
 
             var eatingDiaries = _db.EatingDiaries.FirstOrDefault(ed =>
                 ed.IdCategory == idCategory && ed.UserId == userid && ed.EdId == dto.EdId);
-            if (eatingDiaries is null)
-            {
-                return Ok(new ApiResponses { Code = -1, Message = "食用日记不存在" });
-            }
+            if (eatingDiaries is null) return Ok(new ApiResponses { Code = -1, Message = "食用日记不存在" });
 
             _db.EatingDiaries.Remove(eatingDiaries);
-            if (_db.SaveChanges() == 1)
-            {
-                return Ok(new ApiResponses { Code = 1, Message = "删除食用日记成功" });
-            }
+            if (_db.SaveChanges() == 1) return Ok(new ApiResponses { Code = 1, Message = "删除食用日记成功" });
 
             return Ok(new ApiResponses { Code = -1, Message = "删除食用日记失败" });
         }
@@ -133,11 +114,8 @@ public class MyEatingDiaryController : MyControllerBase
     {
         try
         {
-            int userid = dto.UserToken.UserId;
-            if (!UserService.TryVerifyUserToken(_db, dto.UserToken, out var user, out var error))
-            {
-                return Ok(error);
-            }
+            var userid = dto.UserToken.UserId;
+            if (!UserService.TryVerifyUserToken(_db, dto.UserToken, out var user, out var error)) return Ok(error);
 
             var data = _db.EatingDiaries.Where(ed => ed.UserId == userid)
                 .Select(ed => new
@@ -168,19 +146,14 @@ public class MyEatingDiaryController : MyControllerBase
     [HttpPost]
     public IActionResult GetEatingEatingDiaryInfos(EatingDiaryInfoDTO dto)
     {
-        if (dto.IdFlags.Count == 0)
-        {
-            return Ok(new ApiResponses { Code = -1, Message = "参数错误" });
-        }
+        if (dto.IdFlags.Count == 0) return Ok(new ApiResponses { Code = -1, Message = "参数错误" });
 
         var recipeIds = new List<int>();
         var ingredientIds = new List<int>();
         foreach (var dtoFlag in dto.IdFlags)
         {
-            if (!DbFlagsHelper.TryGetIdCategory(dtoFlag.Key, out sbyte idCategory))
-            {
+            if (!DbFlagsHelper.TryGetIdCategory(dtoFlag.Key, out var idCategory))
                 return Ok(new ApiResponses { Code = -1, Message = "参数错误" });
-            }
 
             switch (idCategory)
             {

@@ -16,25 +16,17 @@ public static class DbFlagsHelper
     {
         if (model.Exists(ModelFlags.Private | ModelFlags.Public))
         {
-            model -= (model & ModelFlags.Public);
-            model |= (model & ModelFlags.Private);
+            model -= model & ModelFlags.Public;
+            model |= model & ModelFlags.Private;
         }
 
-        if (model.Exists(ModelFlags.Ingredient))
-        {
-            return ModelFlags.Ingredient | ModelFlags.Private;
-        }
+        if (model.Exists(ModelFlags.Ingredient)) return ModelFlags.Ingredient | ModelFlags.Private;
 
-        if (model.Exists(ModelFlags.Menu))
-        {
-            return ModelFlags.Menu | ModelFlags.Public;
-        }
+        if (model.Exists(ModelFlags.Menu)) return ModelFlags.Menu | ModelFlags.Public;
 
         if (model.Exists(ModelFlags.Recipe))
-        {
             //方便扩展
             return model;
-        }
 
         return ModelFlags.None;
     }
@@ -43,7 +35,7 @@ public static class DbFlagsHelper
     {
         authority = 0;
         idCategory = 0;
-        ModelFlags ret = (ModelFlags)flags;
+        var ret = (ModelFlags)flags;
         if (ret != ret.DeFavoriteFlags()) return false;
 
         if (ret.Exists(ModelFlags.Ingredient | ModelFlags.Private))
@@ -52,13 +44,15 @@ public static class DbFlagsHelper
             authority = FavoriteAuthorityConstant.Private;
             return true;
         }
-        else if (ret.Exists(ModelFlags.Recipe | ModelFlags.Private))
+
+        if (ret.Exists(ModelFlags.Recipe | ModelFlags.Private))
         {
             idCategory = IdCategoryConstant.Recipe;
             authority = FavoriteAuthorityConstant.Private;
             return true;
         }
-        else if (ret.Exists(ModelFlags.Menu | ModelFlags.Public))
+
+        if (ret.Exists(ModelFlags.Menu | ModelFlags.Public))
         {
             idCategory = IdCategoryConstant.Recipe;
             authority = FavoriteAuthorityConstant.Public;
@@ -67,11 +61,11 @@ public static class DbFlagsHelper
 
         return false;
     }
-    
-    public static bool TryGetIdCategory(byte flags,out sbyte idCategory)
+
+    public static bool TryGetIdCategory(byte flags, out sbyte idCategory)
     {
         idCategory = 0;
-        ModelFlags ret = (ModelFlags)flags;
+        var ret = (ModelFlags)flags;
 
         switch (ret)
         {
@@ -88,13 +82,13 @@ public static class DbFlagsHelper
 
     public static byte GetFavoriteFlags(byte authority, byte idCategory)
     {
-        TryGetFavoriteFlags(authority, idCategory, out byte ret);
+        TryGetFavoriteFlags(authority, idCategory, out var ret);
         return ret;
     }
 
     public static bool TryGetFavoriteFlags(byte authority, byte idCategory, out byte ret)
     {
-        ModelFlags flags = ModelFlags.None;
+        var flags = ModelFlags.None;
 
         if (idCategory == IdCategoryConstant.Ingredient)
         {
@@ -103,13 +97,8 @@ public static class DbFlagsHelper
         else if (idCategory == IdCategoryConstant.Recipe)
         {
             if (authority == FavoriteAuthorityConstant.Public)
-            {
                 flags = ModelFlags.Menu | ModelFlags.Public;
-            }
-            else if (authority == FavoriteAuthorityConstant.Private)
-            {
-                flags = ModelFlags.Recipe | ModelFlags.Private;
-            }
+            else if (authority == FavoriteAuthorityConstant.Private) flags = ModelFlags.Recipe | ModelFlags.Private;
         }
 
         ret = (byte)flags;
@@ -118,9 +107,10 @@ public static class DbFlagsHelper
 
     public static byte GetFlags(byte idCategory)
     {
-        TryGetFlags(idCategory, out byte ret);
+        TryGetFlags(idCategory, out var ret);
         return ret;
     }
+
     public static bool TryGetFlags(byte idCategory, out byte ret)
     {
         ModelFlags flags;

@@ -1,52 +1,49 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace CuisineCompanion.WebApi.DataModel;
+﻿namespace CuisineCompanion.WebApi.DataModel;
 
 /// <summary>
-/// 用户
+///     用户
 /// </summary>
-public partial class User
+public class User
 {
     /// <summary>
-    /// 用户id
+    ///     用户id
     /// </summary>
     public int UserId { get; set; }
 
     /// <summary>
-    /// 名称
+    ///     名称
     /// </summary>
     public string UName { get; set; } = null!;
 
     /// <summary>
-    /// 密码
+    ///     密码
     /// </summary>
     public string Password { get; set; } = null!;
 
     /// <summary>
-    /// 邮箱
+    ///     邮箱
     /// </summary>
     public string Email { get; set; } = null!;
 
     /// <summary>
-    /// 手机
+    ///     手机
     /// </summary>
     public string Phone { get; set; } = null!;
 
     public string Salt { get; set; } = null!;
 
     /// <summary>
-    /// 性别 1：男生、0：女生
+    ///     性别 1：男生、0：女生
     /// </summary>
     public bool Gender { get; set; }
 
     /// <summary>
-    /// 生日   年龄至少要4岁以上
+    ///     生日   年龄至少要4岁以上
     /// </summary>
     public DateTime BirthDate { get; set; }
 
     /// <summary>
-    /// 是否注销
+    ///     是否注销
     /// </summary>
     public bool IsLogout { get; set; }
 

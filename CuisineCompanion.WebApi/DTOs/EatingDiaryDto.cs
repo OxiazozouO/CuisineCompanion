@@ -3,7 +3,6 @@ using CuisineCompanion.Models;
 
 namespace CuisineCompanion.WebApi.DTOs;
 
-
 public record EatingDiaryAddDto : AuthenticationDto
 {
     [Required]
@@ -20,7 +19,6 @@ public record EatingDiaryAddDto : AuthenticationDto
 
     [Required] public int? TId { get; set; }
 }
-
 
 public record EatingDiaryDeleteDto : AuthenticationDto
 {

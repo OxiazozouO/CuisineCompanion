@@ -1,5 +1,4 @@
 using System;
-using CuisineCompanion.Models;
 using static CuisineCompanion.ViewModels.MainViewModel;
 
 namespace CuisineCompanion.Helper;
@@ -9,19 +8,20 @@ public static class UnitHelper
     public static decimal ConvertUnit(decimal value, string input, string output)
     {
         if (input == output) return value;
-        if (Unit.TryGetValue(input, out var i) && Unit.TryGetValue(output, out var o))
-        {
-            return value * i / o;
-        }
+        if (Unit.TryGetValue(input, out var i) && Unit.TryGetValue(output, out var o)) return value * i / o;
 
         throw new ArgumentException();
     }
 
-    public static decimal ConvertBaseUnitTo(decimal value, string input) =>
-        ConvertUnit(value, GetBaseUnit(input), input);
+    public static decimal ConvertBaseUnitTo(decimal value, string input)
+    {
+        return ConvertUnit(value, GetBaseUnit(input), input);
+    }
 
-    public static decimal ConvertToBaseUnit(decimal value, string input) =>
-        ConvertUnit(value, input, GetBaseUnit(input));
+    public static decimal ConvertToBaseUnit(decimal value, string input)
+    {
+        return ConvertUnit(value, input, GetBaseUnit(input));
+    }
 
     public static void ConvertToClosestUnit(decimal value, string input, out decimal result, out string output)
     {
@@ -53,20 +53,14 @@ public static class UnitHelper
 
     public static string GetBaseUnit(string input)
     {
-        if (BaseUnit.TryGetValue(input, out var ret))
-        {
-            return ret ?? input;
-        }
+        if (BaseUnit.TryGetValue(input, out var ret)) return ret ?? input;
 
         throw new ArgumentException();
     }
 
     public static string GetLocalName(string input, string local = "zh")
     {
-        if (Local[local].TryGetValue(input, out var ret))
-        {
-            return ret;
-        }
+        if (Local[local].TryGetValue(input, out var ret)) return ret;
 
         throw new ArgumentException();
     }

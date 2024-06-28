@@ -2,5 +2,8 @@
 
 public partial class Regster
 {
-    public Regster() => InitializeComponent();
+    public Regster()
+    {
+        InitializeComponent();
+    }
 }

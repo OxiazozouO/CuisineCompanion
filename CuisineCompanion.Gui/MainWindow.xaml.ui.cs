@@ -1,15 +1,12 @@
 ﻿using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using CuisineCompanion.Common.Behavior;
 using CuisineCompanion.ViewModels;
 using CuisineCompanion.Views;
-using Microsoft.Xaml.Behaviors;
 
 namespace CuisineCompanion;
 
 /// <summary>
-/// Interaction logic for MainWindow.xaml
+///     Interaction logic for MainWindow.xaml
 /// </summary>
 public partial class MainWindow
 {

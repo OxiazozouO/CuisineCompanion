@@ -52,6 +52,8 @@ public class TimeToColorConverter : IValueConverter
         return ColorHelper.Create(startColor, endColor);
     }
 
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => 
-        Brushes.Black;
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        return Brushes.Black;
+    }
 }

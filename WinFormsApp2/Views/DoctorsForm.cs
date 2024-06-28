@@ -6,6 +6,14 @@ namespace WinFormsApp2.Views;
 
 public partial class DoctorsForm : Form
 {
+    private readonly SqlManager<DoctorDTO> _delete;
+    private readonly SqlManager<DoctorDTO> _findById;
+    private readonly SqlManager<DoctorDTO> _insert;
+    private readonly SqlManager<DoctorDTO> _likeSelect;
+
+    private readonly SqlManager<DoctorDTO> _select;
+    private readonly SqlManager<DoctorDTO> _update;
+
     public DoctorsForm()
     {
         InitializeComponent();
@@ -41,8 +49,8 @@ public partial class DoctorsForm : Form
             }
         );
 
-        string dbName = "medical_management_system";
-        string baseSelectSql =
+        var dbName = "medical_management_system";
+        var baseSelectSql =
             "SELECT DoctorID, DoctorName, Specialty, ContactNumber, Email, HireDate, Degree FROM doctors";
         var read = SqlHelper.BuildReader<DoctorDTO>(
             "DoctorID", nameof(DoctorDTO.DoctorID),
@@ -73,13 +81,6 @@ public partial class DoctorsForm : Form
         _delete = new SqlManager<DoctorDTO>(dbName, "DELETE FROM doctors WHERE DoctorID = {0};");
     }
 
-    private readonly SqlManager<DoctorDTO> _select;
-    private readonly SqlManager<DoctorDTO> _findById;
-    private readonly SqlManager<DoctorDTO> _likeSelect;
-    private readonly SqlManager<DoctorDTO> _update;
-    private readonly SqlManager<DoctorDTO> _insert;
-    private readonly SqlManager<DoctorDTO> _delete;
-
     public void Init(int did = -1)
     {
         List<DoctorDTO> list;
@@ -98,11 +99,11 @@ public partial class DoctorsForm : Form
     }
 
     /// <summary>
-    /// 查找
+    ///     查找
     /// </summary>
     private void QueryButtonClick(object sender, EventArgs e)
     {
-        string? s = textBox1.Text;
+        var s = textBox1.Text;
         List<DoctorDTO> list;
         if (s is null or "")
         {
@@ -119,7 +120,7 @@ public partial class DoctorsForm : Form
     }
 
     /// <summary>
-    /// 添加一行
+    ///     添加一行
     /// </summary>
     private void AddButtonClick(object sender, EventArgs e)
     {
@@ -142,13 +143,13 @@ public partial class DoctorsForm : Form
     }
 
     /// <summary>
-    /// 删除
+    ///     删除
     /// </summary>
     private void DeleteButtonClick(object sender, EventArgs e)
     {
         dataGridView1.GetSelectedIndex<DoctorDTO>(out var list, out var set);
 
-        foreach (int item in set)
+        foreach (var item in set)
         {
             _delete.BuildParameters(list[item].DoctorID);
             var dialogResult = list[item].DoctorName.ShowWarning();
@@ -163,13 +164,13 @@ public partial class DoctorsForm : Form
     }
 
     /// <summary>
-    /// 修改
+    ///     修改
     /// </summary>
     private void UpdateButtonClick(object sender, EventArgs e)
     {
         dataGridView1.GetSelectedIndex<DoctorDTO>(out var list, out var set);
 
-        List<DoctorsEditForm> listView = new List<DoctorsEditForm>(set.Count);
+        var listView = new List<DoctorsEditForm>(set.Count);
         listView.AddRange(set.Select(item => new DoctorsEditForm(list[item], $"修改 {list[item].DoctorName} 医生信息")
             .BuildRunning(d =>
             {
@@ -183,13 +184,15 @@ public partial class DoctorsForm : Form
     }
 
     /// <summary>
-    /// 双击修改
+    ///     双击修改
     /// </summary>
-    private void DataGridView1OnDoubleClick(object? sender, EventArgs e) =>
+    private void DataGridView1OnDoubleClick(object? sender, EventArgs e)
+    {
         UpdateButtonClick(sender, e);
+    }
 
     /// <summary>
-    /// 按下delete键删除
+    ///     按下delete键删除
     /// </summary>
     private void DataGridView1OnKeyDown(object? sender, KeyEventArgs e)
     {

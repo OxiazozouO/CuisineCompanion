@@ -11,7 +11,7 @@ public partial class LogoutModel : ObservableValidator
     [ObservableProperty]
     [NotifyDataErrorInfo]
     private string password;
-    
+
     public string Error
     {
         get

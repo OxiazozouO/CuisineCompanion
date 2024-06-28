@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Windows;
 using CuisineCompanion.Helper;
 using CuisineCompanion.WebApi;
 using Newtonsoft.Json;
@@ -13,8 +12,10 @@ public static class HttpRestClient
     private const string BaseUrl = "http://localhost:5281/api/";
     private static readonly RestClient _client = new(BaseUrl);
 
-    public static bool Execute(this ApiRequest apiRequest, bool isShowError = false) =>
-        Execute(apiRequest, out _, isShowError);
+    public static bool Execute(this ApiRequest apiRequest, bool isShowError = false)
+    {
+        return Execute(apiRequest, out _, isShowError);
+    }
 
     public static bool Execute(this ApiRequest apiRequest, out ApiResponses ret, bool isShowError = false)
     {
@@ -45,13 +46,10 @@ public static class HttpRestClient
                 NotImplemented => "请求的功能尚未实现",
                 BadGateway => "网关错误",
                 _ => "服务器忙"
-            }),
+            })
         };
 
-        if (ret.Code == 0 && isShowError)
-        {
-            MsgBoxHelper.TryError(ret.Message);
-        }
+        if (ret.Code == 0 && isShowError) MsgBoxHelper.TryError(ret.Message);
 
         return ret.Code == 1;
     }
@@ -76,7 +74,7 @@ public static class HttpRestClient
                 outFileName = res.Content.ToEntity<ApiResponses>().Data?.ToString() ?? "";
                 if (string.IsNullOrEmpty(outFileName))
                 {
-                    MsgBoxHelper.TryError($"上传失败");
+                    MsgBoxHelper.TryError("上传失败");
                     return false;
                 }
 

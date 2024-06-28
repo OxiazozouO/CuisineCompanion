@@ -7,22 +7,22 @@ public partial class Form9 : Form
         InitializeComponent();
         Load += (_, _) =>
         {
-            GroupBox box = new GroupBox
+            var box = new GroupBox
             {
                 Text = "测试",
                 Location = new Point(55, 55),
-                FlatStyle = FlatStyle.System,
+                FlatStyle = FlatStyle.System
             };
 
-            RadioButton radioButton1 = new RadioButton
+            var radioButton1 = new RadioButton
             {
                 Location = new Point(55, 30),
-                Text = "测试1",
+                Text = "测试1"
             };
-            RadioButton radioButton2 = new RadioButton
+            var radioButton2 = new RadioButton
             {
                 Location = new Point(55, 60),
-                Text = "测试2",
+                Text = "测试2"
             };
 
             box.Controls.Add(radioButton1);

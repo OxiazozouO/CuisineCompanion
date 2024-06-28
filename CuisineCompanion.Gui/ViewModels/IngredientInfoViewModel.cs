@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CuisineCompanion.Helper;
@@ -23,7 +22,7 @@ public partial class IngredientInfoViewModel : ObservableObject
 
     public static ObservableCollection<IngredientInfoViewModel> Create(IEnumerable<IngredientModel> ingredient)
     {
-        ObservableCollection<IngredientInfoViewModel> list = new ObservableCollection<IngredientInfoViewModel>();
+        var list = new ObservableCollection<IngredientInfoViewModel>();
         foreach (var i in ingredient)
             list.Add(new IngredientInfoViewModel { Ingredient = i });
 

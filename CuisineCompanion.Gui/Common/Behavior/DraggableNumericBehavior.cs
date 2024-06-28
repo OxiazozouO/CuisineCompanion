@@ -12,21 +12,7 @@ public class DraggableNumericBehavior : Behavior<TextBox>
     private bool isMove;
     private Point startPoint;
     private decimal staTextPos;
-// @formatter:off
-    protected override void OnAttached()
-    {
-        AssociatedObject.PreviewMouseLeftButtonUp   += AssociatedObjectOnPreviewMouseLeftButtonUp;
-        AssociatedObject.PreviewMouseMove           += AssociatedObjectOnPreviewMouseMove;
-        AssociatedObject.PreviewMouseLeftButtonDown += AssociatedObjectOnPreviewMouseLeftButtonDown;
-    }
 
-    protected override void OnDetaching()
-    {
-        AssociatedObject.PreviewMouseLeftButtonUp   -= AssociatedObjectOnPreviewMouseLeftButtonUp;
-        AssociatedObject.PreviewMouseMove           -= AssociatedObjectOnPreviewMouseMove;
-        AssociatedObject.PreviewMouseLeftButtonDown -= AssociatedObjectOnPreviewMouseLeftButtonDown;
-    }
-// @formatter:on
     private void AssociatedObjectOnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
         // 鼠标左键按下时开始监测鼠标移动
@@ -46,8 +32,8 @@ public class DraggableNumericBehavior : Behavior<TextBox>
         isMove |= Math.Abs(pos.X) > 0.1;
         if (!isMove) return;
 
-        Point currentPoint = e.GetPosition(AssociatedObject);
-        decimal deltaX = (decimal)(currentPoint.X - startPoint.X);
+        var currentPoint = e.GetPosition(AssociatedObject);
+        var deltaX = (decimal)(currentPoint.X - startPoint.X);
         deltaX += staTextPos;
         if (deltaX < 0) deltaX = 0;
         AssociatedObject.Text = $"{deltaX:0.###}";
@@ -66,10 +52,26 @@ public class DraggableNumericBehavior : Behavior<TextBox>
         else
         {
             //退出键入模式
-            AssociatedObject.RaiseEvent(new RoutedEventArgs(TextBox.LostFocusEvent));
+            AssociatedObject.RaiseEvent(new RoutedEventArgs(UIElement.LostFocusEvent));
         }
 
         isDown = false;
         isMove = false;
     }
+
+// @formatter:off
+    protected override void OnAttached()
+    {
+        AssociatedObject.PreviewMouseLeftButtonUp   += AssociatedObjectOnPreviewMouseLeftButtonUp;
+        AssociatedObject.PreviewMouseMove           += AssociatedObjectOnPreviewMouseMove;
+        AssociatedObject.PreviewMouseLeftButtonDown += AssociatedObjectOnPreviewMouseLeftButtonDown;
+    }
+
+    protected override void OnDetaching()
+    {
+        AssociatedObject.PreviewMouseLeftButtonUp   -= AssociatedObjectOnPreviewMouseLeftButtonUp;
+        AssociatedObject.PreviewMouseMove           -= AssociatedObjectOnPreviewMouseMove;
+        AssociatedObject.PreviewMouseLeftButtonDown -= AssociatedObjectOnPreviewMouseLeftButtonDown;
+    }
+// @formatter:on
 }

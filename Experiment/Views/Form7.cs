@@ -11,7 +11,7 @@ public partial class Form7 : Form
 
     private void button1_Click(object sender, EventArgs e)
     {
-        ListBox listBox1 = new ListBox
+        var listBox1 = new ListBox
         {
             Size = new Size(600, 200),
             Location = new Point(80, 95),
@@ -20,18 +20,16 @@ public partial class Form7 : Form
         };
         Controls.Add(listBox1);
         listBox1.BeginUpdate();
-        for (int i = 1; i <= 50; i++)
+        for (var i = 1; i <= 50; i++)
             listBox1.Items.Add("标签 " + i);
 
         listBox1.EndUpdate();
-        
+
         listBox1.SetSelected(1, true);
         listBox1.SetSelected(2, true);
         listBox1.SetSelected(3, true);
-        
+
         Debug.WriteLine(listBox1.SelectedItems[1]);
         Debug.WriteLine(listBox1.SelectedItems[0]);
-        
-        
     }
 }

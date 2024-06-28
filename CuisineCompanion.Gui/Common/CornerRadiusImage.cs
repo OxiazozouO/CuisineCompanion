@@ -1,9 +1,6 @@
 using System;
-using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Input;
 using System.Windows.Media;
 
 namespace CuisineCompanion.Common;
@@ -33,10 +30,10 @@ public class CornerRadiusImage : Image
     private void ApplyCornerRadiusClip()
     {
         if (CornerRadius == null) return;
-        double radiusX = CornerRadius.TopLeft;
-        double radiusY = CornerRadius.TopRight;
-        double width   = ActualWidth  > 0 ? ActualWidth  : Width ;
-        double height  = ActualHeight > 0 ? ActualHeight : Height;
+        var radiusX = CornerRadius.TopLeft;
+        var radiusY = CornerRadius.TopRight;
+        var width   = ActualWidth  > 0 ? ActualWidth  : Width ;
+        var height  = ActualHeight > 0 ? ActualHeight : Height;
         
         Clip = new RectangleGeometry(new Rect(0, 0, width, height), radiusX, radiusY);
     }

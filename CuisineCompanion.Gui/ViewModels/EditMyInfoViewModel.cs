@@ -2,24 +2,21 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
-using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CuisineCompanion.Helper;
 using CuisineCompanion.HttpClients;
 using CuisineCompanion.Models;
-using CuisineCompanion.Views;
 
 namespace CuisineCompanion.ViewModels;
 
 public partial class EditMyInfoViewModel : ObservableObject
 {
+    [ObservableProperty] private ChangePasswordModel _changePasswordModel = new();
+    [ObservableProperty] private EditMyInfoFlags flag;
+    [ObservableProperty] private LogoutModel logoutModel = new();
     [ObservableProperty] private MyInfoModel myInfo;
     [ObservableProperty] private MyInfoModel oldInfo;
-
-    [ObservableProperty] private ChangePasswordModel _changePasswordModel = new();
-    [ObservableProperty] private LogoutModel logoutModel = new();
-    [ObservableProperty] private EditMyInfoFlags flag;
 
     public EditMyInfoViewModel()
     {
@@ -46,7 +43,7 @@ public partial class EditMyInfoViewModel : ObservableObject
     [RelayCommand]
     private void Save()
     {
-        int flag = 0;
+        var flag = 0;
         if (MsgBoxHelper.TryError(MyInfo.Error + MyInfo.UserNowInfo.Error)) return;
 
         if (OldInfo.UserId != MyInfo.UserId ||
@@ -58,8 +55,8 @@ public partial class EditMyInfoViewModel : ObservableObject
             {
                 MainViewModel.UserToken,
                 Name = MyInfo.UserName,
-                Gender = MyInfo.Gender,
-                BirthDate = MyInfo.BirthDate
+                MyInfo.Gender,
+                MyInfo.BirthDate
             });
             if (req.Execute(out _))
             {
@@ -87,17 +84,17 @@ public partial class EditMyInfoViewModel : ObservableObject
             (int)(old.ProteinRequirement * 10000) != (int)(model.ProteinRequirement * 10000)
             || (int)(old.FatPercentage * 10000) != (int)(model.FatPercentage * 10000))
         {
-            if (MsgBoxHelper.OkCancel($"是否修改此历史身材数据"))
+            if (MsgBoxHelper.OkCancel("是否修改此历史身材数据"))
             {
                 var req2 = ApiEndpoints.UpdateInfo(new
                 {
                     MainViewModel.UserToken,
-                    UpiId = model.UpiId,
-                    Weight = model.Weight,
-                    Height = model.Height,
+                    model.UpiId,
+                    model.Weight,
+                    model.Height,
                     ActivityLevel = model.ActivityLevelStr,
-                    ProteinRequirement = model.ProteinRequirement,
-                    FatPercentage = model.FatPercentage
+                    model.ProteinRequirement,
+                    model.FatPercentage
                 });
                 if (req2.Execute(out var res))
                 {
@@ -121,16 +118,16 @@ public partial class EditMyInfoViewModel : ObservableObject
 
         goto ret;
         add:
-        if (MsgBoxHelper.OkCancel($"添加为新的身材数据？"))
+        if (MsgBoxHelper.OkCancel("添加为新的身材数据？"))
         {
             var req3 = ApiEndpoints.AddInfo(new
             {
                 MainViewModel.UserToken,
-                Weight = model.Weight,
-                Height = model.Height,
+                model.Weight,
+                model.Height,
                 ActivityLevel = model.ActivityLevelStr,
-                ProteinRequirement = model.ProteinRequirement,
-                FatPercentage = model.FatPercentage
+                model.ProteinRequirement,
+                model.FatPercentage
             });
             if (req3.Execute(out var res))
             {
@@ -151,8 +148,8 @@ public partial class EditMyInfoViewModel : ObservableObject
 
         ret:
         OldInfo.Init();
-        StringBuilder sb1 = new StringBuilder();
-        StringBuilder sb2 = new StringBuilder();
+        var sb1 = new StringBuilder();
+        var sb2 = new StringBuilder();
         if ((flag & 1) > 0)
             sb1.AppendLine("用户信息修改成功");
         else if ((flag & 2) > 0)
@@ -169,9 +166,7 @@ public partial class EditMyInfoViewModel : ObservableObject
             sb2.AppendLine("身材数据添加失败");
 
         if (!MsgBoxHelper.TryError(sb2.ToString()) && !string.IsNullOrEmpty(sb1.ToString()))
-        {
             MsgBoxHelper.Info(sb1.ToString());
-        }
     }
 
     [RelayCommand]
@@ -223,13 +218,9 @@ public partial class EditMyInfoViewModel : ObservableObject
             LogoutModel.Password
         });
         if (req.Execute(out var res))
-        {
             MainViewModel.Navigate.GoLogin();
-        }
         else
-        {
             MsgBoxHelper.TryError("注销失败");
-        }
     }
 
     [RelayCommand]
@@ -281,7 +272,6 @@ public partial class EditMyInfoViewModel : ObservableObject
             MsgBoxHelper.TryError(ret.Message);
         }
     }
-    
 
 
     [RelayCommand]
@@ -306,7 +296,7 @@ public partial class EditMyInfoViewModel : ObservableObject
             ProteinRequirement = model.ProteinRequirement,
             ProteinPercentage = model.ProteinPercentage,
             CarbohydrateRequirement = model.CarbohydrateRequirement,
-            FatRequirement = model.FatRequirement,
+            FatRequirement = model.FatRequirement
         };
     }
 }

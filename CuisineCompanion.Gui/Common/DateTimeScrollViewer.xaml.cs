@@ -5,6 +5,8 @@ namespace CuisineCompanion.Common;
 
 public partial class DateTimeScrollViewer : DynamicBoundsVerticalScrollListBox
 {
+    private readonly DateTime BaseObject;
+
     public DateTimeScrollViewer()
     {
         GetTop = Top;
@@ -13,15 +15,12 @@ public partial class DateTimeScrollViewer : DynamicBoundsVerticalScrollListBox
         InitializeComponent();
     }
 
-    private readonly DateTime BaseObject;
+    public ObservableCollection<DateTime> DateTimes { get; set; } = new();
 
     public int Top(int pro)
     {
         var time = BaseObject;
-        for (int i = 0; i < 10; i++)
-        {
-            DateTimes.Insert(0, time.AddDays(pro--));
-        }
+        for (var i = 0; i < 10; i++) DateTimes.Insert(0, time.AddDays(pro--));
 
         return pro;
     }
@@ -29,13 +28,8 @@ public partial class DateTimeScrollViewer : DynamicBoundsVerticalScrollListBox
     public int Bottom(int nex)
     {
         var time = BaseObject;
-        for (int i = 0; i < 10; i++)
-        {
-            DateTimes.Add(time.AddDays(nex++));
-        }
+        for (var i = 0; i < 10; i++) DateTimes.Add(time.AddDays(nex++));
 
         return nex;
     }
-
-    public ObservableCollection<DateTime> DateTimes { get; set; } = new();
 }

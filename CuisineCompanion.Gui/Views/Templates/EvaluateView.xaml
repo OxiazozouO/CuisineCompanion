@@ -18,7 +18,7 @@
     <!--     <models:RecipeModel/> -->
     <!-- </Border.DataContext> -->
 
-    <ItemsControl Grid.Column="1" ItemsSource="{Binding Evaluate}">
+    <ItemsControl ItemsSource="{Binding Evaluate}">
         <ItemsControl.ItemsPanel>
             <ItemsPanelTemplate>
                 <StackPanel Orientation="Vertical" />

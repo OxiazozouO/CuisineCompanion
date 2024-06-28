@@ -12,7 +12,7 @@ public partial class MedicalRecordsEditForm : EditForm<MedicalRecordDTO, Medical
     }
 
     /// <summary>
-    /// model赋值到view
+    ///     model赋值到view
     /// </summary>
     public sealed override void SetEnt()
     {
@@ -33,7 +33,7 @@ public partial class MedicalRecordsEditForm : EditForm<MedicalRecordDTO, Medical
     }
 
     /// <summary>
-    /// view赋值到model
+    ///     view赋值到model
     /// </summary>
     protected override MedicalRecordDTO GetEnt()
     {

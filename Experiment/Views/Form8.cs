@@ -9,14 +9,14 @@ public partial class Form8 : Form
 
     private void addButton_Click(object sender, EventArgs e)
     {
-        if(textBox1.Text is "")return;
+        if (textBox1.Text is "") return;
         comboBox1.Items.Add(textBox1.Text);
     }
 
     private void addGrandButton_Click(object sender, EventArgs e)
     {
         comboBox1.BeginUpdate();
-        for (int i = 0; i < 100; i++)
+        for (var i = 0; i < 100; i++)
             comboBox1.Items.Add("项目 " + i);
         comboBox1.EndUpdate();
     }

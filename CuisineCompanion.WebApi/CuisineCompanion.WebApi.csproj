@@ -8,64 +8,64 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="AutoMapper" Version="13.0.1" />
-        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.17" />
+        <PackageReference Include="AutoMapper" Version="13.0.1"/>
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.17"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.16">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.12" />
-        <PackageReference Include="MySql.EntityFrameworkCore" Version="7.0.16" />
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.12"/>
+        <PackageReference Include="MySql.EntityFrameworkCore" Version="7.0.16"/>
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0"/>
     </ItemGroup>
 
     <ItemGroup>
-      <None Remove="NewFile1.txt" />
-      <None Remove="Helpers\**" />
-      <None Remove="Database\**" />
-      <None Remove="File\**" />
+        <None Remove="NewFile1.txt"/>
+        <None Remove="Helpers\**"/>
+        <None Remove="Database\**"/>
+        <None Remove="File\**"/>
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Include="..\CuisineCompanion.Core\Helper\BackendEncryptionHelper.cs">
-        <Link>Helper\BackendEncryptionHelper.cs</Link>
-      </Compile>
-      <Compile Include="..\CuisineCompanion.Core\Helper\FileUrlHelper.cs">
-        <Link>Helper\FileUrlHelper.cs</Link>
-      </Compile>
-      <Compile Remove="Helpers\**" />
-      <Compile Include="..\CuisineCompanion.Core\Helper\RegexHelper.cs">
-        <Link>Helper\RegexHelper.cs</Link>
-      </Compile>
-      <Compile Include="..\CuisineCompanion.Core\Helper\StringHelper.cs">
-        <Link>Helper\StringHelper.cs</Link>
-      </Compile>
-      <Compile Include="..\CuisineCompanion.Core\Http\ApiResponse.cs">
-        <Link>HttpApi\ApiResponse.cs</Link>
-      </Compile>
-      <Compile Remove="Database\**" />
-      <Compile Remove="File\**" />
-      <Compile Include="..\CuisineCompanion.Core\Model\DbFlagsHelper.cs">
-        <Link>Constant\DbFlagsHelper.cs</Link>
-      </Compile>
-      <Compile Include="..\CuisineCompanion.Core\Model\FavoriteFlags.cs">
-        <Link>Constant\FavoriteFlags.cs</Link>
-      </Compile>
-      <Compile Include="..\CuisineCompanion.Core\Model\SearchFlag.cs">
-        <Link>Constant\SearchFlag.cs</Link>
-      </Compile>
+        <Compile Include="..\CuisineCompanion.Core\Helper\BackendEncryptionHelper.cs">
+            <Link>Helper\BackendEncryptionHelper.cs</Link>
+        </Compile>
+        <Compile Include="..\CuisineCompanion.Core\Helper\FileUrlHelper.cs">
+            <Link>Helper\FileUrlHelper.cs</Link>
+        </Compile>
+        <Compile Remove="Helpers\**"/>
+        <Compile Include="..\CuisineCompanion.Core\Helper\RegexHelper.cs">
+            <Link>Helper\RegexHelper.cs</Link>
+        </Compile>
+        <Compile Include="..\CuisineCompanion.Core\Helper\StringHelper.cs">
+            <Link>Helper\StringHelper.cs</Link>
+        </Compile>
+        <Compile Include="..\CuisineCompanion.Core\Http\ApiResponse.cs">
+            <Link>HttpApi\ApiResponse.cs</Link>
+        </Compile>
+        <Compile Remove="Database\**"/>
+        <Compile Remove="File\**"/>
+        <Compile Include="..\CuisineCompanion.Core\Model\DbFlagsHelper.cs">
+            <Link>Constant\DbFlagsHelper.cs</Link>
+        </Compile>
+        <Compile Include="..\CuisineCompanion.Core\Model\FavoriteFlags.cs">
+            <Link>Constant\FavoriteFlags.cs</Link>
+        </Compile>
+        <Compile Include="..\CuisineCompanion.Core\Model\SearchFlag.cs">
+            <Link>Constant\SearchFlag.cs</Link>
+        </Compile>
     </ItemGroup>
 
     <ItemGroup>
-      <EmbeddedResource Remove="Helpers\**" />
-      <EmbeddedResource Remove="Database\**" />
-      <EmbeddedResource Remove="File\**" />
+        <EmbeddedResource Remove="Helpers\**"/>
+        <EmbeddedResource Remove="Database\**"/>
+        <EmbeddedResource Remove="File\**"/>
     </ItemGroup>
 
     <ItemGroup>
-      <Content Remove="Helpers\**" />
-      <Content Remove="Database\**" />
-      <Content Remove="File\**" />
+        <Content Remove="Helpers\**"/>
+        <Content Remove="Database\**"/>
+        <Content Remove="File\**"/>
     </ItemGroup>
 
 </Project>

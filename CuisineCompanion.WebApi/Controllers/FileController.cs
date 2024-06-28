@@ -13,10 +13,7 @@ public class FileController : ControllerBase
     {
         var filePath = Path.Combine(FileUrlHelper.OldFilePath, path, fileName);
 
-        if (!Exists(filePath))
-        {
-            return NotFound();
-        }
+        if (!Exists(filePath)) return NotFound();
 
         var fileStream = OpenRead(filePath);
         var fileExtension = Path.GetExtension(fileName)[1..];
@@ -45,14 +42,10 @@ public class FileController : ControllerBase
         try
         {
             if (file == null)
-            {
                 return Task.FromResult<IActionResult>(Ok(new ApiResponses { Code = -1, Message = "文件为空" }));
-            }
 
             if (file.Length > 1024 * 1024 * 10)
-            {
                 return Task.FromResult<IActionResult>(Ok(new ApiResponses { Code = -1, Message = "文件大小超过10MB" }));
-            }
 
             if (file.ContentType.Contains("application/octet-stream") || file.ContentType.Contains("image"))
             {

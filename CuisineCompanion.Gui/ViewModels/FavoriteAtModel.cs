@@ -6,8 +6,8 @@ namespace CuisineCompanion.ViewModels;
 
 public partial class FavoriteAtModel : ObservableObject
 {
-    [ObservableProperty] private byte flag;
     [ObservableProperty] private ObservableCollection<FavoriteModel> favoriteList;
+    [ObservableProperty] private byte flag;
 
     public FavoriteAtModel()
     {

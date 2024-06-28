@@ -8,23 +8,13 @@ namespace CuisineCompanion.Common;
 
 public class WaterfallPanel : Panel
 {
-    public int Columns
-    {
-        get => (int)GetValue(ColumnsProperty);
-        set => SetValue(ColumnsProperty, value);
-    }
-
     public static readonly DependencyProperty ColumnsProperty =
         DependencyProperty.Register(nameof(Columns), typeof(int), typeof(WaterfallPanel), new PropertyMetadata(3));
 
-    public double Spacing
-    {
-        get => (double)GetValue(SpacingProperty);
-        set => SetValue(SpacingProperty, value);
-    }
-
     public static readonly DependencyProperty SpacingProperty =
         DependencyProperty.Register(nameof(Spacing), typeof(double), typeof(WaterfallPanel), new PropertyMetadata(5.0));
+
+    private List<double> columnHeights;
 
     static WaterfallPanel()
     {
@@ -32,7 +22,17 @@ public class WaterfallPanel : Panel
             new FrameworkPropertyMetadata(typeof(WaterfallPanel)));
     }
 
-    private List<double> columnHeights;
+    public int Columns
+    {
+        get => (int)GetValue(ColumnsProperty);
+        set => SetValue(ColumnsProperty, value);
+    }
+
+    public double Spacing
+    {
+        get => (double)GetValue(SpacingProperty);
+        set => SetValue(SpacingProperty, value);
+    }
 
     protected override Size MeasureOverride(Size availableSize)
     {
@@ -46,7 +46,7 @@ public class WaterfallPanel : Panel
         // 计算每列的宽度
         var width = (availableSize.Width - (Columns - 1 * Spacing)) / Columns;
         // 遍历面板内的每个子元素
-        for (int i = 0; i < InternalChildren.Count; i++)
+        for (var i = 0; i < InternalChildren.Count; i++)
         {
             // 如果当前子元素不是 FrameworkElement 类型，则继续下一个循环
             if (InternalChildren[i] is not FrameworkElement child) continue;
@@ -55,28 +55,20 @@ public class WaterfallPanel : Panel
             // 设置子元素的宽度
             child.Width = width;
 
-            int columnIndex = 0;
+            var columnIndex = 0;
             //找最小的高度
             if (i / Columns == 0)
-            {
                 columnIndex = i % Columns;
-            }
             else
-            {
                 for (var j = 0; j < Columns; j++)
-                {
                     if (columnHeights[columnIndex] > columnHeights[j])
-                    {
                         columnIndex = j;
-                    }
-                }
-            }
 
             // 计算子元素的 X 坐标
-            double x = (width + Spacing) * columnIndex;
+            var x = (width + Spacing) * columnIndex;
 
             // 获取当前列的高度
-            double y = columnHeights[columnIndex];
+            var y = columnHeights[columnIndex];
             // 如果不是第一行，则加上行间距
             if (i / Columns > 0)
                 y += Spacing;

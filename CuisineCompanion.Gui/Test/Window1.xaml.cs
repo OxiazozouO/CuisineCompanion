@@ -9,7 +9,7 @@ public partial class Window1
     public Window1()
     {
         InitializeComponent();
-        var s = new Sector()
+        var s = new Sector
         {
             Center = new Point(100, 100),
             OuterRadius = 100,

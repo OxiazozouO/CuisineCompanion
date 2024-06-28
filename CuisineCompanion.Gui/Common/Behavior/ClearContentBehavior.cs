@@ -9,21 +9,27 @@ namespace CuisineCompanion.Common.Behavior;
 
 public class ClearContentBehavior : Behavior<UIElement>
 {
+    public static readonly DependencyProperty TargetProperty =
+        DependencyProperty.Register(nameof(Target), typeof(DispatcherObject), typeof(ClearContentBehavior),
+            new PropertyMetadata(null));
+
     public bool IsClearClose { get; set; }
+
     public DispatcherObject Target
     {
         get => (DispatcherObject)GetValue(TargetProperty);
         set => SetValue(TargetProperty, value);
     }
-    
-    public static readonly DependencyProperty TargetProperty =
-        DependencyProperty.Register(nameof(Target), typeof(DispatcherObject), typeof(ClearContentBehavior), new PropertyMetadata(null));
 
-    protected override void OnAttached() =>
+    protected override void OnAttached()
+    {
         AssociatedObject.MouseDown += AssociatedObject_MouseDown;
+    }
 
-    protected override void OnDetaching() =>
+    protected override void OnDetaching()
+    {
         AssociatedObject.MouseDown -= AssociatedObject_MouseDown;
+    }
 
     private void AssociatedObject_MouseDown(object sender, MouseButtonEventArgs args)
     {
@@ -76,9 +82,6 @@ public class ClearContentBehavior : Behavior<UIElement>
                 return;
         }
 
-        if (IsClearClose)
-        {
-            AssociatedObject.Visibility = Visibility.Collapsed;
-        }
+        if (IsClearClose) AssociatedObject.Visibility = Visibility.Collapsed;
     }
 }

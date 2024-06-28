@@ -2,10 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CuisineCompanion.Helper;
-using CuisineCompanion.HttpClients;
 using CuisineCompanion.Models;
 
 namespace CuisineCompanion.ViewModels;
@@ -13,19 +10,6 @@ namespace CuisineCompanion.ViewModels;
 public partial class MyFavoritesViewModel : ObservableObject
 {
     [ObservableProperty] private ObservableCollection<FavoriteModel> favorite;
-
-    #region 计算出来的变量
-
-    //食材收藏夹
-    [ObservableProperty] private FavoriteAtModel ingredients;
-
-    //食谱收藏夹
-    [ObservableProperty] private FavoriteAtModel recipes;
-
-    //菜单收藏夹
-    [ObservableProperty] private FavoriteAtModel menus;
-
-    #endregion
 
     #region Root
 
@@ -113,7 +97,7 @@ public partial class MyFavoritesViewModel : ObservableObject
     }
 
     /// <summary>
-    /// 收集字典
+    ///     收集字典
     /// </summary>
     /// <param name="oldValue"></param>
     /// <param name="newValue"></param>
@@ -156,4 +140,17 @@ public partial class MyFavoritesViewModel : ObservableObject
     {
         Menus.Flag = (byte)(ModelFlags.Menu | ModelFlags.Private);
     }
+
+    #region 计算出来的变量
+
+    //食材收藏夹
+    [ObservableProperty] private FavoriteAtModel ingredients;
+
+    //食谱收藏夹
+    [ObservableProperty] private FavoriteAtModel recipes;
+
+    //菜单收藏夹
+    [ObservableProperty] private FavoriteAtModel menus;
+
+    #endregion
 }

@@ -6,14 +6,14 @@ public abstract class EditForm<T, R> : Form where T : new()
 {
     protected T _model;
 
-    protected EditForm(T model,string text)
+    private Action<T> _running;
+
+    protected EditForm(T model, string text)
     {
         _model = model;
         StartPosition = FormStartPosition.CenterScreen;
         Text = text;
     }
-
-    private Action<T> _running;
 
     public Action<T> Running
     {
@@ -24,7 +24,7 @@ public abstract class EditForm<T, R> : Form where T : new()
 
     private void TestValue(object obj)
     {
-        string s = Helpers.GetError(obj);
+        var s = Helpers.GetError(obj);
         if (s != "")
         {
             s.ShowError();
@@ -43,12 +43,12 @@ public abstract class EditForm<T, R> : Form where T : new()
     }
 
     /// <summary>
-    /// model赋值到view
+    ///     model赋值到view
     /// </summary>
     public abstract void SetEnt();
 
     /// <summary>
-    /// view赋值到model
+    ///     view赋值到model
     /// </summary>
     protected abstract T GetEnt();
 
@@ -58,5 +58,8 @@ public abstract class EditForm<T, R> : Form where T : new()
         TestValue(ret);
     }
 
-    protected void Close_Click(object sender, EventArgs e) => Close();
+    protected void Close_Click(object sender, EventArgs e)
+    {
+        Close();
+    }
 }

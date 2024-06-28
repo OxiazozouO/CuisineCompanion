@@ -4,12 +4,12 @@ namespace CuisineCompanion.Common;
 
 public partial class DateTimeDialog
 {
-    public object ReturnValue { get; private set; }
-
     public DateTimeDialog()
     {
         InitializeComponent();
     }
+
+    public object ReturnValue { get; private set; }
 
 
     [RelayCommand]

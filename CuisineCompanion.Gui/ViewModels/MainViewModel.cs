@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -16,19 +14,14 @@ namespace CuisineCompanion.ViewModels;
 
 public class MainViewModel : ObservableObject
 {
-    public static void Init(object? res)
-    {
-        UserToken = res.ToEntity<UserTokenModel>();
-    }
-
     public static UserTokenModel UserToken = new() { UserId = 0, UserName = "admin", Token = "admin" };
 
-    
+
     private static MainViewModel _instance;
-    public static MainViewModel Instance => _instance ??= new MainViewModel();
 
     private static MyInfoModel _myInfo;
-    
+    public static MainViewModel Instance => _instance ??= new MainViewModel();
+
     public MyInfoModel MyInfo
     {
         get
@@ -47,13 +40,20 @@ public class MainViewModel : ObservableObject
     }
 
 
-    public static CultureInfo I18N => new CultureInfo(Lang);
+    public static CultureInfo I18N => new(Lang);
+
+    public static void Init(object? res)
+    {
+        UserToken = res.ToEntity<UserTokenModel>();
+    }
 
     #region 配置项
 
     public static string Lang { get; set; } = "zh-CN";
 
-    private static Dictionary<string, Dictionary<string, Dictionary<bool, double[]>>>? _referenceIntakeOfNutrients;
+    private static Dictionary<string, Dictionary<string, string>>? _referenceIntakeOfNutrients;
+
+    private static Dictionary<string, Dictionary<string, string>>? _userNutrients;
 
     private static Dictionary<string, double>? _EAR, _RNI, _UL;
 
@@ -88,9 +88,9 @@ public class MainViewModel : ObservableObject
     }
 
 
-    private static Dictionary<string, Tuple<string, decimal>>? _nutritionalMap;
+    private static Dictionary<string, string>? _nutritionalMap;
 
-    public static Dictionary<string, Tuple<string, decimal>>? NutritionalMap
+    public static Dictionary<string, string>? NutritionalMap
     {
         get
         {
@@ -173,7 +173,7 @@ public class MainViewModel : ObservableObject
     }
 
     /// <summary>
-    /// 蛋白质需要量
+    ///     蛋白质需要量
     /// </summary>
     public static Dictionary<bool, byte[]>? _proteinRequirement;
 
@@ -201,8 +201,8 @@ public class MainViewModel : ObservableObject
             _local                      is null ? "UnitLocal"                  : "",
             _activityLevels             is null ? "ActivityLevels"             : "",
             _proteinRequirement         is null ? "ProteinRequirement"         : "",
-            _referenceIntakeOfNutrients is null ? "ReferenceIntakeOfNutrients" : "",
-            
+            _referenceIntakeOfNutrients is null ? "ReferenceIntakeOfNutrients" : ""
+
         };
         // @formatter:on
         var reqStr = string.Join(',', l.Where(s => !string.IsNullOrEmpty(s)));
@@ -217,10 +217,10 @@ public class MainViewModel : ObservableObject
 
         if (!req.Execute(out var res)) return;
 
-        string? json = res.Data?.ToString();
+        var json = res.Data?.ToString();
         var mp = json.ToEntity<Dictionary<string, string>>();
         if (mp.TryGetValue("NutrientUnits", out json))
-            _nutritionalMap = json.ToEntity<Dictionary<string, Tuple<string, decimal>>>();
+            _nutritionalMap = json.ToEntity<Dictionary<string, string>>();
 
         if (mp.TryGetValue("Units", out json))
             _unit = json.ToEntity<Dictionary<string, decimal>>();
@@ -238,11 +238,9 @@ public class MainViewModel : ObservableObject
             _local = json.ToEntity<Dictionary<string, Dictionary<string, string>>>();
 
         if (mp.TryGetValue("ActivityLevels", out json))
-        {
             _activityLevels = json.ToEntity<Dictionary<string, double>>()
                 .OrderBy(kv => kv.Value)
                 .ToDictionary(kv => kv.Key, kv => kv.Value);
-        }
 
         if (mp.TryGetValue("ProteinRequirement", out json))
             _proteinRequirement = json.ToEntity<Dictionary<bool, byte[]>>();
@@ -250,56 +248,93 @@ public class MainViewModel : ObservableObject
 
         if (mp.TryGetValue("ReferenceIntakeOfNutrients", out json))
         {
-            var dic = json.ToEntity<Dictionary<string, Dictionary<string, Dictionary<bool, byte[]>>>>();
-            _referenceIntakeOfNutrients = dic.ToDictionary(
-                outerPair => outerPair.Key,
-                outerPair => outerPair.Value.ToDictionary(
-                    middlePair => middlePair.Key,
-                    middlePair => middlePair.Value.ToDictionary(
-                        innerPair => innerPair.Key,
-                        innerPair =>
-                        {
-                            int doubleSize = sizeof(double);
-                            int doubleArrayLength = innerPair.Value.Length / doubleSize;
-                            double[] doubleArray = new double[doubleArrayLength];
-
-                            for (int i = 0; i < doubleArrayLength; i++)
-                            {
-                                doubleArray[i] = BitConverter.ToDouble(innerPair.Value, i * doubleSize);
-                            }
-
-                            return doubleArray;
-                        }
-                    )
-                )
-            );
+            _referenceIntakeOfNutrients = json.ToEntity<Dictionary<string, Dictionary<string, string>>>();
         }
     }
 
     public static void InitNutritional(bool gender, int age)
     {
-        if (_referenceIntakeOfNutrients is null) return;
-        if (!_referenceIntakeOfNutrients.TryGetValue("EAR", out var ear)) return;
+        try
+        {
+            var dic = _referenceIntakeOfNutrients;
+            if (dic is null) return;
 
+            var indDic = new Dictionary<string, string>(); //营养成分的索引  <id,name>
+            {
+                if (!dic.TryGetValue("index", out var indMap)
+                    || !indMap.TryGetValue("index", out var ind)
+                    || string.IsNullOrEmpty(ind)
+                   ) return;
 
-        _EAR = new Dictionary<string, double>();
-        foreach (var (key, value) in ear)
-            _EAR[key] = value[gender][age];
+                var indArr = ind.Split(',');
+                for (var i = 0; i < indArr.Length; i++)
+                {
+                    indDic[i.ToString()] = indArr[i];
+                }
+            }
 
+            var result = new Dictionary<string, Dictionary<string, double>>();
+            foreach (var (key, value) in dic)
+            {
+                if (key == "index") continue;
+                result[key] = new Dictionary<string, double>();
+                foreach (var (s, value1) in value)
+                {
+                    var arr = value1.Split('|');
+                    if (arr.Length != 2) return;
+                    var arr2 = arr[0].Split('@');
+                    gender:
+                    if (arr2.Length != 2) return;
+                    var values = arr2[0].Split(',');
+                    var inds = arr2[1].Split(',').Select(int.Parse).ToArray();
+                    if (values.Length != inds.Length) return;
+                    int ageCopy = age;
+                    string value2 = "";
+                    equal:
+                    if (gender)
+                    {
+                        for (var i = 0; i < inds.Length; i++)
+                        {
+                            if (ageCopy > inds[i])
+                            {
+                                ageCopy -= inds[i];
+                            }
+                            else
+                            {
+                                value2 = values[i];
+                                break;
+                            }
+                        }
 
-        if (!_referenceIntakeOfNutrients.TryGetValue("RNI", out var rni)) return;
-        _RNI = new Dictionary<string, double>();
-        foreach (var (key, value) in rni)
-            _RNI[key] = value[gender][age];
+                        double value3 = string.IsNullOrEmpty(value2) ? 0 : double.Parse(value2);
+                        result[key][indDic[s]] = value3;
+                    }
+                    else
+                    {
+                        gender = true;
+                        if (arr[1] == "=")
+                        {
+                            goto equal;
+                        }
 
+                        arr2 = arr[1].Split('@');
+                        goto gender;
+                    }
+                }
+            }
 
-        if (!_referenceIntakeOfNutrients.TryGetValue("UL", out var ul)) return;
-        _UL = new Dictionary<string, double>();
-        foreach (var (key, value) in ul)
-            _UL[key] = value[gender][age];
+            result.TryGetValue("EAR", out _EAR);
+            result.TryGetValue("RNI", out _RNI);
+            result.TryGetValue("UL", out _UL);
+            
+        }
+        catch (Exception e)
+        {
+            MsgBoxHelper.TryError("初始化失败！\n", e.Message);
+        }
     }
-
-    public static bool TryGetNutritional(string key, out Tuple<string, decimal>? value)
+    
+    public static bool TryGetNutritional(string key, out string? value)
     {
         value = null;
         return NutritionalMap?.TryGetValue(key, out value) ?? false;

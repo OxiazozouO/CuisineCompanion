@@ -5,11 +5,15 @@ namespace CuisineCompanion.Helper;
 
 public static class MsgBoxHelper
 {
-    public static void Info(string message, string caption = "信息") => 
+    public static void Info(string message, string caption = "信息")
+    {
         Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Information);
+    }
 
-    public static void Warning(string message, string caption = "警告") => 
+    public static void Warning(string message, string caption = "警告")
+    {
         Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Warning);
+    }
 
     public static bool TryError(string? message, string caption = "错误")
     {
@@ -25,8 +29,10 @@ public static class MsgBoxHelper
     }
 
     public static MessageBoxResult Custom(string message, string caption, MessageBoxButton buttons,
-        MessageBoxImage icon) =>
-        Show(message, caption, buttons, icon);
+        MessageBoxImage icon)
+    {
+        return Show(message, caption, buttons, icon);
+    }
 
     public static bool OkCancel(string message, string caption = "提示")
     {

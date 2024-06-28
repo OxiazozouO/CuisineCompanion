@@ -9,7 +9,7 @@ public partial class Form6 : Form
 
     private void Form6_Load(object sender, EventArgs e)
     {
-        TextBox textBox1 = new TextBox
+        var textBox1 = new TextBox
         {
             Location = new Point(80, 55),
             Multiline = true,

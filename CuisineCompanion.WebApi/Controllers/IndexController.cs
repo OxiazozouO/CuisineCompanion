@@ -20,14 +20,11 @@ public class IndexController : MyControllerBase
     {
         try
         {
-            if (!UserService.TryVerifyUserToken(_db, dto.UserToken, out var user, out var error))
-            {
-                return Ok(error);
-            }
-            
+            if (!UserService.TryVerifyUserToken(_db, dto.UserToken, out var user, out var error)) return Ok(error);
+
             object data = null;
-            string text = dto.Text;
-            SearchFlags flag = (SearchFlags)dto.Flag;
+            var text = dto.Text;
+            var flag = (SearchFlags)dto.Flag;
             switch (flag)
             {
                 case SearchFlags.Food:
@@ -50,7 +47,7 @@ public class IndexController : MyControllerBase
                             i.Allergy,
                             i.Content,
                             FileUri = Url.GetIngredientUrl(Request, i.FileUri),
-                            Dosage = 100,
+                            Dosage = 100
                         }).Take(50)
                         .ToList();
                     break;
@@ -145,7 +142,7 @@ public class IndexController : MyControllerBase
                             i.Allergy,
                             i.Content,
                             FileUri = Url.GetIngredientUrl(Request, i.FileUri),
-                            Dosage = 100,
+                            Dosage = 100
                         } by new
                         {
                             c.CategoryId,
@@ -160,7 +157,7 @@ public class IndexController : MyControllerBase
                     data = new
                     {
                         Recipes = data1,
-                        Ingredients = data2,
+                        Ingredients = data2
                     };
                 }
                     break;

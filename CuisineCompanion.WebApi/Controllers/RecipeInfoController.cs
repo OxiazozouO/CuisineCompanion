@@ -29,10 +29,7 @@ public class RecipeInfoController : MyControllerBase
                     r.Summary
                 }).FirstOrDefault();
 
-            if (recipeDetails == null)
-            {
-                return Ok(new ApiResponses { Code = -1, Message = "没有找到此食谱" });
-            }
+            if (recipeDetails == null) return Ok(new ApiResponses { Code = -1, Message = "没有找到此食谱" });
 
             var categories = (from ci in _db.CategoryItems
                 join c in _db.Categories on ci.CategoryId equals c.CategoryId
@@ -49,7 +46,7 @@ public class RecipeInfoController : MyControllerBase
                 .Select(step => new
                 {
                     step.Title,
-                    FileUri = Url.GetRecipeUrl( Request, step.FileUri),
+                    FileUri = Url.GetRecipeUrl(Request, step.FileUri),
                     step.Refer,
                     step.RequiredTime,
                     step.RequiredIngredient,
@@ -84,7 +81,7 @@ public class RecipeInfoController : MyControllerBase
                 Steps = steps,
                 Ingredients = ingredients
             };
-            
+
             return Ok(new ApiResponses
             {
                 Code = 1,

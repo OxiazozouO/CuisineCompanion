@@ -7,14 +7,14 @@ using RestSharp;
 
 public class Program
 {
-    static void Main(string[] args)
+    private static void Main(string[] args)
     {
         test6();
     }
 
     private static void test1()
     {
-        var list = new List<string>()
+        var list = new List<string>
         {
             "qwq12345678",
             "12345qqqghrewqvbfdseawebsdseafw6",
@@ -23,7 +23,7 @@ public class Program
             @"qqjsjvekavodibnfocdjjdevjgw98174243521452qfhqdnwfevnwheqfvbhdfvnj12351423teggfwsfqqqqqqqqqqqq6748590-`1234567890-=[]\;',./~!@#$%^&*()_+{}|:<>?fqoevaAFEAWAFAFsgfesafgrhaAWFidfujJJVFFBUGHWFQWDKADSVqwdfwDUHFJACDSijdfngjfwekvdhnvfajwkdsvj",
             @"qqjsjvekavodibnfocdjjdevjgw98174243521452qqqqqqqafffffffaeagaqqqqq6748590-`1234567890-=[]\;',./~!@#$%^&*()_+{}|:<>?fqoevaAFEAWAFAFsgfesafgrhaAWFidfujJJVFFBUGHWFQWDKADSVqwdfwDUHFJACDSijdfngjfwekvdhnvfajwkdsvj",
             @"qqjsjvekavodibnfocdjjdevjgw98174243521452qqqqqqasgsgegwgarrrqqqqqq6748590-`1234567890-=[]\;',./~!@#$%^&*()_+{}|:<>?fqoevaAFEAWAFAFsgfesafgrhaAWFidfujJJVFFBUGHWFQWDKADSVqwdfwDUHFJACDSijdfngjfwekvdhnvfajwkdsvj",
-            @"qqjsjvekavodibnfocdjjdevjgw98174243521452qqqqqqqqqqqq6748590-`1234567890-=[]\;',./~!@#$%^&*()_+{}|:<>?fqoevaAFEAWAFAFsgfesafgrhaAWFidfujJJVFFBUGHWFQWDKADSVqwdfwDUHFJACDSijdfngjfwekvdhnvfajwkdsvj",
+            @"qqjsjvekavodibnfocdjjdevjgw98174243521452qqqqqqqqqqqq6748590-`1234567890-=[]\;',./~!@#$%^&*()_+{}|:<>?fqoevaAFEAWAFAFsgfesafgrhaAWFidfujJJVFFBUGHWFQWDKADSVqwdfwDUHFJACDSijdfngjfwekvdhnvfajwkdsvj"
         };
         foreach (var s in list)
         {
@@ -48,7 +48,7 @@ public class Program
         });
         request.AddParameter("application/json", json, ParameterType.RequestBody);
 
-        IRestResponse response = client.Execute(request);
+        var response = client.Execute(request);
         Console.WriteLine(response.Content);
     }
 
@@ -60,7 +60,7 @@ public class Program
 
         foreach (var item in obj)
         {
-            Dictionary<string, string> mp = new Dictionary<string, string>();
+            var mp = new Dictionary<string, string>();
             foreach (var (key, value) in item)
             {
                 if (value is null or "") continue;
@@ -73,24 +73,20 @@ public class Program
 
     private static void test4()
     {
-        for (long i = 13000000000; i <= 19900000000; i++)
-        {
+        for (var i = 13000000000; i <= 19900000000; i++)
             if (Regex.IsMatch(i.ToString(), RegexHelper.MobileExact))
-            {
                 Console.WriteLine(i);
-            }
-        }
     }
 
     private static void test5()
     {
-        string result = "..11..1......1.";
+        var result = "..11..1......1.";
 
         // 使用正则表达式匹配数字和小数点
-        string pattern = @"\d+(\.\d*)?|\.\d+";
+        var pattern = @"\d+(\.\d*)?|\.\d+";
 
         // 匹配字符串中的所有数字和小数点
-        Match match = Regex.Match(result, pattern);
+        var match = Regex.Match(result, pattern);
 
         // 输出匹配结果中的第一个小数点及其前面的数字
         Console.WriteLine(match.Value);
@@ -129,17 +125,14 @@ public class Program
                     // ignored
                 }
 
-                if (rr == 101)
-                {
-                    Console.WriteLine(rr);
-                }
+                if (rr == 101) Console.WriteLine(rr);
 
                 if (ll == 0 || ll > rr)
                 {
                     ll = 1;
-                    List<string> list2 = new List<string>();
+                    var list2 = new List<string>();
                     list2.Add("1岁~");
-                    for (int k = 1; k < l.Length; k++) list2.Add("0");
+                    for (var k = 1; k < l.Length; k++) list2.Add("0");
                     l = list2.ToArray();
                 }
                 else if (rr == 0)
@@ -147,7 +140,7 @@ public class Program
                     rr = 101;
                 }
 
-                for (int j = ll; j < rr; j++)
+                for (var j = ll; j < rr; j++)
                 {
                     newList.Add($"{j}\t" + string.Join('\t', l.Skip(1)));
                     map.Add(l.Skip(1).ToList());
@@ -158,19 +151,15 @@ public class Program
                 newList.Add(item);
                 var list = item.Split('\t');
                 map.Add(list.Skip(1).ToList());
-                if (list.Length == 1)
-                {
-                    names.Add(list[0]);
-                }
+                if (list.Length == 1) names.Add(list[0]);
             }
         }
 
-        int ind = 0;
+        var ind = 0;
 
         List<List<string>> list4 = null;
 
         foreach (var list in map)
-        {
             if (list.Count == 0)
             {
                 list4 = new List<List<string>>();
@@ -180,67 +169,157 @@ public class Program
             {
                 list4.Add(list);
             }
-        }
 
         var dics = new List<Dictionary<string, List<string>>>();
         foreach (var list in all)
         {
             var dic = new Dictionary<string, List<string>>();
 
-            for (var i = 0; i < list[0].Count; i++)
-            {
-                dic[list[0][i]] = new List<string>();
-            }
+            for (var i = 0; i < list[0].Count; i++) dic[list[0][i]] = new List<string>();
 
             for (var j = 1; j < list.Count; j++)
-            {
-                for (var i = 0; i < list[j].Count; i++)
-                {
-                    dic[list[0][i]].Add(list[j][i]);
-                }
-            }
+            for (var i = 0; i < list[j].Count; i++)
+                dic[list[0][i]].Add(list[j][i]);
 
             dics.Add(dic);
         }
 
-        var dicss = new Dictionary<string, Dictionary<string, Dictionary<bool, byte[]>>>();
+        var dicss = new Dictionary<string, Dictionary<string, string>>();
         for (var i = 0; i < dics.Count; i++)
         {
             var dic = dics[i];
-            var dic2 = new Dictionary<string, Dictionary<bool, byte[]>>();
+            var dic2 = new Dictionary<string, string>();
             foreach (var (key, value) in dic)
             {
-                var dic3 = new Dictionary<bool, byte[]>();
-                var list1 = new List<double>();
-                list1.Add(0);
-                for (var k = 0; k < value.Count / 2; k++)
+                string dic3 = "";
+                var list1 = new List<string>();
+                for (var k = 0; k < value.Count / 2; k++) list1.Add(value[k]);
+
+                var list2 = new List<string>();
+                for (var k = value.Count / 2; k < value.Count; k++) list2.Add(value[k]);
+
+
+                foreach (var s1 in list1.Where(s1 => s1 != "0"))
+                    goto ret;
+
+                foreach (var s1 in list2.Where(s1 => s1 != "0"))
+                    goto ret;
+
+                continue;
+
+
+                ret:
+                for (var j = 0; j < list1.Count; j++)
                 {
-                    list1.Add(double.Parse(value[k]));
+                    if (list1[j] == "0")
+                    {
+                        list1[j] = "";
+                    }
                 }
 
-                byte[] byteArray1 = new byte[list1.Count * sizeof(double)];
-                Buffer.BlockCopy(list1.ToArray(), 0, byteArray1, 0, byteArray1.Length);
-                dic3[true] = byteArray1;
-
-                var list2 = new List<double>();
-                list1.Add(0);
-                for (var k = value.Count / 2; k < value.Count; k++)
+                for (var j = 0; j < list2.Count; j++)
                 {
-                    list2.Add(double.Parse(value[k]));
+                    if (list2[j] == "0")
+                    {
+                        list2[j] = "";
+                    }
                 }
 
-                byte[] byteArray2 = new byte[list2.Count * sizeof(double)];
-                Buffer.BlockCopy(list1.ToArray(), 0, byteArray2, 0, byteArray2.Length);
-                dic3[false] = byteArray2;
+                var str1 = string.Join(',', list1);
+                var str2 = string.Join(',', list2);
+                str2 = str1 == str2 ? "=" : str2;
 
-                dic2[key] = dic3;
+                var newList1 = new List<string>();
+                var newList11 = new List<byte>();
+                var newList2 = new List<string>();
+                var newList22 = new List<byte>();
+
+                for (int k = 1, count = 1; k < list1.Count; k++)
+                {
+                    if (list1[k] == list1[k - 1])
+                    {
+                        count++;
+                    }
+                    else
+                    {
+                        newList1.Add(list1[k - 1]);
+                        newList11.Add((byte)count);
+                        count = 1;
+                    }
+
+                    if (k == list1.Count - 1)
+                    {
+                        newList1.Add(list1[k]);
+                        newList11.Add((byte)count);
+                    }
+                }
+
+                if (str2 != "=")
+                {
+                    for (int k = 1, count = 1; k < list2.Count; k++)
+                    {
+                        if (list2[k] == list2[k - 1])
+                        {
+                            count++;
+                        }
+                        else
+                        {
+                            newList2.Add(list2[k - 1]);
+                            newList22.Add((byte)count);
+                            count = 1;
+                        }
+
+                        if (k == list2.Count - 1)
+                        {
+                            newList2.Add(list2[k]);
+                            newList22.Add((byte)count);
+                        }
+                    }
+                }
+
+                var result = string.Join(',', newList1) + "@" + string.Join(',', newList11);
+                result = result + "|" +
+                         (str2 == "=" ? "=" : (string.Join(',', newList2)) + "@" + string.Join(',', newList22));
+
+                dic2[key] = result;
             }
 
             dicss[names[i]] = dic2;
         }
 
-        Console.WriteLine(newList);
-        string s = string.Join('\n', newList);
+        var s = string.Join('\n', newList);
+
+
         dicss.ToJson();
+
+        HashSet<string> set = new HashSet<string>();
+        var newDic = new Dictionary<string, Dictionary<string, string>>();
+        foreach (var (key, value) in dicss)
+        foreach (var (key1, value1) in value)
+            set.Add(key1);
+
+        var indDic = new Dictionary<string, int>();
+        {
+            int k = 0;
+            foreach (var s1 in set)
+            {
+                indDic[s1] = k++;
+            }
+        }
+        
+        foreach (var (key, value) in dicss)
+        {
+            newDic[key]=new Dictionary<string, string>();
+            foreach (var (key1, value1) in value)
+            {
+                newDic[key][indDic[key1].ToString()] = value1;
+                set.Add(key1);
+            }
+        }
+
+        newDic["index"] = new Dictionary<string, string> { ["index"] = string.Join(',', set) };
+
+        newDic.ToJson();
+
     }
 }

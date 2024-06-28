@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Security.Cryptography.X509Certificates;
 using System.Windows.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CuisineCompanion.Helper;
@@ -9,28 +8,28 @@ namespace CuisineCompanion.Models;
 
 public partial class NutrientContentModel : ObservableObject
 {
+    [ObservableProperty] private Brush color;
     [ObservableProperty] private string name;
     [ObservableProperty] private string unit;
     [ObservableProperty] private decimal value;
-    [ObservableProperty] private Brush color;
 }
 
 public partial class NutrientContentRatioViewModel : ObservableObject
 {
-    [ObservableProperty] private string name;
-    [ObservableProperty] private string unit;
-    [ObservableProperty] private decimal value;
     [ObservableProperty] private Brush color;
+    [ObservableProperty] private decimal ear;
 
     [ObservableProperty] private decimal maxValue;
-    [ObservableProperty] private decimal ear;
-    [ObservableProperty] private decimal rni;
-    [ObservableProperty] private decimal ul;
-
-    [ObservableProperty] private decimal outValue;
-    [ObservableProperty] private string outUnit;
+    [ObservableProperty] private string name;
 
     [ObservableProperty] private decimal nrv;
+    [ObservableProperty] private string outUnit;
+
+    [ObservableProperty] private decimal outValue;
+    [ObservableProperty] private decimal rni;
+    [ObservableProperty] private decimal ul;
+    [ObservableProperty] private string unit;
+    [ObservableProperty] private decimal value;
 
     public void InitMaxValue()
     {
@@ -56,7 +55,7 @@ public partial class NutrientContentRatioViewModel : ObservableObject
         if (MaxValue == 0) MaxValue = 10;
 
         Color = ColorHelper.GetColor(Value, Ear, Rni, Ul);
-        
+
         if (Rni > 0)
             Nrv = Value * 100m / Rni;
     }
@@ -64,7 +63,7 @@ public partial class NutrientContentRatioViewModel : ObservableObject
 
     partial void OnMaxValueChanged(decimal oldValue, decimal newValue)
     {
-        Unit = NutritionalMap.TryGetValue(Name, out var v) ? v.Item1 : "";
+        Unit = NutritionalMap?.TryGetValue(Name, out var v) ?? false ? v : "";
         UnitHelper.ConvertToClosestUnit(Value, Unit, out var result, out var output);
         OutUnit = output;
         OutValue = result;
