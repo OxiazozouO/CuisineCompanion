@@ -48,7 +48,7 @@ public partial class EditEatingDiaryViewModel : ObservableObject
             .Where(diary => diary.EatingDiary.FileUrl is null || diary.EatingDiary.Name is null)
             .Select(diary => new KeyValuePair<ModelFlags, int>(diary.EatingDiary.Flag, diary.EatingDiary.TId))
             .ToHashSet();
-        var req = ApiEndpoints.GetGetEatingEatingDiaryInfos(new
+        var req = ApiEndpoints.GetEatingDiaryInfos(new
         {
             IdFlags
         });

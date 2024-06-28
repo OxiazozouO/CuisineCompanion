@@ -4,6 +4,9 @@ namespace CuisineCompanion.HttpClients;
 
 public static class ApiEndpoints
 {
+
+    #region 账户
+
     public static ApiRequest AccountRegister(object parameters)
     {
         return new ApiRequest
@@ -24,6 +27,16 @@ public static class ApiEndpoints
         };
     }
 
+    public static ApiRequest AccountLogout(object parameters)
+    {
+        return new ApiRequest
+        {
+            Method = POST,
+            Url = "Account/Logout",
+            Parameters = parameters
+        };
+    }
+
     public static ApiRequest AccountChangeInfo(object parameters)
     {
         return new ApiRequest
@@ -34,12 +47,12 @@ public static class ApiEndpoints
         };
     }
 
-    public static ApiRequest AccountLogout(object parameters)
+    public static ApiRequest AccountChangePassword(object parameters)
     {
         return new ApiRequest
         {
             Method = POST,
-            Url = "Account/Logout",
+            Url = "Account/ChangePassword",
             Parameters = parameters
         };
     }
@@ -54,15 +67,113 @@ public static class ApiEndpoints
         };
     }
 
-    public static ApiRequest AccountChangePassword(object parameters)
+    #endregion
+    
+
+    public static ApiRequest GetConfigs(object parameters)
     {
         return new ApiRequest
         {
             Method = POST,
-            Url = "Account/ChangePassword",
+            Url = "Config/GetConfigs",
             Parameters = parameters
         };
     }
+
+    #region 收藏
+
+    public static ApiRequest AddFavorite(object parameters)
+    {
+        return new ApiRequest
+        {
+            Method = POST,
+            Url = "Favorite/AddFavorite",
+            Parameters = parameters
+        };
+    }
+
+    public static ApiRequest RemoveFavorite(object parameters)
+    {
+        return new ApiRequest
+        {
+            Method = POST,
+            Url = "Favorite/RemoveFavorite",
+            Parameters = parameters
+        };
+    }
+
+    public static ApiRequest EditFavorite(object parameters)
+    {
+        return new ApiRequest
+        {
+            Method = POST,
+            Url = "Favorite/EditFavorite",
+            Parameters = parameters
+        };
+    }
+
+    public static ApiRequest UserFavorites(object parameters)
+    {
+        return new ApiRequest
+        {
+            Method = POST,
+            Url = "Favorite/UserFavorites",
+            Parameters = parameters
+        };
+    }
+
+    public static ApiRequest FavoriteListItems(object parameters)
+    {
+        return new ApiRequest
+        {
+            Method = POST,
+            Url = "Favorite/FavoriteListItems",
+            Parameters = parameters
+        };
+    }
+
+    public static ApiRequest AddFavoriteItem(object parameters)
+    {
+        return new ApiRequest
+        {
+            Method = POST,
+            Url = "FavoriteItem/AddFavoriteItem",
+            Parameters = parameters
+        };
+    }
+
+
+    public static ApiRequest IsLike(object parameters)
+    {
+        return new ApiRequest
+        {
+            Method = POST,
+            Url = "FavoriteItems/IsLike",
+            Parameters = parameters
+        };
+    }
+
+    public static ApiRequest RemoveFavoriteItems(object parameters)
+    {
+        return new ApiRequest
+        {
+            Method = POST,
+            Url = "FavoriteItem/RemoveFavoriteItems",
+            Parameters = parameters
+        };
+    }
+
+    public static ApiRequest RemoveFavoriteItem(object parameters)
+    {
+        return new ApiRequest
+        {
+            Method = POST,
+            Url = "FavoriteItem/RemoveFavoriteItem",
+            Parameters = parameters
+        };
+    }
+
+    #endregion
 
     public static ApiRequest IndexSearch(object parameters)
     {
@@ -104,83 +215,58 @@ public static class ApiEndpoints
         };
     }
 
-
-    public static ApiRequest GetConfigs(object parameters)
-    {
-        return new ApiRequest
-        {
-            Method = POST,
-            Url = "Config/GetConfigs",
-            Parameters = parameters
-        };
-    }
+    #region 用户信息
 
     public static ApiRequest MyAllInfo(object parameters)
     {
         return new ApiRequest
         {
             Method = POST,
-            Url = "MyInfo/MyAllInfo",
+            Url = "UserInfo/MyAllInfo",
             Parameters = parameters
         };
     }
 
-    public static ApiRequest AddInfo(object parameters)
+    public static ApiRequest AddMyInfo(object parameters)
     {
         return new ApiRequest
         {
             Method = POST,
-            Url = "MyInfo/AddInfo",
+            Url = "UserInfo/AddMyInfo",
             Parameters = parameters
         };
     }
 
-    public static ApiRequest UpdateInfo(object parameters)
+    public static ApiRequest UpdateMyInfo(object parameters)
     {
         return new ApiRequest
         {
             Method = POST,
-            Url = "MyInfo/UpdateInfo",
+            Url = "UserInfo/UpdateMyInfo",
             Parameters = parameters
         };
     }
 
-    public static ApiRequest DeleteInfo(object parameters)
+    public static ApiRequest DeleteMyInfo(object parameters)
     {
         return new ApiRequest
         {
             Method = POST,
-            Url = "MyInfo/DeleteInfo",
+            Url = "UserInfo/DeleteMyInfo",
             Parameters = parameters
         };
     }
+
+    #endregion
+
+    #region 饮食日记
 
     public static ApiRequest AddEatingDiary(object parameters)
     {
         return new ApiRequest
         {
             Method = POST,
-            Url = "MyEatingDiary/AddEatingDiary",
-            Parameters = parameters
-        };
-    }
-
-    public static ApiRequest GetEatingDiaries(object parameters)
-    {
-        return new ApiRequest
-        {
-            Method = POST,
-            Url = "MyEatingDiary/GetEatingDiaries",
-            Parameters = parameters
-        };
-    }
-
-    public static ApiRequest GetGetEatingEatingDiaryInfos(object parameters)
-    {
-        return new ApiRequest
-        {
-            Method = POST,
-            Url = "MyEatingDiary/GetEatingEatingDiaryInfos",
+            Url = "UserEatingDiary/AddEatingDiary",
             Parameters = parameters
         };
     }
@@ -190,101 +276,27 @@ public static class ApiEndpoints
         return new ApiRequest
         {
             Method = POST,
-            Url = "MyEatingDiary/DeleteEatingDiary",
+            Url = "UserEatingDiary/DeleteEatingDiary",
             Parameters = parameters
         };
     }
 
-    #region Favorite
-
-    public static ApiRequest AddFavoriteItems(object parameters)
+    public static ApiRequest GetEatingDiaries(object parameters)
     {
         return new ApiRequest
         {
             Method = POST,
-            Url = "FavoriteItems/AddFavoriteItems",
+            Url = "UserEatingDiary/GetEatingDiaries",
             Parameters = parameters
         };
     }
 
-
-    public static ApiRequest IsLike(object parameters)
+    public static ApiRequest GetEatingDiaryInfos(object parameters)
     {
         return new ApiRequest
         {
             Method = POST,
-            Url = "FavoriteItems/IsLike",
-            Parameters = parameters
-        };
-    }
-
-    public static ApiRequest RemoveFavoriteItems(object parameters)
-    {
-        return new ApiRequest
-        {
-            Method = POST,
-            Url = "FavoriteItems/RemoveFavoriteItems",
-            Parameters = parameters
-        };
-    }
-
-    public static ApiRequest RemoveFavoriteItem(object parameters)
-    {
-        return new ApiRequest
-        {
-            Method = POST,
-            Url = "FavoriteItems/RemoveFavoriteItem",
-            Parameters = parameters
-        };
-    }
-
-
-    public static ApiRequest AddFavorite(object parameters)
-    {
-        return new ApiRequest
-        {
-            Method = POST,
-            Url = "Favorites/AddFavorite",
-            Parameters = parameters
-        };
-    }
-
-    public static ApiRequest RemoveFavorite(object parameters)
-    {
-        return new ApiRequest
-        {
-            Method = POST,
-            Url = "Favorites/RemoveFavorite",
-            Parameters = parameters
-        };
-    }
-
-    public static ApiRequest EditFavorite(object parameters)
-    {
-        return new ApiRequest
-        {
-            Method = POST,
-            Url = "Favorites/EditFavorite",
-            Parameters = parameters
-        };
-    }
-
-    public static ApiRequest UserFavorites(object parameters)
-    {
-        return new ApiRequest
-        {
-            Method = POST,
-            Url = "Favorites/UserFavorites",
-            Parameters = parameters
-        };
-    }
-
-    public static ApiRequest FavoriteListItems(object parameters)
-    {
-        return new ApiRequest
-        {
-            Method = POST,
-            Url = "Favorites/FavoriteListItems",
+            Url = "UserEatingDiary/GetEatingDiaryInfos",
             Parameters = parameters
         };
     }

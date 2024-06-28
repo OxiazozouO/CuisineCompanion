@@ -37,6 +37,10 @@ public partial class EditMyInfoViewModel : ObservableObject
 
     public ObservableCollection<UserInfoModel> UpdateUserInfoList(ObservableCollection<UserInfoModel> userInfoList)
     {
+        if (userInfoList is null)
+        {
+            return null;
+        }
         return new ObservableCollection<UserInfoModel>(userInfoList.Select(Clone));
     }
 
@@ -86,7 +90,7 @@ public partial class EditMyInfoViewModel : ObservableObject
         {
             if (MsgBoxHelper.OkCancel("是否修改此历史身材数据"))
             {
-                var req2 = ApiEndpoints.UpdateInfo(new
+                var req2 = ApiEndpoints.UpdateMyInfo(new
                 {
                     MainViewModel.UserToken,
                     model.UpiId,
@@ -120,7 +124,7 @@ public partial class EditMyInfoViewModel : ObservableObject
         add:
         if (MsgBoxHelper.OkCancel("添加为新的身材数据？"))
         {
-            var req3 = ApiEndpoints.AddInfo(new
+            var req3 = ApiEndpoints.AddMyInfo(new
             {
                 MainViewModel.UserToken,
                 model.Weight,
@@ -175,7 +179,7 @@ public partial class EditMyInfoViewModel : ObservableObject
         if (MyInfo.UserInfoList is null || MyInfo.UserInfoList.Count == 0) return;
         if (MsgBoxHelper.OkCancel($"是否删除\"{MyInfo.UserNowInfo.UpdateTime:yyyy-MM-dd HH:mm:ss}\"时间的身材数据？"))
         {
-            var req = ApiEndpoints.DeleteInfo(new
+            var req = ApiEndpoints.DeleteMyInfo(new
             {
                 MainViewModel.UserToken,
                 Id = MyInfo.UserNowInfo.UpiId

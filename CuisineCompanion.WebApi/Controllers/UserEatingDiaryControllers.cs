@@ -10,9 +10,9 @@ namespace CuisineCompanion.WebApi.Controllers;
 
 [Route("api/[controller]/[action]")]
 [ApiController]
-public class MyEatingDiaryController : MyControllerBase
+public class UserEatingDiaryController : MyControllerBase
 {
-    public MyEatingDiaryController(RecipeManagementSystemContext db) : base(db)
+    public UserEatingDiaryController(RecipeManagementSystemContext db) : base(db)
     {
     }
 
@@ -144,10 +144,10 @@ public class MyEatingDiaryController : MyControllerBase
     }
 
     [HttpPost]
-    public IActionResult GetEatingEatingDiaryInfos(EatingDiaryInfoDTO dto)
+    public IActionResult GetEatingDiaryInfos(EatingDiaryInfoDTO dto)
     {
         if (dto.IdFlags.Count == 0) return Ok(new ApiResponses { Code = -1, Message = "参数错误" });
-
+        
         var recipeIds = new List<int>();
         var ingredientIds = new List<int>();
         foreach (var dtoFlag in dto.IdFlags)

@@ -9,9 +9,9 @@ namespace CuisineCompanion.WebApi.Controllers;
 
 [Route("api/[controller]/[action]")]
 [ApiController]
-public class FavoritesController : MyControllerBase
+public class FavoriteController : MyControllerBase
 {
-    public FavoritesController(RecipeManagementSystemContext db) : base(db)
+    public FavoriteController(RecipeManagementSystemContext db) : base(db)
     {
     }
 

@@ -173,7 +173,7 @@ public partial class FavoriteViewModel : ObservableObject
     {
         if (!MsgBoxHelper.OkCancel($"是否把\"{name}\"加入\"{model.CName}\"收藏夹？")) return;
 
-        var req = ApiEndpoints.AddFavoriteItems(new
+        var req = ApiEndpoints.AddFavoriteItem(new
         {
             MainViewModel.UserToken,
             model.Flag,

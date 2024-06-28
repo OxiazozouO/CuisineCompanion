@@ -7,9 +7,9 @@ namespace CuisineCompanion.WebApi.Controllers;
 
 [Route("api/[controller]/[action]")]
 [ApiController]
-public class MyInfoController : MyControllerBase
+public class UserInfoController : MyControllerBase
 {
-    public MyInfoController(RecipeManagementSystemContext db) : base(db)
+    public UserInfoController(RecipeManagementSystemContext db) : base(db)
     {
     }
 
@@ -56,7 +56,7 @@ public class MyInfoController : MyControllerBase
     }
 
     [HttpPost]
-    public IActionResult AddInfo(UserInfoAddDto dto)
+    public IActionResult AddMyInfo(UserInfoAddDto dto)
     {
         try
         {
@@ -101,7 +101,7 @@ public class MyInfoController : MyControllerBase
     }
 
     [HttpPost]
-    public IActionResult UpdateInfo(UserInfoUpdateDto dto)
+    public IActionResult UpdateMyInfo(UserInfoUpdateDto dto)
     {
         try
         {
@@ -135,9 +135,9 @@ public class MyInfoController : MyControllerBase
 
         return Ok(ApiResponses.ErrorResult);
     }
-
+    
     [HttpPost]
-    public IActionResult DeleteInfo(UserSelectionDto dto)
+    public IActionResult DeleteMyInfo(UserSelectionDto dto)
     {
         try
         {

@@ -7,14 +7,14 @@ namespace CuisineCompanion.WebApi.Controllers;
 
 [Route("api/[controller]/[action]")]
 [ApiController]
-public class FavoriteItemsController : MyControllerBase
+public class FavoriteItemController : MyControllerBase
 {
-    public FavoriteItemsController(RecipeManagementSystemContext db) : base(db)
+    public FavoriteItemController(RecipeManagementSystemContext db) : base(db)
     {
     }
 
     [HttpPost]
-    public IActionResult AddFavoriteItems(FavoriteItemCreationDto dto)
+    public IActionResult AddFavoriteItem(FavoriteItemCreationDto dto)
     {
         if (!DbFlagsHelper.TryDeFlags(dto.Flag, out var authority, out var idCategory))
             return Ok(new ApiResponses { Code = -1, Message = "参数错误" });
