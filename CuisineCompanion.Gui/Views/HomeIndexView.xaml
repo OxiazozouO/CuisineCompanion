@@ -241,7 +241,7 @@
                                                             <TextBlock
                                                                 FontSize="24"
                                                                 Foreground="#2C37C2"
-                                                                Text="{Binding CName}" />
+                                                                Text="{Binding FName}" />
                                                         </Border>
                                                         <TextBlock
                                                             FontSize="13"

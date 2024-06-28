@@ -57,7 +57,7 @@
                 Foreground="Gray"
                 HorizontalAlignment="Left"
                 Margin="10,10"
-                Text="{Binding Root.CName}" />
+                Text="{Binding Root.FName}" />
             <TextBlock
                 Margin="16,20"
                 Style="{StaticResource Text1Style}"

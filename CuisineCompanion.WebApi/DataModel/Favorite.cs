@@ -26,7 +26,7 @@ public partial class Favorite
     /// <summary>
     /// 名称
     /// </summary>
-    public string CName { get; set; } = null!;
+    public string FName { get; set; } = null!;
 
     /// <summary>
     /// 描述

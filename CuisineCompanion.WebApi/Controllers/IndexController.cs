@@ -74,12 +74,12 @@ public class IndexController : MyControllerBase
                             f.Authority == FavoriteAuthorityConstant.Public
                             && f.IdCategory == IdCategoryConstant.Recipe
                             && (string.IsNullOrEmpty(text)
-                                || (f.CName != null && f.CName.Contains(text))
+                                || (f.FName != null && f.FName.Contains(text))
                                 || (f.Refer != null && f.Refer.Contains(text))
                             )).Select(f => new
                         {
                             f.FavoriteId,
-                            f.CName,
+                            f.FName,
                             f.Refer,
                             FileUri = Url.GetFavoriteUrl(Request, f.FileUri),
                             Flag = DbFlagsHelper.GetFavoriteFlags((byte)f.Authority, (byte)f.IdCategory),

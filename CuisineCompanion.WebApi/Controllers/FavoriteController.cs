@@ -36,13 +36,13 @@ public class FavoriteController : MyControllerBase
                 });
 
             var favorite =
-                _db.Favorites.FirstOrDefault(f => f.UserId == userid && f.CName == dto.CName);
+                _db.Favorites.FirstOrDefault(f => f.UserId == userid && f.FName == dto.FName);
             if (favorite is not null) return Ok(new ApiResponses { Code = -1, Message = "此收藏夹已存在" });
 
             favorite = new Favorite
             {
                 UserId = userid,
-                CName = dto.CName,
+                FName = dto.FName,
                 Refer = dto.Refer,
                 Authority = authority,
                 IdCategory = idCategory
@@ -142,7 +142,7 @@ public class FavoriteController : MyControllerBase
                     goto ret;
             }
 
-            favorite.CName = dto.CName;
+            favorite.FName = dto.FName;
             favorite.Refer = dto.Refer;
             favorite.Authority = authority;
             favorite.IdCategory = idCategory;
@@ -186,7 +186,7 @@ public class FavoriteController : MyControllerBase
                 .Select(f => new
                 {
                     f.FavoriteId,
-                    f.CName,
+                    f.FName,
                     f.Refer,
                     FileUri = Url.GetFavoriteUrl(Request, f.FileUri),
                     Flag = DbFlagsHelper.GetFavoriteFlags((byte)f.Authority, (byte)f.IdCategory),

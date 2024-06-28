@@ -30,7 +30,7 @@ public partial class EditFavoriteViewModel : ObservableValidator
     {
         Fmodel = new FavoriteModel
         {
-            CName = model.CName,
+            FName = model.FName,
             Refer = model.Refer,
             Flag = model.Flag,
             FileUri = model.FileUri,

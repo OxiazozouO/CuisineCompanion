@@ -39,6 +39,10 @@ public partial class RecipeManagementSystemContext : DbContext
 
     public virtual DbSet<UserPhysicalInfo> UserPhysicalInfos { get; set; }
 
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseMySQL("server=localhost;user=root;password=123456;database=recipe_management_system");
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Category>(entity =>
@@ -158,11 +162,11 @@ public partial class RecipeManagementSystemContext : DbContext
                 .HasDefaultValueSql("'1'")
                 .HasComment("权限 1：私有收藏夹 2：公开菜单收藏夹")
                 .HasColumnName("authority");
-            entity.Property(e => e.CName)
+            entity.Property(e => e.FName)
                 .HasMaxLength(30)
                 .IsFixedLength()
                 .HasComment("名称")
-                .HasColumnName("c_name");
+                .HasColumnName("f_name");
             entity.Property(e => e.FileUri)
                 .HasMaxLength(60)
                 .IsFixedLength()

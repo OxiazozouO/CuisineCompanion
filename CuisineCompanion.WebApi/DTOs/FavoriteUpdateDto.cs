@@ -30,7 +30,7 @@ public record FavoriteCreationDto : FavoriteBaseDto
 
     [Required(ErrorMessage = "收藏夹名称不能为空")]
     [StringLength(30, ErrorMessage = "简介不能超过{1}个字符")]
-    public string CName { get; set; }
+    public string FName { get; set; }
 
     [StringLength(198, ErrorMessage = "收藏夹简介不能超过{1}个字符")]
     public string Refer { get; set; }
@@ -47,7 +47,7 @@ public record FavoriteUpdateDto : FavoriteBaseDto
 
     [Required(ErrorMessage = "收藏夹名称不能为空")]
     [StringLength(100, ErrorMessage = "简介不能超过{1}个字符")]
-    public string CName { get; set; }
+    public string FName { get; set; }
 
     [StringLength(198, ErrorMessage = "收藏夹简介不能超过{1}个字符")]
     public string Refer { get; set; }

@@ -114,7 +114,7 @@
                                             <common:CornerRadiusImage Source="{Binding FileUri}" Style="{StaticResource CornerRadiusImageStyle}" />
 
                                             <StackPanel Margin="8,0,0,0" Orientation="Vertical">
-                                                <TextBlock Style="{StaticResource Fih1}" Text="{Binding CName}" />
+                                                <TextBlock Style="{StaticResource Fih1}" Text="{Binding FName}" />
                                                 <TextBlock Style="{StaticResource Fih2}" Text="{Binding Refer}" />
                                                 <Border Background="#FFDCC2" Style="{StaticResource FavoriteItemBorderStyle}">
                                                     <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
@@ -190,7 +190,7 @@
                                                 <TextBlock
                                                     Foreground="#3B8100"
                                                     Style="{StaticResource Fih1}"
-                                                    Text="{Binding CName}" />
+                                                    Text="{Binding FName}" />
                                                 <TextBlock
                                                     Foreground="#3B8100"
                                                     Style="{StaticResource Fih2}"
@@ -276,7 +276,7 @@
                                                 <TextBlock
                                                     Foreground="#2C37C2"
                                                     Style="{StaticResource Fih1}"
-                                                    Text="{Binding CName}" />
+                                                    Text="{Binding FName}" />
                                                 <TextBlock
                                                     Foreground="#2C37C2"
                                                     Style="{StaticResource Fih2}"

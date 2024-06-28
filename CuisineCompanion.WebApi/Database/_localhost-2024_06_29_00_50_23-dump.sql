@@ -136,7 +136,7 @@ CREATE TABLE `favorite` (
                             `favorite_id` int NOT NULL AUTO_INCREMENT COMMENT '收藏id',
                             `user_id` int NOT NULL COMMENT '用户id',
                             `file_uri` char(60) NOT NULL COMMENT '多媒体文件',
-                            `c_name` char(30) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '名称',
+                            `f_name` char(30) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '名称',
                             `refer` char(200) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL COMMENT '描述',
                             `authority` tinyint NOT NULL DEFAULT '1' COMMENT '权限 1：私有收藏夹 2：公开菜单收藏夹',
                             `id_category` tinyint NOT NULL DEFAULT '2' COMMENT '收藏类型 1：食材 2：食谱 3：菜单',
@@ -382,4 +382,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-06-29  0:50:23
+-- Dump completed on 2024-06-29  1:52:54

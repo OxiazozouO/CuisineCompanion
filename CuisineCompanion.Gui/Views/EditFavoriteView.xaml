@@ -115,7 +115,7 @@
                         Style="{StaticResource Input}"
                         TipBoxText="收藏夹的名称">
                         <common:TipTextBox.InputView>
-                            <TextBox Text="{Binding CName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                            <TextBox Text="{Binding FName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
                         </common:TipTextBox.InputView>
                     </common:TipTextBox>
                 </Grid>

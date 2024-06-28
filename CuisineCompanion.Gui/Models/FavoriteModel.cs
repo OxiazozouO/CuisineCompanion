@@ -9,7 +9,7 @@ public partial class FavoriteModel : ObservableValidator
     [StringLength(30, ErrorMessage = "简介不能超过{1}个字符")]
     [ObservableProperty]
     [NotifyDataErrorInfo]
-    private string cName;
+    private string fName;
 
     [ObservableProperty] private int favoriteId;
 

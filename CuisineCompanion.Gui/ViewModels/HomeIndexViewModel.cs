@@ -120,7 +120,7 @@ public partial class HomeIndexViewModel : ObservableObject
     [RelayCommand]
     private static void OpenFavoriteView(FavoriteModel model)
     {
-        MainViewModel.Navigate.Navigate($"{model.CName} 收藏夹详情",
+        MainViewModel.Navigate.Navigate($"{model.FName} 收藏夹详情",
             new FavoriteItemView
             {
                 DataContext = new FavoriteItemViewModel

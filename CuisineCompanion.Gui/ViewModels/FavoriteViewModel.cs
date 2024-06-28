@@ -38,7 +38,7 @@ public partial class FavoriteViewModel : ObservableObject
             MainViewModel.UserToken,
             Flag = f,
             FileUrl = fileName,
-            model.CName,
+            model.FName,
             model.Refer
         });
 
@@ -85,7 +85,7 @@ public partial class FavoriteViewModel : ObservableObject
             Flag = (byte)f,
             model.FavoriteId,
             FileName = fileName,
-            model.CName,
+            model.FName,
             model.Refer
         });
 
@@ -93,7 +93,7 @@ public partial class FavoriteViewModel : ObservableObject
         {
             MyFavorites.Favorite.Remove(oldModel);
 
-            oldModel.CName = model.CName;
+            oldModel.FName = model.FName;
             oldModel.Refer = model.Refer;
             oldModel.Flag = (byte)f;
             if (ret.Data is not null)
@@ -120,7 +120,7 @@ public partial class FavoriteViewModel : ObservableObject
     private void RemoveFavorite(FavoriteModel model)
     {
         tag = true;
-        if (MsgBoxHelper.OkCancel($"是否删除\"{model.CName}\"收藏夹？ 此操作将删除该收藏夹下的所有{model.ItemsCount}个收藏。"))
+        if (MsgBoxHelper.OkCancel($"是否删除\"{model.FName}\"收藏夹？ 此操作将删除该收藏夹下的所有{model.ItemsCount}个收藏。"))
         {
             var req = ApiEndpoints.RemoveFavorite(new
             {
@@ -171,7 +171,7 @@ public partial class FavoriteViewModel : ObservableObject
 
     private void AddTo(FavoriteModel model, string name, int tid)
     {
-        if (!MsgBoxHelper.OkCancel($"是否把\"{name}\"加入\"{model.CName}\"收藏夹？")) return;
+        if (!MsgBoxHelper.OkCancel($"是否把\"{name}\"加入\"{model.FName}\"收藏夹？")) return;
 
         var req = ApiEndpoints.AddFavoriteItem(new
         {
@@ -195,7 +195,7 @@ public partial class FavoriteViewModel : ObservableObject
 
     private void OpenView(FavoriteModel model)
     {
-        MainViewModel.Navigate.Navigate($"{model.CName} 收藏夹详情",
+        MainViewModel.Navigate.Navigate($"{model.FName} 收藏夹详情",
             new FavoriteItemView
             {
                 DataContext = new FavoriteItemViewModel
