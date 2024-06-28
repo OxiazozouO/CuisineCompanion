@@ -103,11 +103,11 @@ DROP TABLE IF EXISTS `eating_diary`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `eating_diary` (
                                 `ed_id` int NOT NULL AUTO_INCREMENT COMMENT 'id',
-                                `user_id` int NOT NULL,
-                                `id_category` tinyint NOT NULL COMMENT '0：食材  1：食谱',
+                                `user_id` int NOT NULL COMMENT '用户id',
+                                `id_category` tinyint NOT NULL COMMENT '目标类型 0：食材  1：食谱',
                                 `tid` int DEFAULT NULL COMMENT '目标id',
                                 `dosages` json NOT NULL COMMENT '用量列表,（包含id和用量）',
-                                `short_nutrient_content` json NOT NULL COMMENT '简短的营养元素表 （能量、碳水、蛋白质、脂肪）',
+                                `nutrient_content` json NOT NULL COMMENT '营养元素缓存',
                                 `update_time` datetime NOT NULL COMMENT '记录的时间',
                                 PRIMARY KEY (`ed_id`),
                                 KEY `eating_diary_user_user_id_fk` (`user_id`),
@@ -135,7 +135,7 @@ DROP TABLE IF EXISTS `favorite`;
 CREATE TABLE `favorite` (
                             `favorite_id` int NOT NULL AUTO_INCREMENT COMMENT '收藏id',
                             `user_id` int NOT NULL COMMENT '用户id',
-                            `file_uri` char(60) NOT NULL,
+                            `file_uri` char(60) NOT NULL COMMENT '多媒体文件',
                             `c_name` char(30) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '名称',
                             `refer` char(200) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL COMMENT '描述',
                             `authority` tinyint NOT NULL DEFAULT '1' COMMENT '权限 1：私有收藏夹 2：公开菜单收藏夹',
@@ -224,7 +224,7 @@ DROP TABLE IF EXISTS `preparation_step`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `preparation_step` (
-                                    `preparation_step_id` int NOT NULL AUTO_INCREMENT,
+                                    `preparation_step_id` int NOT NULL AUTO_INCREMENT COMMENT 'id',
                                     `recipe_id` int NOT NULL COMMENT '食谱id',
                                     `sequence_number` int NOT NULL COMMENT '顺序编号',
                                     `title` char(30) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL COMMENT '标题',
@@ -257,7 +257,7 @@ DROP TABLE IF EXISTS `recipe`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `recipe` (
-                          `recipe_id` int NOT NULL AUTO_INCREMENT,
+                          `recipe_id` int NOT NULL AUTO_INCREMENT COMMENT 'id',
                           `user_id` int NOT NULL COMMENT '创建用户id',
                           `title` char(30) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL COMMENT '标题',
                           `r_name` char(30) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL COMMENT '名称',
@@ -322,9 +322,9 @@ CREATE TABLE `user` (
                         `password` char(44) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '密码',
                         `email` char(30) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '邮箱',
                         `phone` char(11) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '手机',
-                        `Salt` char(49) NOT NULL,
+                        `Salt` char(49) NOT NULL COMMENT '盐',
                         `gender` tinyint(1) NOT NULL DEFAULT '0' COMMENT '性别 1：男生、0：女生',
-                        `birth_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '生日   年龄至少要4岁以上',
+                        `birth_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '生日',
                         `is_logout` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否注销',
                         PRIMARY KEY (`user_id`),
                         UNIQUE KEY `user_pk` (`u_name`)
@@ -355,8 +355,8 @@ CREATE TABLE `user_physical_info` (
                                       `weight` double NOT NULL DEFAULT '30' COMMENT '体重(kg)',
                                       `activity_level` char(20) NOT NULL COMMENT '运动习惯',
                                       `protein_requirement` double NOT NULL COMMENT '蛋白质摄入量',
-                                      `fat_percentage` double NOT NULL COMMENT '脂肪功能占比',
-                                      `update_time` datetime NOT NULL,
+                                      `fat_percentage` double NOT NULL COMMENT '脂肪供能占比',
+                                      `update_time` datetime NOT NULL COMMENT '更新时间',
                                       PRIMARY KEY (`upi_id`),
                                       KEY `user_physical_info_user_user_id_fk` (`u_id`),
                                       CONSTRAINT `user_physical_info_user_user_id_fk` FOREIGN KEY (`u_id`) REFERENCES `user` (`user_id`)
@@ -382,4 +382,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-06-28 17:55:56
+-- Dump completed on 2024-06-29  0:50:23

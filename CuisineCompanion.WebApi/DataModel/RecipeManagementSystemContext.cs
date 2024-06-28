@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 
 namespace CuisineCompanion.WebApi.DataModel;
 
@@ -37,10 +39,6 @@ public partial class RecipeManagementSystemContext : DbContext
 
     public virtual DbSet<UserPhysicalInfo> UserPhysicalInfos { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https: //go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseMySQL("server=localhost;user=root;password=123456;database=recipe_management_system");
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Category>(entity =>
@@ -48,6 +46,8 @@ public partial class RecipeManagementSystemContext : DbContext
             entity.HasKey(e => e.CategoryId).HasName("PRIMARY");
 
             entity.ToTable("category", tb => tb.HasComment("分类"));
+
+            entity.HasIndex(e => e.CName, "category_pk").IsUnique();
 
             entity.Property(e => e.CategoryId)
                 .HasComment("分类id")
@@ -108,7 +108,7 @@ public partial class RecipeManagementSystemContext : DbContext
         {
             entity.HasKey(e => e.EdId).HasName("PRIMARY");
 
-            entity.ToTable("eating_diary", tb => tb.HasComment("食用日记"));
+            entity.ToTable("eating_diary", tb => tb.HasComment("饮食日记"));
 
             entity.HasIndex(e => e.UserId, "eating_diary_user_user_id_fk");
 
@@ -120,12 +120,12 @@ public partial class RecipeManagementSystemContext : DbContext
                 .HasColumnType("json")
                 .HasColumnName("dosages");
             entity.Property(e => e.IdCategory)
-                .HasComment("0：食材  1：食谱")
+                .HasComment("目标类型 0：食材  1：食谱")
                 .HasColumnName("id_category");
-            entity.Property(e => e.ShortNutrientContent)
-                .HasComment("简短的营养元素表 （能量、碳水、蛋白质、脂肪）")
+            entity.Property(e => e.NutrientContent)
+                .HasComment("营养元素缓存")
                 .HasColumnType("json")
-                .HasColumnName("short_nutrient_content");
+                .HasColumnName("nutrient_content");
             entity.Property(e => e.Tid)
                 .HasComment("目标id")
                 .HasColumnName("tid");
@@ -133,7 +133,9 @@ public partial class RecipeManagementSystemContext : DbContext
                 .HasComment("记录的时间")
                 .HasColumnType("datetime")
                 .HasColumnName("update_time");
-            entity.Property(e => e.UserId).HasColumnName("user_id");
+            entity.Property(e => e.UserId)
+                .HasComment("用户id")
+                .HasColumnName("user_id");
 
             entity.HasOne(d => d.User).WithMany(p => p.EatingDiaries)
                 .HasForeignKey(d => d.UserId)
@@ -164,6 +166,7 @@ public partial class RecipeManagementSystemContext : DbContext
             entity.Property(e => e.FileUri)
                 .HasMaxLength(60)
                 .IsFixedLength()
+                .HasComment("多媒体文件")
                 .HasColumnName("file_uri");
             entity.Property(e => e.IdCategory)
                 .HasDefaultValueSql("'2'")
@@ -269,7 +272,9 @@ public partial class RecipeManagementSystemContext : DbContext
 
             entity.HasIndex(e => e.RecipeId, "preparation_step_recipe_recipe_id_fk");
 
-            entity.Property(e => e.PreparationStepId).HasColumnName("preparation_step_id");
+            entity.Property(e => e.PreparationStepId)
+                .HasComment("id")
+                .HasColumnName("preparation_step_id");
             entity.Property(e => e.FileUri)
                 .HasMaxLength(60)
                 .IsFixedLength()
@@ -319,7 +324,9 @@ public partial class RecipeManagementSystemContext : DbContext
 
             entity.HasIndex(e => e.UserId, "recipe____fk");
 
-            entity.Property(e => e.RecipeId).HasColumnName("recipe_id");
+            entity.Property(e => e.RecipeId)
+                .HasComment("id")
+                .HasColumnName("recipe_id");
             entity.Property(e => e.FileUri)
                 .HasMaxLength(60)
                 .IsFixedLength()
@@ -398,7 +405,7 @@ public partial class RecipeManagementSystemContext : DbContext
                 .HasColumnName("user_id");
             entity.Property(e => e.BirthDate)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
-                .HasComment("生日   年龄至少要4岁以上")
+                .HasComment("生日")
                 .HasColumnType("datetime")
                 .HasColumnName("birth_date");
             entity.Property(e => e.Email)
@@ -424,7 +431,8 @@ public partial class RecipeManagementSystemContext : DbContext
                 .HasColumnName("phone");
             entity.Property(e => e.Salt)
                 .HasMaxLength(49)
-                .IsFixedLength();
+                .IsFixedLength()
+                .HasComment("盐");
             entity.Property(e => e.UName)
                 .HasMaxLength(20)
                 .IsFixedLength()
@@ -449,7 +457,7 @@ public partial class RecipeManagementSystemContext : DbContext
                 .HasComment("运动习惯")
                 .HasColumnName("activity_level");
             entity.Property(e => e.FatPercentage)
-                .HasComment("脂肪功能占比")
+                .HasComment("脂肪供能占比")
                 .HasColumnName("fat_percentage");
             entity.Property(e => e.Height)
                 .HasDefaultValueSql("'120'")
@@ -462,6 +470,7 @@ public partial class RecipeManagementSystemContext : DbContext
                 .HasComment("用户id")
                 .HasColumnName("u_id");
             entity.Property(e => e.UpdateTime)
+                .HasComment("更新时间")
                 .HasColumnType("datetime")
                 .HasColumnName("update_time");
             entity.Property(e => e.Weight)

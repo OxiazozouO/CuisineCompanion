@@ -1,45 +1,51 @@
-﻿namespace CuisineCompanion.WebApi.DataModel;
+﻿using System;
+using System.Collections.Generic;
+
+namespace CuisineCompanion.WebApi.DataModel;
 
 /// <summary>
-///     用户身体数据
+/// 用户身体数据
 /// </summary>
-public class UserPhysicalInfo
+public partial class UserPhysicalInfo
 {
     /// <summary>
-    ///     id
+    /// id
     /// </summary>
     public int UpiId { get; set; }
 
     /// <summary>
-    ///     用户id
+    /// 用户id
     /// </summary>
     public int UId { get; set; }
 
     /// <summary>
-    ///     身高
+    /// 身高
     /// </summary>
     public double Height { get; set; }
 
     /// <summary>
-    ///     体重(kg)
+    /// 体重(kg)
     /// </summary>
     public double Weight { get; set; }
 
     /// <summary>
-    ///     运动习惯
+    /// 运动习惯
     /// </summary>
     public string ActivityLevel { get; set; } = null!;
 
     /// <summary>
-    ///     蛋白质摄入量
+    /// 蛋白质摄入量
     /// </summary>
     public double ProteinRequirement { get; set; }
 
     /// <summary>
-    ///     脂肪功能占比
+    /// 脂肪供能占比
     /// </summary>
     public double FatPercentage { get; set; }
 
+    /// <summary>
+    /// 更新时间
+    /// </summary>
     public DateTime UpdateTime { get; set; }
 
     public virtual User UIdNavigation { get; set; } = null!;

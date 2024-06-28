@@ -1,17 +1,20 @@
-﻿namespace CuisineCompanion.WebApi.DataModel;
+﻿using System;
+using System.Collections.Generic;
+
+namespace CuisineCompanion.WebApi.DataModel;
 
 /// <summary>
-///     分类
+/// 分类
 /// </summary>
-public class Category
+public partial class Category
 {
     /// <summary>
-    ///     分类id
+    /// 分类id
     /// </summary>
     public int CategoryId { get; set; }
 
     /// <summary>
-    ///     名称
+    /// 名称
     /// </summary>
     public string CName { get; set; } = null!;
 }

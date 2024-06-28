@@ -12,7 +12,7 @@ builder.Services.AddSwaggerGen();
 
 //数据库上下文
 builder.Services.AddDbContext<RecipeManagementSystemContext>(m => m.UseMySQL(
-    builder.Configuration.GetConnectionString("DefaultConnection"))
+    "server=localhost;user=root;password=123456;database=recipe_management_system")
 );
 
 var app = builder.Build();

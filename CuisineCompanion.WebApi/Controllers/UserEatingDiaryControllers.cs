@@ -39,7 +39,7 @@ public class UserEatingDiaryController : MyControllerBase
                 UpdateTime = dto.UpdateTime,
                 Tid = dto.TId,
                 Dosages = dto.Dosages.ToJson(),
-                ShortNutrientContent = dto.Nutrients.ToJson()
+                NutrientContent = dto.Nutrients.ToJson()
             };
             _db.Add(eatingDiary);
             if (_db.SaveChanges() == 1)
@@ -125,7 +125,7 @@ public class UserEatingDiaryController : MyControllerBase
                     ed.UpdateTime,
                     Flag = DbFlagsHelper.GetFlags((byte)ed.IdCategory),
                     ed.Dosages,
-                    Nutrients = ed.ShortNutrientContent
+                    Nutrients = ed.NutrientContent
                 }).ToList();
 
             return Ok(new ApiResponses
