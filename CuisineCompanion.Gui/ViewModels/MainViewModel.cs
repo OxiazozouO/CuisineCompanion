@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Windows;
@@ -28,7 +29,8 @@ public class MainViewModel : ObservableObject
         {
             if (_myInfo is not null) return _myInfo;
             _myInfo = ApiService.GetMyAllInfo() ?? new MyInfoModel();
-            InitNutritional(_myInfo.Gender, _myInfo.BirthDate.GetAge());
+            if (_myInfo is not null)
+                InitNutritional(_myInfo.Gender, _myInfo.BirthDate.GetAge());
             return _myInfo;
         }
         set
@@ -326,14 +328,13 @@ public class MainViewModel : ObservableObject
             result.TryGetValue("EAR", out _EAR);
             result.TryGetValue("RNI", out _RNI);
             result.TryGetValue("UL", out _UL);
-            
         }
         catch (Exception e)
         {
             MsgBoxHelper.TryError("初始化失败！\n", e.Message);
         }
     }
-    
+
     public static bool TryGetNutritional(string key, out string? value)
     {
         value = null;
@@ -375,6 +376,13 @@ public class MainViewModel : ObservableObject
             return _mainFrame;
         }
         set => _mainFrame = value;
+    }
+    
+    public static void ReStart()
+    {
+        string fileName = Process.GetCurrentProcess().MainModule?.FileName;
+        Process.Start(fileName);
+        Application.Current.Shutdown();
     }
 
     #endregion

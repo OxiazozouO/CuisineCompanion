@@ -147,8 +147,8 @@
     <value>Settings</value>
   </data>
     <data name="Regster_Instruction" xml:space="preserve">
-    <value>Create a new account to use Recipe Assistant</value>
-  </data>
+        <value>Create a new account to use the recipe and health management platform</value>
+    </data>
     <data name="Str_Password_Confirm" xml:space="preserve">
     <value>Confirm password</value>
   </data>

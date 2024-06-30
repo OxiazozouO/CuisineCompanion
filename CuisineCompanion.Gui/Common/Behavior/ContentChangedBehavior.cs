@@ -121,6 +121,7 @@ public class ContentChangedBehavior : Behavior<UIElement>
             default:
                 return;
         }
+        AssociatedObject_ContentChanged(null,null);
     }
 
 

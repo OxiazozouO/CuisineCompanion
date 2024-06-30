@@ -34,7 +34,7 @@ public partial class MenuBarViewModel : ObservableObject
             return url switch
             {
                 PageUrl.Home => "首页",
-                PageUrl.Collection => "收藏的菜谱",
+                PageUrl.Collection => "我的收藏",
                 PageUrl.Analysis => "饮食日记",
                 PageUrl.MyInfo => "我的信息",
                 _ => ""

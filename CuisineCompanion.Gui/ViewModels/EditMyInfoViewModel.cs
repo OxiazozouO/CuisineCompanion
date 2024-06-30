@@ -222,7 +222,7 @@ public partial class EditMyInfoViewModel : ObservableObject
             LogoutModel.Password
         });
         if (req.Execute(out var res))
-            MainViewModel.Navigate.GoLogin();
+            MainViewModel.ReStart();
         else
             MsgBoxHelper.TryError("注销失败");
     }
@@ -282,7 +282,7 @@ public partial class EditMyInfoViewModel : ObservableObject
     private static void SignOut()
     {
         if (!MsgBoxHelper.OkCancel("是否退出登录？")) return;
-        MainViewModel.Navigate.GoLogin();
+        MainViewModel.ReStart();
     }
 
 

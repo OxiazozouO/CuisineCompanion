@@ -1,6 +1,6 @@
 ﻿<UserControl
     Background="White"
-    DataContext="{Binding Instance, Source={StaticResource HomeIndexViewModelInstance}}"
+    DataContext="{Binding BindingHelper, Source={StaticResource HomeIndexViewModelInstance}}"
     mc:Ignorable="d"
     x:Class="CuisineCompanion.Views.HomeIndexView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -35,10 +35,12 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
+
                 <views:SimpleSearchBox
                     Grid.Row="0"
                     HorizontalAlignment="Right"
                     Margin="0,0,10,0" />
+
                 <ScrollViewer
                     Grid.Row="1"
                     Margin="5,1"
@@ -48,70 +50,82 @@
                     </b:Interaction.Behaviors>
                     <Grid ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                         <StackPanel Orientation="Vertical">
-                            <ListBox
-                                Background="#7AF0FFFF"
-                                ItemsSource="{Binding FilterOptions}"
-                                SelectedItem="{Binding Option, Mode=TwoWay}"
-                                SelectionMode="Single">
-                                <ListBox.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <StackPanel Orientation="Horizontal" />
-                                    </ItemsPanelTemplate>
-                                </ListBox.ItemsPanel>
-                                <ListBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <Border
-                                            Background="#A9FFFFFF"
-                                            BorderBrush="#4D997B"
-                                            BorderThickness="1"
-                                            CornerRadius="5"
-                                            Margin="10,10,10,5">
-                                            <StackPanel Orientation="Vertical">
-                                                <common:CornerRadiusImage
-                                                    CornerRadius="5"
-                                                    Height="90"
-                                                    Source="{Binding ImageSource}"
-                                                    Width="90" />
-                                                <TextBlock
-                                                    FontSize="24"
-                                                    Foreground="#4D997B"
-                                                    HorizontalAlignment="Center"
-                                                    Text="{Binding Label}" />
-                                            </StackPanel>
-                                            <b:Interaction.Behaviors>
-                                                <behavior:PressReboundBehavior />
-                                                <behavior:FocusAmplificationBehavior Mod="Weak" />
-                                            </b:Interaction.Behaviors>
-                                        </Border>
-                                    </DataTemplate>
-                                </ListBox.ItemTemplate>
-                                <ListBox.ItemContainerStyle>
-                                    <Style TargetType="ListBoxItem">
-                                        <Setter Property="MinHeight" Value="40" />
-                                        <Setter Property="Template">
-                                            <Setter.Value>
-                                                <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                                                    <Grid>
-                                                        <Border CornerRadius="16" x:Name="Border2" />
-                                                        <ContentPresenter VerticalAlignment="Center" />
-                                                    </Grid>
-                                                    <ControlTemplate.Triggers>
-                                                        <Trigger Property="IsSelected" Value="True">
-                                                            <Setter Property="Background" TargetName="Border2" Value="{x:Static helper:ColorHelper.A}" />
-                                                            <Setter Property="Opacity" TargetName="Border2" Value="0.9" />
-                                                        </Trigger>
+                            <StackPanel Background="#7AF0FFFF" Orientation="Horizontal">
+                                <ListBox
+                                    Background="{x:Null}"
+                                    ItemsSource="{Binding FilterOptions}"
+                                    SelectedItem="{Binding Option, Mode=TwoWay}"
+                                    SelectionMode="Single">
+                                    <ListBox.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Horizontal" />
+                                        </ItemsPanelTemplate>
+                                    </ListBox.ItemsPanel>
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border
+                                                Background="#A9FFFFFF"
+                                                BorderBrush="#4D997B"
+                                                BorderThickness="1"
+                                                CornerRadius="5"
+                                                Margin="10,10,10,5">
+                                                <StackPanel Orientation="Vertical">
+                                                    <common:CornerRadiusImage
+                                                        CornerRadius="5"
+                                                        Height="90"
+                                                        Source="{Binding ImageSource}"
+                                                        Width="90" />
+                                                    <TextBlock
+                                                        FontSize="24"
+                                                        Foreground="#4D997B"
+                                                        HorizontalAlignment="Center"
+                                                        Text="{Binding Label}" />
+                                                </StackPanel>
+                                                <b:Interaction.Behaviors>
+                                                    <behavior:PressReboundBehavior />
+                                                    <behavior:FocusAmplificationBehavior Mod="Weak" />
+                                                </b:Interaction.Behaviors>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                    <ListBox.ItemContainerStyle>
+                                        <Style TargetType="ListBoxItem">
+                                            <Setter Property="MinHeight" Value="40" />
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                                        <Grid>
+                                                            <Border CornerRadius="16" x:Name="Border2" />
+                                                            <ContentPresenter VerticalAlignment="Center" />
+                                                        </Grid>
+                                                        <ControlTemplate.Triggers>
+                                                            <Trigger Property="IsSelected" Value="True">
+                                                                <Setter Property="Background" TargetName="Border2" Value="{x:Static helper:ColorHelper.A}" />
+                                                                <Setter Property="Opacity" TargetName="Border2" Value="0.9" />
+                                                            </Trigger>
 
-                                                        <Trigger Property="IsMouseOver" Value="True">
-                                                            <Setter Property="Background" TargetName="Border2" Value="{x:Static helper:ColorHelper.O}" />
-                                                            <Setter Property="Opacity" TargetName="Border2" Value="0.8" />
-                                                        </Trigger>
-                                                    </ControlTemplate.Triggers>
-                                                </ControlTemplate>
-                                            </Setter.Value>
-                                        </Setter>
-                                    </Style>
-                                </ListBox.ItemContainerStyle>
-                            </ListBox>
+                                                            <Trigger Property="IsMouseOver" Value="True">
+                                                                <Setter Property="Background" TargetName="Border2" Value="{x:Static helper:ColorHelper.O}" />
+                                                                <Setter Property="Opacity" TargetName="Border2" Value="0.8" />
+                                                            </Trigger>
+                                                        </ControlTemplate.Triggers>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </ListBox.ItemContainerStyle>
+                                </ListBox>
+
+                                <common:CornerRadiusImage
+                                    CornerRadius="5"
+                                    Grid.Column="0"
+                                    Height="140"
+                                    HorizontalAlignment="Center"
+                                    Source="../Images/app.png"
+                                    VerticalAlignment="Center"
+                                    Width="140" />
+                            </StackPanel>
+
                             <Grid>
                                 <ItemsControl ItemsSource="{Binding Recipes}" Visibility="{Binding Recipes, Converter={StaticResource NullOrEmptyToVisibilityConverter}, FallbackValue=Collapsed}">
                                     <ItemsControl.ItemsPanel>

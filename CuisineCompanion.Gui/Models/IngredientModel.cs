@@ -44,7 +44,7 @@ public partial class IngredientModel : ObservableObject
         foreach (var (key, value) in Nutritional)
         {
             dic.TryAdd(key, 0m);
-            dic[key] += UnitHelper.ConvertToBaseUnit(InputDosage, InputUnit) * value / 100;
+            dic[key] += UnitHelper.ConvertToBaseUnit(InputDosage * (decimal)Content, InputUnit) * value / 100;
         }
     }
 

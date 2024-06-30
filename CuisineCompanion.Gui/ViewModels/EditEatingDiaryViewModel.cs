@@ -233,15 +233,12 @@ public partial class EditEatingDiaryViewModel : ObservableObject
         {
             if (MsgBoxHelper.TryError(Time.Error + SelectedItem.Error)) return;
             var model = AddTo(SelectedItem.Date + Time.Time);
+            if (model is null) return;
             UpdateUI(model, 1);
             MsgBoxHelper.Info("添加成功！");
         }
     }
 
-    // private async Task UpdateUIAsync(EatingDiaryAtViewModel model, int i)
-    // {
-    //     await Task.Run(() => { UpdateUI(model, i); });
-    // }
     /// <summary>
     ///     更新ui
     /// </summary>
@@ -249,11 +246,13 @@ public partial class EditEatingDiaryViewModel : ObservableObject
     /// <param name="i">1：添加  2：删除</param>
     private void UpdateUI(EatingDiaryAtViewModel model, int i)
     {
+        
         var item = SelectedItem;
         var item2 = SelectedEatingDiaries;
         switch (i)
         {
             case 1:
+                model.InitNutritional((decimal)MainViewModel.Instance.MyInfo.Tdee);
                 var instance = HomeIndexViewModel._instance;
                 EatingDiary.EatingDiaries.Add(model);
                 SelectedEatingDiaries.Add(model);

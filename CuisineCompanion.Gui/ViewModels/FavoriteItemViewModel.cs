@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -68,64 +69,46 @@ public partial class FavoriteItemViewModel : ObservableObject
     {
         var f = (ModelFlags)Root.Flag;
         var isExists = _searchCache.TryGetValue(SearchText, out var res);
+
         if (f.Exists(ModelFlags.Ingredient))
         {
-            if (isExists)
-            {
-                Ingredients = res as ObservableCollection<IngredientInfoViewModel>;
-            }
-            else
-            {
-                if (_searchCache[""] is ObservableCollection<IngredientInfoViewModel> list)
-                {
-                    Ingredients = new ObservableCollection<IngredientInfoViewModel>(
-                        list.Where(i =>
-                            (i.Ingredient.IName != null && i.Ingredient.IName.Contains(SearchText))
-                            || (i.Ingredient.Refer != null && i.Ingredient.Refer.Contains(SearchText))
-                        ));
-                    if (Ingredients.Count != 0)
-                        _searchCache[SearchText] = Ingredients;
-                }
-            }
+            Ingredients = GetSearchResults<IngredientInfoViewModel>(isExists, res, i =>
+                (i.Ingredient.IName != null && i.Ingredient.IName.Contains(SearchText))
+                || (i.Ingredient.Refer != null && i.Ingredient.Refer.Contains(SearchText))
+            );
         }
         else if (f.Exists(ModelFlags.Recipe))
         {
-            if (isExists)
-            {
-                Recipes = res as ObservableCollection<RecipeInfoViewModel>;
-            }
-            else
-            {
-                if (_searchCache[""] is ObservableCollection<RecipeInfoViewModel> list)
-                {
-                    Recipes = new ObservableCollection<RecipeInfoViewModel>(list.Where(r =>
-                        (r.Summary != null && r.Summary.Contains(SearchText))
-                        || (r.Title != null && r.Title.Contains(SearchText))
-                    ));
-                    if (Recipes.Count != 0)
-                        _searchCache[SearchText] = Recipes;
-                }
-            }
+            Recipes = GetSearchResults<RecipeInfoViewModel>(isExists, res, r =>
+                (r.Summary != null && r.Summary.Contains(SearchText))
+                || (r.Title != null && r.Title.Contains(SearchText))
+            );
         }
         else if (f.Exists(ModelFlags.Menu))
         {
-            if (isExists)
-            {
-                Menus = res as ObservableCollection<RecipeInfoViewModel>;
-            }
-            else
-            {
-                if (_searchCache[""] is ObservableCollection<RecipeInfoViewModel> list)
-                {
-                    Menus = new ObservableCollection<RecipeInfoViewModel>(list.Where(r =>
-                        (r.Summary != null && r.Summary.Contains(SearchText))
-                        || (r.Title != null && r.Title.Contains(SearchText))
-                    ));
-                    if (Menus.Count != 0)
-                        _searchCache[SearchText] = Menus;
-                }
-            }
+            Menus = GetSearchResults<RecipeInfoViewModel>(isExists, res, r =>
+                (r.Summary != null && r.Summary.Contains(SearchText))
+                || (r.Title != null && r.Title.Contains(SearchText))
+            );
         }
+    }
+
+    private ObservableCollection<T> GetSearchResults<T>(bool isExists, object res, Func<T, bool> predicate)
+    {
+        if (isExists)
+        {
+            return res as ObservableCollection<T>;
+        }
+
+        if (_searchCache[""] is ObservableCollection<T> list)
+        {
+            var results = new ObservableCollection<T>(list.Where(predicate));
+            if (results.Count != 0)
+                _searchCache[SearchText] = results;
+            return results;
+        }
+
+        return new ObservableCollection<T>();
     }
 
     [RelayCommand]

@@ -161,7 +161,7 @@ public partial class IngredientViewModel : ObservableObject, ILike
                     EatingDiary = new EatingDiaryModel
                     {
                         TId = IngredientModel.IngredientId,
-                        Flag = ModelFlags.Recipe,
+                        Flag = ModelFlags.Ingredient,
                         EdId = int.Parse(res.Data.ToString()),
                         FileUrl = IngredientModel.FileUri,
                         Name = IngredientModel.IName,

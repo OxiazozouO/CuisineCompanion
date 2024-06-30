@@ -87,6 +87,20 @@ public partial class MyInfoModel : ObservableValidator
         }
     }
 
+    partial void OnBirthDateChanging(DateTime oldValue, DateTime newValue)
+    {
+        Init();
+    }
+
+    partial void OnGenderChanging(bool oldValue, bool newValue)
+    {
+        Init();
+    }
+
+    
+
+    
+
     partial void OnUserInfoListChanged(ObservableCollection<UserInfoModel>? oldValue,
         ObservableCollection<UserInfoModel> newValue)
     {

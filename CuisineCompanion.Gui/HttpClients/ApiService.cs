@@ -11,6 +11,7 @@ public static class ApiService
 {
     public static MyInfoModel? GetMyAllInfo()
     {
+        if (MainViewModel.UserToken is null) return null;
         var req = ApiEndpoints.MyAllInfo(new { MainViewModel.UserToken });
         MyInfoModel? myInfo = null;
         if (req.Execute(out var res))

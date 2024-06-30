@@ -147,8 +147,8 @@
     <value>设置</value>
   </data>
     <data name="Regster_Instruction" xml:space="preserve">
-    <value>创建新帐户以使用食谱助手</value>
-  </data>
+        <value>创建新帐户以使用食谱与健康管理平台</value>
+    </data>
     <data name="Str_Password_Confirm" xml:space="preserve">
     <value>确认密码</value>
   </data>

@@ -141,14 +141,7 @@ public partial class NavigateControl
     }
 
     [RelayCommand]
-    public void GoLogin()
-    {
-        _rStack.Clear();
-        _lStack.Clear();
-
-        MainViewModel.MainFrame.Navigate(new AuthenticationView());
-        MainViewModel.Navigate = null;
-    }
+    public void GoLogin() => MainViewModel.ReStart();
 
     [RelayCommand]
     public void GoHome()
@@ -160,6 +153,7 @@ public partial class NavigateControl
     {
         flags ??= SearchFlags.Recipe;
         searchText ??= "";
+        
         var home = HomeIndexViewModel._instance;
         _rStack.Clear();
         _lStack.Clear();
@@ -170,7 +164,7 @@ public partial class NavigateControl
         home.EatingDiary = new EatingDiaryViewModel { EatingDiaries = e };
         home.SearchText = searchText;
         home.InitOption((SearchFlags)flags);
-        ReNavigate($"你好，{MainViewModel.UserToken.UserName}！欢迎来到 食谱信息管理系统！",
+        ReNavigate($"你好，{MainViewModel.UserToken.UserName}！欢迎来到 食谱与健康管理平台！",
             new HomeIndexView
             {
                 DataContext = home

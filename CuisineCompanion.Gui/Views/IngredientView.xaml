@@ -19,12 +19,12 @@
     <Grid Background="White">
         <StackPanel
             Background="White"
-            Margin="36,5"
             Orientation="Vertical"
             x:Name="MainPanel">
             <Border
                 Background="#FFF3E6"
                 CornerRadius="10"
+                Margin="36,5"
                 Padding="5,5">
                 <common:CornerRadiusImage
                     CornerRadius="55"

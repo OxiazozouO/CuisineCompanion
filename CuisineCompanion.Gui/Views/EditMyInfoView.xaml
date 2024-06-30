@@ -605,7 +605,7 @@
                     HorizontalAlignment="Center"
                     Margin="30,24,10,0"
                     Style="{StaticResource Title}"
-                    Text="退出登陆" />
+                    Text="退出登录" />
                 <b:Interaction.Behaviors>
                     <behavior:PressReboundBehavior Command="{Binding DataContext.SignOutCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type views:EditMyInfoView}}}" CommandParameter="{Binding}" />
                     <behavior:FocusAmplificationBehavior

@@ -148,7 +148,7 @@ public static class ApiEndpoints
         return new ApiRequest
         {
             Method = POST,
-            Url = "FavoriteItems/IsLike",
+            Url = "FavoriteItem/IsLike",
             Parameters = parameters
         };
     }

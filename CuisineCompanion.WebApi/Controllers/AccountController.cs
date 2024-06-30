@@ -32,7 +32,7 @@ public class AccountController : MyControllerBase
             {
                 UName = dto.Name,
                 Password = dto.Password,
-                Salt = dto.Password,
+                Salt = dto.Salt,
                 Email = dto.Email,
                 Phone = dto.Phone
             };
@@ -64,7 +64,7 @@ public class AccountController : MyControllerBase
     }
 
     /// <summary>
-    ///     登陆
+    ///     登录
     /// </summary>
     /// <param name="dto"></param>
     /// <returns></returns>
@@ -84,7 +84,7 @@ public class AccountController : MyControllerBase
             return Ok(new ApiResponses
             {
                 Code = 1,
-                Message = "登陆成功",
+                Message = "登录成功",
                 Data = new UserToken
                 {
                     UserId = user.UserId,

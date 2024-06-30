@@ -109,6 +109,8 @@ public partial class TipTextBox
             Source = InputView,
             Path = new PropertyPath("(Validation.HasError)")
         });
+        
+        
 
 
         Interaction.GetBehaviors(InputView).Add(new ContentChangedBehavior((o, args, content) =>

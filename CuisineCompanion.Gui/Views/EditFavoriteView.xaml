@@ -25,11 +25,18 @@
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Column="1" Orientation="Vertical">
             <Border MinHeight="40" Style="{StaticResource Body}">
-                <DockPanel>
+                <Grid MinHeight="40">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
                     <Border
                         Background="#52B39E"
                         CornerRadius="10"
-                        DockPanel.Dock="Left">
+                        DockPanel.Dock="Left"
+                        Grid.Column="0"
+                        MinHeight="40">
                         <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
                             <Image
                                 Height="24"
@@ -40,7 +47,7 @@
                                 FontSize="24"
                                 Foreground="White"
                                 HorizontalAlignment="Right"
-                                Margin="4,0,10,0"
+                                Padding="4,0,10,0"
                                 Text="返回"
                                 VerticalAlignment="Center" />
                         </StackPanel>
@@ -53,13 +60,15 @@
                         Background="#52B39E"
                         CornerRadius="10"
                         DockPanel.Dock="Right"
+                        Grid.Column="2"
                         HorizontalAlignment="Right"
+                        MinHeight="40"
                         Width="80">
                         <TextBlock
                             FontSize="24"
                             Foreground="White"
                             HorizontalAlignment="Center"
-                            Margin="10,0,10,0"
+                            Padding="10,0"
                             Text="确认"
                             VerticalAlignment="Center" />
                         <b:Interaction.Behaviors>
@@ -67,9 +76,7 @@
                             <behavior:FocusAmplificationBehavior Mod="Weak" />
                         </b:Interaction.Behaviors>
                     </Border>
-                </DockPanel>
-
-
+                </Grid>
             </Border>
             <Border DataContext="{Binding Fmodel}" Style="{StaticResource Body}">
                 <Grid>

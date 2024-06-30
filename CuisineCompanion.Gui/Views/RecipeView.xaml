@@ -21,12 +21,12 @@
             Background="White"
             DataContext="{Binding Recipe}"
             HorizontalAlignment="Stretch"
-            Margin="34,5"
             Orientation="Vertical"
             x:Name="MainPanel">
             <Border
                 Background="Azure"
                 CornerRadius="55"
+                Margin="34,5"
                 Padding="5,5">
                 <common:CornerRadiusImage
                     CornerRadius="55"

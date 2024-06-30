@@ -14,7 +14,6 @@ namespace CuisineCompanion.ViewModels;
 
 public partial class HomeIndexViewModel : ObservableObject
 {
-    public static HomeIndexViewModel _instance = new();
     [ObservableProperty] private ObservableCollection<CategoryViewModel> categories;
 
     [ObservableProperty] private EatingDiaryViewModel eatingDiary;
@@ -53,7 +52,9 @@ public partial class HomeIndexViewModel : ObservableObject
 
     public ObservableCollection<FilterOptionViewModel> FilterOptions { get; set; }
 
-    public HomeIndexViewModel Instance
+    public static HomeIndexViewModel _instance = new HomeIndexViewModel();
+
+    public HomeIndexViewModel BindingHelper
     {
         get => _instance;
         set => SetProperty(ref _instance, value);
@@ -74,17 +75,16 @@ public partial class HomeIndexViewModel : ObservableObject
     {
         var req = ApiEndpoints.IndexSearch(new
             { MainViewModel.UserToken, Flag = (byte)Option.SearchFlag, Text = SearchText });
-        if (req.Execute(out var res) && Clear())
+        if (!req.Execute(out var res) || !Clear()) return;
+        switch (Option.SearchFlag)
         {
-            if (Option.SearchFlag == SearchFlags.Recipe)
-            {
+            case SearchFlags.Recipe:
                 Recipes = res.Data.ToEntity<ObservableCollection<RecipeInfoViewModel>>();
-            }
-            else if (Option.SearchFlag == SearchFlags.Food)
-            {
+                break;
+            case SearchFlags.Food:
                 Ingredients = IngredientInfoViewModel.Create(res.Data.ToEntity<IEnumerable<IngredientModel>>());
-            }
-            else if (Option.SearchFlag == SearchFlags.Category)
+                break;
+            case SearchFlags.Category:
             {
                 if (JsonConvert.DeserializeObject(res.Data.ToString()) is JObject obj)
                 {
@@ -95,11 +95,12 @@ public partial class HomeIndexViewModel : ObservableObject
                         foreach (var model in list2)
                             Categories.Add(model);
                 }
+
+                break;
             }
-            else if (Option.SearchFlag == SearchFlags.Menu)
-            {
+            case SearchFlags.Menu:
                 Menus = res.Data.ToEntity<ObservableCollection<FavoriteModel>>();
-            }
+                break;
         }
     }
 
