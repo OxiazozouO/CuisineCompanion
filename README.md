@@ -10,3 +10,7 @@ https://github.com/OxiazozouO/CuisineCompanion
 2024-6-28 优化数据库的数据模型 和 规范API名称
 
 2024-6-30 结档
+
+
+
+Mysql数据库文件：CuisineCompanion\CuisineCompanion.WebApi\Database
